@@ -2,7 +2,7 @@
 
 1. Create a fork of this project
 2. Clone your fork into your local machine.
-3. Add an `upstream` remote pointing to the main CYF repo (to be able to pull updates from your team members)
+3. Add an `upstream` remote pointing to the main CYF repo (to be able to pull updates from your team members) by this code - `git remote add upstream https://github.com/CodeYourFuture/scot-miqa-migrantsqa.git`
 
 After cloning the project, we will create the local database that the project will use.
 

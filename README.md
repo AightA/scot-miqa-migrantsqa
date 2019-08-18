@@ -122,3 +122,10 @@ Don't forget to set the `content-type` to `raw` and `application/json`
 This will bring you back a `token`. Copy the token you get in the response.
 
 - Now, we can use this token for the `status/protected` route. Do a *GET* request to `http://localhost:4000/api/status/protected` and add a `header` with the name `Authorization` and the value: `Bearer the_token_from_previous step`, i.e. `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTU2NTkwOTU4OX0.qidn4r7nrolFByyfd956Kh8BkOhwcaUSzyUK0V7su1c`
+
+## Group Participant
+- Zan
+- Reyam
+- Saeed
+- Nab
+- Ahmed

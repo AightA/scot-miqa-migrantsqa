@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 
 export default class MenuBar extends Component {
   state = {
-    activeItem: "home"
+    activeItem:
+      window.location.pathname === "/"
+        ? "home"
+        : window.location.pathname.substr(1)
   };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -32,6 +35,14 @@ export default class MenuBar extends Component {
           onClick={this.handleItemClick}
           as={Link}
           to="/status"
+        />
+        <Menu.Item
+          name="register"
+          position="right"
+          active={activeItem === "register"}
+          onClick={this.handleItemClick}
+          as={Link}
+          to="/register"
         />
       </Menu>
     );

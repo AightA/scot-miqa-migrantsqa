@@ -18,11 +18,14 @@ export default class UserRegistration extends Component {
     password: "",
     passwordConfirmation: "",
     errorsLog: [],
-    success: ""
+    successLog: [],
+    err: null
   };
 
   isFormValid = () => {
     let errorsLog = [];
+    let successLog = [];
+    let success;
     let error;
 
     const { username, email, password, passwordConfirmation } = this.state;
@@ -33,32 +36,27 @@ export default class UserRegistration extends Component {
       !passwordConfirmation.length
     ) {
       error = { message: "Please fill all fields" };
-      this.setState({ errorsLog: errorsLog.concat(error) });
+      this.setState({ errorsLog: errorsLog.concat(error), err: true });
       return false;
     } else if (password.length < 2 || passwordConfirmation.length < 2) {
       error = { message: "Password is too short" };
-      this.setState({ errorsLog: errorsLog.concat(error) });
+      this.setState({ errorsLog: errorsLog.concat(error), err: true });
       return false;
     } else if (password !== passwordConfirmation) {
       error = { message: "Password doesn't match" };
-      this.setState({ errorsLog: errorsLog.concat(error) });
+      this.setState({ errorsLog: errorsLog.concat(error), err: true });
       return false;
     } else {
-      error = { message: "PASS" };
-      this.setState({ errorsLog: errorsLog.concat(error) });
-      //this.setState({ errorsLog: [] });
+      success = { message: "Successfully registered" };
+      this.setState({ successLog: successLog.concat(success), err: false });
       return true;
     }
   };
 
-  // TODO implement
-  //isFormEmpty = () => {};
-
-  //isPasswordValid = () => {};
-
-  displayErrors = errors => {
-    console.log(errors);
-    var pars = errors.map((error, index) => <p key={index}>{error.message}</p>);
+  displayMessage = message => {
+    var pars = message.map((message, index) => (
+      <p key={index}>{message.message}</p>
+    ));
     console.log(pars);
     return pars;
   };
@@ -84,15 +82,22 @@ export default class UserRegistration extends Component {
       });
     }
   };
+
+  handleMessageLog = () => {
+    const { err, errorsLog, successLog } = this.state;
+    if (err === true)
+      return (
+        <Message error>
+          <h3>Error</h3>
+          {this.displayMessage(errorsLog)}
+        </Message>
+      );
+    if (err === false)
+      return <Message success>{this.displayMessage(successLog)}</Message>;
+  };
+
   render() {
-    //destructuring
-    const {
-      username,
-      email,
-      password,
-      passwordConfirmation,
-      errorsLog
-    } = this.state;
+    const { username, email, password, passwordConfirmation } = this.state;
     return (
       <Grid textAlign="center" verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -150,12 +155,7 @@ export default class UserRegistration extends Component {
               </Button>
             </Segment>
           </Form>
-          {errorsLog.length > 0 && (
-            <Message error>
-              <h3>Error</h3>
-              {this.displayErrors(errorsLog)}
-            </Message>
-          )}
+          {this.handleMessageLog()}
           <Message>
             Already a User ?<Link to="/login"> Login</Link>{" "}
           </Message>

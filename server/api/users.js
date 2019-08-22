@@ -18,10 +18,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/register", (req, res) => {
-  //const { username, email, password } = req.body;
-  const username = req.body.username;
-  const email = req.body.email;
-  const password = req.body.password;
+  const { username, email, password } = req.body;
   usersDb
     .createUser(username, email, password)
     .then(data => {

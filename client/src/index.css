@@ -7,6 +7,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.paragraph {
-  font-size: 20px;
+.text-in-about {
+  font-size: 18px;
 }

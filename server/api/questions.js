@@ -1,14 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const usersDb = require("../services/database/users");
-const q = require("../services/database/questions");
+const question = require("../services/database/questions");
 
-/**
- * The route here will be: /users/ (remember the prefix users is defined in api/index.js)
- */
 router.get("/", (req, res) => {
-	usersDb
-		.getAllUsers()
+	question
+		.getAllQuestions()
 		.then((data) => {
 			res.send(data);
 		})

@@ -1,6 +1,6 @@
 const config = {
 	development: {
-		user: "postgres",
+		user: "app_user",
 		host: "localhost",
 		database: "final_project",
 		password: "password",

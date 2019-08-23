@@ -1,5 +1,6 @@
 -- Drop tables in case they already exist
 DROP TABLE if exists users;
+DROP TABLE if exists questions;
 
 -- Create tables
 CREATE TABLE users (
@@ -17,13 +18,12 @@ insert into users (email,password) values('zan@gmail.com','2516722');
 
 
 CREATE TABLE questions(
-  id           SERIAL PRIMARY KEY,
-  ques_text    VARCHAR (150) NOT NULL,
-  ques_date    DATE NOT NULL,
-  tags         VARCHAR(50),
-  isAnswered   BOOLEAN NOT NULL,
-  score        INT,
-  userid      INT REFERENCES users(id)
+  id                  SERIAL PRIMARY KEY,
+  questions.text    VARCHAR (150) NOT NULL,
+  questions.date            DATE NOT NULL,
+  tags                 VARCHAR(50),
+  is_answered           BOOLEAN NOT NULL,
+  score                INT,
+  user_id               INT REFERENCES users(id)
 );
-
 

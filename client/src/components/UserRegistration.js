@@ -18,37 +18,51 @@ export default class UserRegistration extends Component {
     password: "",
     passwordConfirmation: "",
     errorsLog: [],
-    successLog: [],
-    err: null
+    isSuccess: false,
+    isLoading: false
   };
 
   isFormValid = () => {
-    let errorsLog = [];
-    let successLog = [];
-    let success;
     let error;
 
-    const { username, email, password, passwordConfirmation } = this.state;
-    if (
+    if (this.isFormEmpty(this.state)) {
+      error = { message: "Please fill all fields" };
+      this.setState({ errorsLog: [error] });
+      return false;
+    } else if (this.isPasswordTooShort(this.state)) {
+      error = { message: "Password is too short" };
+      this.setState({ errorsLog: [error] });
+      return false;
+    } else if (!this.isPasswordMismatch(this.state)) {
+      error = { message: "Password doesn't match" };
+      this.setState({ errorsLog: [error] });
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  isFormEmpty = ({ username, email, password, passwordConfirmation }) => {
+    return (
       !username.length ||
       !email.length ||
       !password.length ||
       !passwordConfirmation.length
-    ) {
-      error = { message: "Please fill all fields" };
-      this.setState({ errorsLog: errorsLog.concat(error), err: true });
-      return false;
-    } else if (password.length < 2 || passwordConfirmation.length < 2) {
-      error = { message: "Password is too short" };
-      this.setState({ errorsLog: errorsLog.concat(error), err: true });
-      return false;
-    } else if (password !== passwordConfirmation) {
-      error = { message: "Password doesn't match" };
-      this.setState({ errorsLog: errorsLog.concat(error), err: true });
+    );
+  };
+
+  isPasswordTooShort = ({ password, passwordConfirmation }) => {
+    if (password.length > 2 || passwordConfirmation.length > 2) {
       return false;
     } else {
-      success = { message: "Successfully registered" };
-      this.setState({ successLog: successLog.concat(success), err: false });
+      return true;
+    }
+  };
+
+  isPasswordMismatch = ({ password, passwordConfirmation }) => {
+    if (password !== passwordConfirmation) {
+      return false;
+    } else {
       return true;
     }
   };
@@ -57,7 +71,6 @@ export default class UserRegistration extends Component {
     var pars = message.map((message, index) => (
       <p key={index}>{message.message}</p>
     ));
-    console.log(pars);
     return pars;
   };
 
@@ -69,35 +82,45 @@ export default class UserRegistration extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-    if (!this.isFormValid()) {
-      return false;
-    } else {
-      const { username, email, password } = this.state;
-      postUsers(username, email, password);
-      this.setState({
-        username: "",
-        email: "",
-        password: "",
-        passwordConfirmation: ""
-      });
+    if (this.isFormValid()) {
+      this.setState({ errorsLog: [], isLoading: true });
+      const { username, email, password, errorsLog } = this.state;
+      postUsers(username, email, password)
+        .then(createdUser => {
+          this.setState({
+            isLoading: false,
+            isSuccess: createdUser.status === 200 ? true : false,
+            username: "",
+            email: "",
+            password: "",
+            passwordConfirmation: ""
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          this.setState({ errorsLog: errorsLog.concat(err), isLoading: false });
+        });
     }
   };
 
-  handleMessageLog = () => {
-    const { err, errorsLog, successLog } = this.state;
-    if (err === true)
-      return (
-        <Message error>
-          <h3>Error</h3>
-          {this.displayMessage(errorsLog)}
-        </Message>
-      );
-    if (err === false)
-      return <Message success>{this.displayMessage(successLog)}</Message>;
+  handleInputError = (errorLog, inputName) => {
+    return errorLog.some(error =>
+      error.message.toLowerCase().includes(inputName)
+    )
+      ? "error"
+      : "";
   };
 
   render() {
-    const { username, email, password, passwordConfirmation } = this.state;
+    const {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      isLoading,
+      errorsLog,
+      isSuccess
+    } = this.state;
     return (
       <Grid textAlign="center" verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -115,6 +138,7 @@ export default class UserRegistration extends Component {
                 placeholder="username"
                 onChange={this.handleChange}
                 value={username}
+                className={this.handleInputError(errorsLog, "username")}
                 type="text"
               />
 
@@ -126,6 +150,7 @@ export default class UserRegistration extends Component {
                 placeholder="Email Address"
                 onChange={this.handleChange}
                 value={email}
+                className={this.handleInputError(errorsLog, "email")}
                 type="email"
               />
 
@@ -137,6 +162,7 @@ export default class UserRegistration extends Component {
                 placeholder="Password"
                 onChange={this.handleChange}
                 value={password}
+                className={this.handleInputError(errorsLog, "password")}
                 type="password"
               />
 
@@ -148,16 +174,29 @@ export default class UserRegistration extends Component {
                 placeholder="Password Confirmation"
                 onChange={this.handleChange}
                 value={passwordConfirmation}
+                className={this.handleInputError(errorsLog, "password")}
                 type="password"
               />
-              <Button color="brown" fluid size="large">
+              <Button
+                disabled={isLoading}
+                className={isLoading ? "loading" : ""}
+                color="brown"
+                fluid
+                size="large"
+              >
                 Submit
               </Button>
             </Segment>
           </Form>
-          {this.handleMessageLog()}
+          {errorsLog.length > 0 && (
+            <Message error>
+              <h3>Error</h3>
+              {this.displayMessage(errorsLog)}
+            </Message>
+          )}
+          {isSuccess && <Message success>Successfully registered</Message>}
           <Message>
-            Already a User ?<Link to="/login"> Login</Link>{" "}
+            Already a user? <Link to="/login">Login</Link>{" "}
           </Message>
         </Grid.Column>
       </Grid>

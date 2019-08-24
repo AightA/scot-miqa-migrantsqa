@@ -4,5 +4,7 @@ export const postUsers = (username, email, password) => {
     body: JSON.stringify({ username, email, password }),
     headers: { "Content-Type": "application/json" }
   };
-  return fetch("/api/users/register", postData);
+  return fetch("/auth/register", postData);
+  // .then(response => console.log(response.status))
+  // .catch(err => console.error(err));
 };

@@ -90,6 +90,14 @@ This structure using `Express.Router` allows our code to be _modular_ and minimi
 > 2. Create an API endpoint `api/some_table.js`
 > 3. Create a service under `services/databases/some_table.js` (this will contain the SQL to connect the API and the database)
 
+## Access the dB
+1. cd server
+2. connect to our database: psql final_project
+3.  execute  sql code against our DB : using this        command l:
+  psql -d final_project  -f /Users/reyam m/scot-miqa-migrantsqa/server/db recreate-schema.sql
+  
+*You have to change the path depends on your project path
+
 
 ## Authentication and Authorisation
 

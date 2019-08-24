@@ -33,6 +33,14 @@ export default class MenuBar extends Component {
           as={Link}
           to="/status"
         />
+        <Menu.Item
+          name="login"
+          active={activeItem === "login"}
+          position="right"
+          onClick={this.handleItemClick}
+          as={Link}
+          to="/login"
+        />
       </Menu>
     );
   }

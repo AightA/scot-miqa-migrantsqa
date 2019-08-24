@@ -18,12 +18,12 @@ insert into users (email,password) values('zan@gmail.com','2516722');
 
 
 CREATE TABLE questions(
-  id                  SERIAL PRIMARY KEY,
-  questions.text    VARCHAR (150) NOT NULL,
-  questions.date            DATE NOT NULL,
-  tags                 VARCHAR(50),
-  is_answered           BOOLEAN NOT NULL,
-  score                INT,
-  user_id               INT REFERENCES users(id)
+  id                       SERIAL PRIMARY KEY,
+  content                  VARCHAR (150) NOT NULL,
+  date_posted              DATE NOT NULL,
+  tags                     VARCHAR(50),
+  is_answered              BOOLEAN NOT NULL,
+  score                    INT,
+  user_id                  INT REFERENCES users(id)
 );
 

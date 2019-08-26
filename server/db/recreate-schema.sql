@@ -1,6 +1,6 @@
 -- Drop tables in case they already exist
-DROP TABLE if exists users;
-DROP TABLE if exists questions;
+DROP TABLE if exists users CASCADE;
+DROP TABLE if exists questions CASCADE;
 
 -- Create tables
 CREATE TABLE users (
@@ -10,9 +10,9 @@ CREATE TABLE users (
   password VARCHAR(200) NOT NULL
 );
 
-insert into users (email,password) values('reyam@gmail.com','123455');
-insert into users (email,password) values('ahmed@gmail.com','73635');
-insert into users (email,password) values('zan@gmail.com','2516722');
+insert into users (username,email,password) values('user1','reyam@gmail.com','123455');
+insert into users (username,email,password) values('user2','ahmed@gmail.com','73635');
+insert into users (username,email,password) values('user3','zan@gmail.com','2516722');
 
 
 

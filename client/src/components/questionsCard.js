@@ -1,6 +1,6 @@
 import React from "react";
 import { getQuestions, getUsers } from "../api/questions";
-import { Card, Grid } from "semantic-ui-react";
+import { Card, Grid, Container } from "semantic-ui-react";
 
 class Questions extends React.Component {
   constructor(props) {
@@ -13,35 +13,32 @@ class Questions extends React.Component {
 
   componentDidMount() {
     getQuestions().then(response => {
-      console.log(response);
       this.setState({ questions: response });
     });
-  }
 
-  //componentDidMount() {
-  //getUsers()
-  //.then(response => {
-  //console.log(response)
-  //this.setState({ users: response });
-  //});
-  //}
+    // getUsers()
+    //.then(response => {
+    //this.setState({ users: response });
+    //});
+  }
 
   render() {
     const { questions, users } = this.state;
     return (
-      <div>
+      <Container>
         {questions.map(question => {
           console.log(question.ques_text);
           return (
-            <Card>
+            <Card fluid>
               <Card.Content>
+                <Card.Header>user</Card.Header>
                 <Card.Header>{question.ques_text}</Card.Header>
                 <Card.Meta>{question.ques_date}</Card.Meta>
               </Card.Content>
             </Card>
           );
         })}
-      </div>
+      </Container>
     );
   }
 }

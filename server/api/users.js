@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const usersDb = require("../services/database/users");
-const q = require("../services/database/questions");
 
 /**
  * The route here will be: /users/ (remember the prefix users is defined in api/index.js)
@@ -17,5 +16,6 @@ router.get("/", (req, res) => {
       res.send(500);
     });
 });
+
 
 module.exports = router;

@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/Home.css";
 import Search from "./HomePageSearch";
 import { Header, Container, Icon, Input } from "semantic-ui-react";
-
+import Questions from "./questionsCard";
 const Home = () => {
   return (
     <Container>
@@ -12,9 +12,10 @@ const Home = () => {
         <Input
           fluid
           icon={<Icon name="add" inverted circular link />}
-          placeholder="Write you"
+          placeholder="Write your questions here"
         />
       </header>
+      <Questions />
     </Container>
   );
 };

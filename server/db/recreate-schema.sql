@@ -1,7 +1,6 @@
 -- Drop tables in case they already exist
 DROP TABLE if exists users;
 DROP TABLE if exists questions;
-
 -- Create tables
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,

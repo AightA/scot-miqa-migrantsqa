@@ -92,14 +92,18 @@ This structure using `Express.Router` allows our code to be _modular_ and minimi
 > 2. Create an API endpoint `api/some_table.js`
 > 3. Create a service under `services/databases/some_table.js` (this will contain the SQL to connect the API and the database)
 
-## Access the dB
+## Recreate and populate the DB 
 1. cd server
-2. connect to our database: psql final_project
-3.  execute  sql code against our DB : using this        command l:
-  psql -d final_project  -f /Users/reyam m/scot-miqa-migrantsqa/server/db recreate-schema.sql
+2. connect to the database: psql final_project
+3. execute the following command:
+`GRANT ALL PRIVILEGES ON TABLE questions TO app_user;`
+4. Quit the database:
+`\q`
+5. recreate schema using this command:
+ `psql -d final_project -f db/recreate-schema.sql`
+6. populate DB using this command:
+ `psql -d final_project -f db/populate-db.sql`
   
-*You have to change the path depends on your project path
-
 
 ## Authentication and Authorisation
 

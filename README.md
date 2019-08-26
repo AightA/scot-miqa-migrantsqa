@@ -12,19 +12,20 @@ After cloning the project, we will create the local database that the project wi
 - Create your database: `createdb final_project`
 - `npm run recreate-db:local` (this will create and populate your new team's DB with the data your colleague added)
 
-> Your actual database schema will go to `server/db/recreate-schema.sql` and you can add sample test data in  `server/db/populate-db.sql`
+> Your actual database schema will go to `server/db/recreate-schema.sql` and you can add sample test data in `server/db/populate-db.sql`
 
 ## Test it all works
 
 Now let us test that the whole stack works (the `React frontend` connects to the `Node API` which connects to the `Postgres Database` )
 
-- Open a terminal, navigate  to the root of the project and do `npm install`
+- Open a terminal, navigate to the root of the project and do `npm install`
 - `cd` into `server` and run `npm run dev`
 - On a different terminal, `cd` into `client` and run `npm run dev`
 
 Once the React website opens in a browser. Navigate to the _Status_ page, and you should see two users listed in the page. This means everything works fine.
 
 # Development Process
+
 Read the [Development process](CONTRIBUTING.md).
 
 > IMPORTANT: Make sure you read and understand the development proces guidelines before starting any work. Ask mentors for explanation if you have any questions.
@@ -59,11 +60,11 @@ The API is implemented using [Express](https://expressjs.com/) framework. We hav
 
 - `services` folder contain `database` services. These are modules to manipulate a certain entity in the database. For example, if you have a table called `documents`, you might add a module `services/database/documents` that will expose methods like `addDocument, getDocumentById` and implement an `SQL` statement to perform the required functionality.
 
-- `api` When you add a new API, for example for managing `questions`. You can add it at `api/index.js`. This will define the _prefix_ so for example, 
+- `api` When you add a new API, for example for managing `questions`. You can add it at `api/index.js`. This will define the _prefix_ so for example,
 
 ```js
-const questions = require('./questions');
-router.use('/questions', questions);
+const questions = require("./questions");
+router.use("/questions", questions);
 ```
 
 and in `questions` module you will define the routes. Note these will all be prefixed with _questions_.
@@ -72,12 +73,12 @@ For example
 
 ```js
 // questions.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 // This route is GET /questions/ (because everything in this file is "mounted" on the prefix questions from the previous step)
-router.get('/', (req, res) => {
-    res.send('All good')
+router.get("/", (req, res) => {
+  res.send("All good");
 });
 
 module.exports = router;
@@ -86,9 +87,18 @@ module.exports = router;
 This structure using `Express.Router` allows our code to be _modular_ and minimise conflict between team members. You can read more about [Express Router](expressjs.com/en/guide/routing.html#express-router)
 
 > Typically a server-side user story will involve:
+>
 > 1. Define a table in `db/recreate-schema.sql`
 > 2. Create an API endpoint `api/some_table.js`
 > 3. Create a service under `services/databases/some_table.js` (this will contain the SQL to connect the API and the database)
+
+## Access the dB
+1. cd server
+2. connect to our database: psql final_project
+3.  execute  sql code against our DB : using this        command l:
+  psql -d final_project  -f /Users/reyam m/scot-miqa-migrantsqa/server/db recreate-schema.sql
+  
+*You have to change the path depends on your project path
 
 
 ## Authentication and Authorisation
@@ -97,33 +107,48 @@ The project has routes and services to implement an authentication / authorisati
 
 To test authentication:
 
-- In Postman, do a *GET* on `http://localhost:4000/api/status/protected`. You should receive a `403` (Forbidden) as a response.
+- In Postman, do a _GET_ on `http://localhost:4000/api/status/protected`. You should receive a `403` (Forbidden) as a response.
 
-- Register a user by doing a *POST* to `http://localhost:4000/auth/register` with the body looking like: 
+- Register a user by doing a _POST_ to `http://localhost:4000/auth/register` with the body looking like:
 
 ```json
 {
-    "email": "myemail@gmail.com",
-    "password": "mypassword"
+  "email": "myemail@gmail.com",
+  "password": "mypassword"
 }
 ```
 
 Don't forget to set the `content-type` to `raw` and `application/json`
 
-- Now you can login by doing a *POST* to `http://localhost:4000/auth/login` with a body similar to:
+- Now you can login by doing a _POST_ to `http://localhost:4000/auth/login` with a body similar to:
 
 ```json
 {
-    "email": "myemail@gmail.com",
-    "password": "mypassword"
+  "email": "myemail@gmail.com",
+  "password": "mypassword"
 }
 ```
 
 This will bring you back a `token`. Copy the token you get in the response.
 
-- Now, we can use this token for the `status/protected` route. Do a *GET* request to `http://localhost:4000/api/status/protected` and add a `header` with the name `Authorization` and the value: `Bearer the_token_from_previous step`, i.e. `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTU2NTkwOTU4OX0.qidn4r7nrolFByyfd956Kh8BkOhwcaUSzyUK0V7su1c`
+- Now, we can use this token for the `status/protected` route. Do a _GET_ request to `http://localhost:4000/api/status/protected` and add a `header` with the name `Authorization` and the value: `Bearer the_token_from_previous step`, i.e. `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTU2NTkwOTU4OX0.qidn4r7nrolFByyfd956Kh8BkOhwcaUSzyUK0V7su1c`
+
+## User Registration
+
+I have update the pre populated `database query` located on `server -> services -> database -> users -> createUser`
+
+> 1 Added `username` as a parameter to the pre populated function `createUser`.
+> 2 Changed the `insert query` to handle the username.
+> 3 Followed by modifying the `recreate-schema.sql` to add the username to the `users table` file located `server ->db->recreate-schema.sql`
+> 4 Modified the `populate-db.sql` located `server ->db->populate-db.sql` to handle the insertion of the username.
+> 5 Run the following command `npm run recreate-db:local` to execute the changes.
+> 6 Created an Endpoint to hand (POST) `router.post("/register")` this file is located under `` server ->api->users.js```
+> 7 created `UserRegistration.js` component to handle user registration.The registration form meets all the required validation mentioned in the acceptance criteria.
+> 8 Added a link in `MenuBar.js`, to display the register menu, additionally, added
+> `<Route path>' in the`index.js`. 9 Finally, created`registration.js` to handle data post the the correct endpoint.
 
 ## Group Participant
+
 - Zan
 - Reyam
 - Saeed

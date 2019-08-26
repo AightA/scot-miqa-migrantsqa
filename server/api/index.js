@@ -1,4 +1,4 @@
-import 'semantic-ui-css/semantic.min.css';
+//import 'semantic-ui-css/semantic.min.css';
 const express = require("express");
 const router = express.Router();
 

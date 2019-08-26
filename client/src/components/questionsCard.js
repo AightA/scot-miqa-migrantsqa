@@ -23,17 +23,17 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { questions, users } = this.state;
+    const { questions } = this.state;
     return (
       <Container>
         {questions.map(question => {
-          console.log(question.ques_text);
+          console.log(question.content);
           return (
             <Card fluid>
               <Card.Content>
                 <Card.Header>user</Card.Header>
-                <Card.Header>{question.ques_text}</Card.Header>
-                <Card.Meta>{question.ques_date}</Card.Meta>
+                <Card.Header>{question.content}</Card.Header>
+                <Card.Meta>{question.date_posted}</Card.Meta>
               </Card.Content>
             </Card>
           );

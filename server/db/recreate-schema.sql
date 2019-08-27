@@ -20,7 +20,3 @@ CREATE TABLE questions(
   score                    INT,
   user_id                  INT REFERENCES users(id)
 );
-
-
-recreate schema using this command: psql -d final_project -f db/recreate-schema.sql
-populate DB using this command: psql -d final_project -f db/populate-db.sql

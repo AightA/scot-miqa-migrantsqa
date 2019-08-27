@@ -8,10 +8,10 @@ const usersDb = require("../services/database/users");
 router.get("/", (req, res) => {
 	usersDb
 		.getAllUsers()
-		.then((data) => {
+		.then(data => {
 			res.send(data);
 		})
-		.catch((err) => {
+		.catch(err => {
 			console.error(err);
 			res.send(500);
 		});

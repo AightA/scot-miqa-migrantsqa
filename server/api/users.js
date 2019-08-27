@@ -17,4 +17,17 @@ router.get("/", (req, res) => {
 		});
 });
 
+router.get("/:userId", (req, res) => {
+	let id = req.params.userId;
+	usersDb
+		.getUserById(id)
+		.then((data) => {
+			res.send(data);
+		})
+		.catch((err) => {
+			console.error(err);
+			res.send(500);
+		});
+});
+
 module.exports = router;

@@ -10,13 +10,6 @@ CREATE TABLE users (
   password VARCHAR(200) NOT NULL
 );
 
-insert into users (username,email,password) values('user1','reyam@gmail.com','123455');
-insert into users (username,email,password) values('user2','ahmed@gmail.com','73635');
-insert into users (username,email,password) values('user3','zan@gmail.com','2516722');
-
-
-
-
 
 CREATE TABLE questions(
   id                       SERIAL PRIMARY KEY,
@@ -28,3 +21,6 @@ CREATE TABLE questions(
   user_id                  INT REFERENCES users(id)
 );
 
+
+recreate schema using this command: psql -d final_project -f db/recreate-schema.sql
+populate DB using this command: psql -d final_project -f db/populate-db.sql

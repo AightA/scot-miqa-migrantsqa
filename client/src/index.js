@@ -8,6 +8,7 @@ import Status from "./components/Status";
 import MenuBar from "./components/MenuBar";
 import Register from "./components/UserRegistration";
 import Login from "./components/Login";
+import ProfilePage from "./components/ProfilePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const Routes = () => {
@@ -19,6 +20,7 @@ const Routes = () => {
       <Route path="/status/" component={Status} />
       <Route path="/register" component={Register} />
       <Route path="/login/" component={Login} />
+      <Route path="/profile" component={ProfilePage} />
     </Router>
   );
 };

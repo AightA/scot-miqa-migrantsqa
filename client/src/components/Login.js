@@ -6,52 +6,113 @@ import {
   Grid,
   Header,
   Message,
-  Segment
+  Segment,
+  Icon
 } from "semantic-ui-react";
+import { UserLogin } from "../api/login";
+import { Link } from "react-router-dom";
+import Home from "./Home";
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      email: "",
+      password: "",
+      isLoggedIn: null
+      //errorLog: []
+    };
   }
 
-  handleUserChange = e => {};
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.setState({
+        isLoggedIn: true
+      });
+    }
+  }
+
+  handleOnChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  handleOnSubmit = e => {
+    e.preventDefault();
+    const { email, password } = this.state;
+    UserLogin(email, password)
+      .then(loggedInUser => {
+        console.log(loggedInUser);
+        localStorage.setItem("token", loggedInUser.token);
+        document.location.href = "/";
+        // this.setState({
+        //   isLoggedIn: true
+        // });
+      })
+      .catch(err => {
+        this.setState({
+          // errorLog: errorLog.concat(err),
+          isLoggedIn: err.status === 403 ? false : false
+        });
+      });
+  };
 
   render() {
-    return (
-      <Grid centered columns={2}>
-        <Grid.Column>
-          <Header as="h2" textAlign="center">
-            Login
-          </Header>
-          <Segment>
-            <Form size="large">
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="Email address"
-                onChange={this.handleUserChange}
-              />
-              <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password"
-                type="password"
-              />
+    const { email, password, isLoggedIn } = this.state;
+    if (localStorage.getItem("token")) {
+      return <Home />;
+    } else
+      return (
+        <Grid textAlign="center" verticalAlign="middle">
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <Header as="h2" icon color="brown" textAlign="center">
+              <Icon name="sign in" color="brown" />
+              Login
+            </Header>
 
-              <Button color="blue" fluid size="large">
-                Login
-              </Button>
+            <Form onSubmit={this.handleOnSubmit} size="large">
+              <Segment stacked>
+                <Form.Input
+                  fluid
+                  name="email"
+                  icon="mail"
+                  iconPosition="left"
+                  placeholder="Email Address"
+                  onChange={this.handleOnChange}
+                  value={email}
+                  type="email"
+                />
+
+                <Form.Input
+                  fluid
+                  name="password"
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Password"
+                  onChange={this.handleOnChange}
+                  value={password}
+                  type="password"
+                />
+
+                <Button fluid color="brown" size="large">
+                  login
+                </Button>
+              </Segment>
             </Form>
-          </Segment>
-          <Message>
-            Not registered yet? <a href="#">Sign Up</a>
-          </Message>
-        </Grid.Column>
-      </Grid>
-    );
+            {isLoggedIn === false ? (
+              <Message error>Please check your email/password</Message>
+            ) : null}
+            <Message>
+              <Link to="/forgot-password">Forgot password?</Link>
+            </Message>
+            <Message>
+              Not registered yet? <Link to="/register">Sign up</Link>
+            </Message>
+          </Grid.Column>
+        </Grid>
+      );
   }
 }
 

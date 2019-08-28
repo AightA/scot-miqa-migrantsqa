@@ -20,17 +20,7 @@ class Login extends Component {
       email: "",
       password: "",
       isLoggedIn: null
-      //errorLog: []
     };
-  }
-
-  componentDidMount() {
-    const token = localStorage.getItem("token");
-    if (token) {
-      this.setState({
-        isLoggedIn: true
-      });
-    }
   }
 
   handleOnChange = e => {
@@ -47,14 +37,10 @@ class Login extends Component {
         console.log(loggedInUser);
         localStorage.setItem("token", loggedInUser.token);
         document.location.href = "/";
-        // this.setState({
-        //   isLoggedIn: true
-        // });
       })
       .catch(err => {
         this.setState({
-          // errorLog: errorLog.concat(err),
-          isLoggedIn: err.status === 403 ? false : false
+          isLoggedIn: err.status > 200 && err.status < 405 ? false : true
         });
       });
   };

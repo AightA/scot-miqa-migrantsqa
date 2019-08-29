@@ -20,3 +20,5 @@ CREATE TABLE questions(
   score                    INT,
   user_id                  INT REFERENCES users(id)
 );
+
+GRANT ALL PRIVILEGES ON TABLE questions TO app_user;

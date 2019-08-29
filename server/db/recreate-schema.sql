@@ -22,3 +22,4 @@ CREATE TABLE questions(
 );
 
 GRANT ALL PRIVILEGES ON TABLE questions TO app_user;
+GRANT ALL PRIVILEGES ON TABLE users TO app_user;

@@ -37,9 +37,7 @@ class Questions extends React.Component {
               <Card.Content>
                 <Card.Header>{question.content}</Card.Header>
                 <Card.Meta>{formatingDate(question.date_posted)}</Card.Meta>
-                <Card.Meta>
-                  {"by"} {question.username}
-                </Card.Meta>
+                <Card.Meta> by {question.username}</Card.Meta>
               </Card.Content>
             </Card>
           );

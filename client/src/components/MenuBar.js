@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Menu, MenuHeader } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 export default class MenuBar extends Component {
   state = {
@@ -15,7 +15,7 @@ export default class MenuBar extends Component {
   handleLogout = e => {
     e.preventDefault();
     localStorage.removeItem("token");
-    document.location.href = "/";
+    window.location.href = "/";
   };
   render() {
     const { activeItem } = this.state;
@@ -56,8 +56,6 @@ export default class MenuBar extends Component {
               active={activeItem === "logout"}
               position="right"
               onClick={this.handleLogout}
-              as={Link}
-              to="/home"
             />
           ) : (
             <Menu.Menu position="right">

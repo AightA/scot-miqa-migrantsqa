@@ -10,7 +10,7 @@ import {
   Icon
 } from "semantic-ui-react";
 import { UserLogin } from "../api/login";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Home from "./Home";
 
 class Login extends Component {
@@ -21,6 +21,15 @@ class Login extends Component {
       password: "",
       isLoggedIn: null
     };
+  }
+
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.setState({
+        isLoggedIn: true
+      });
+    }
   }
 
   handleOnChange = e => {
@@ -34,9 +43,11 @@ class Login extends Component {
     const { email, password } = this.state;
     UserLogin(email, password)
       .then(loggedInUser => {
-        console.log(loggedInUser);
         localStorage.setItem("token", loggedInUser.token);
-        document.location.href = "/";
+        window.location.reload();
+        this.setState({
+          isLoggedIn: true
+        });
       })
       .catch(err => {
         this.setState({
@@ -47,58 +58,58 @@ class Login extends Component {
 
   render() {
     const { email, password, isLoggedIn } = this.state;
-    if (localStorage.getItem("token")) {
-      return <Home />;
-    } else
-      return (
-        <Grid textAlign="center" verticalAlign="middle">
-          <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" icon color="brown" textAlign="center">
-              <Icon name="sign in" color="brown" />
-              Login
-            </Header>
+    if (isLoggedIn) {
+      return <Redirect to="/" />;
+    }
+    return (
+      <Grid textAlign="center" verticalAlign="middle">
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as="h2" icon color="brown" textAlign="center">
+            <Icon name="sign in" color="brown" />
+            Login
+          </Header>
 
-            <Form onSubmit={this.handleOnSubmit} size="large">
-              <Segment stacked>
-                <Form.Input
-                  fluid
-                  name="email"
-                  icon="mail"
-                  iconPosition="left"
-                  placeholder="Email Address"
-                  onChange={this.handleOnChange}
-                  value={email}
-                  type="email"
-                />
+          <Form onSubmit={this.handleOnSubmit} size="large">
+            <Segment stacked>
+              <Form.Input
+                fluid
+                name="email"
+                icon="mail"
+                iconPosition="left"
+                placeholder="Email Address"
+                onChange={this.handleOnChange}
+                value={email}
+                type="email"
+              />
 
-                <Form.Input
-                  fluid
-                  name="password"
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  onChange={this.handleOnChange}
-                  value={password}
-                  type="password"
-                />
+              <Form.Input
+                fluid
+                name="password"
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
+                onChange={this.handleOnChange}
+                value={password}
+                type="password"
+              />
 
-                <Button fluid color="brown" size="large">
-                  login
-                </Button>
-              </Segment>
-            </Form>
-            {isLoggedIn === false ? (
-              <Message error>Please check your email/password</Message>
-            ) : null}
-            <Message>
-              <Link to="/forgot-password">Forgot password?</Link>
-            </Message>
-            <Message>
-              Not registered yet? <Link to="/register">Sign up</Link>
-            </Message>
-          </Grid.Column>
-        </Grid>
-      );
+              <Button fluid color="brown" size="large">
+                Login
+              </Button>
+            </Segment>
+          </Form>
+          {isLoggedIn === false && (
+            <Message error>Please check your email/password</Message>
+          )}
+          <Message>
+            <Link to="/forgot-password">Forgot password?</Link>
+          </Message>
+          <Message>
+            Not registered yet? <Link to="/register">Sign up</Link>
+          </Message>
+        </Grid.Column>
+      </Grid>
+    );
   }
 }
 

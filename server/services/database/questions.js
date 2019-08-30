@@ -7,10 +7,14 @@ const pool = new Pool(config);
  * won't be allowed in the final version of the project as it is a
  * security risk to expose all users
  */
+
 const getAllQuestions = () => {
 	return new Promise((resolve, reject) => {
-		pool.query("SELECT * FROM questions", (error, result) => {
+		pool.query(`select questions.content, users.username ,questions.date_posted
+		from questions 
+		INNER JOIN users ON users.id = questions.user_id limit 10`, (error, result) => {
 			if (error) {
+				console.error(error)
 				reject(error);
 			} else {
 				resolve(result.rows);
@@ -18,4 +22,4 @@ const getAllQuestions = () => {
 		});
 	});
 };
-module.exports= {getAllQuestions}
+module.exports= {getAllQuestions};

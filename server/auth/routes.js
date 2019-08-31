@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const db = require("../services/database/users");
+const { authMiddleware } = require('../auth/passport');
 
 /**
  * Users Login
@@ -55,26 +56,29 @@ router.post("/register", async (req, res, next) => {
 /**
  *  User Profile Password Update
  */
-router.put('/change-password', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-  console.log('req', req);
-  const { password, email } = req.body;
+router.put('/change-password',
+  authMiddleware,
+  async (req, res, next) => {
+    console.log('req---------->', req.user);
 
-  const user = {
-    password,
-    email,
-  };
+    const { password, email } = req.body;
 
-  db.updatePassword(user)
-    .then(() => {
-      res.send({
-        success: true,
-        message: "Password changed"
+    const user = {
+      password,
+      email,
+    };
+
+    db.updatePassword(user)
+      .then(() => {
+        res.send({
+          success: true,
+          message: "Password changed"
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        next(err);
       });
-    })
-    .catch(err => {
-      console.log(err);
-      next(err);
-    });
-})
+  })
 
 module.exports = router;

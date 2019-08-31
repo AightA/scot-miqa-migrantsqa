@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "semantic-ui-css/semantic.min.css";
 import "./index.css";
@@ -11,19 +11,45 @@ import Login from "./components/Login";
 import ProfilePage from "./components/ProfilePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-//TODO change to class component && isAuthenticated
-const Routes = () => {
-  return (
-    <Router>
-      <MenuBar />
-      <Route path="/" exact component={Home} />
-      <Route path="/about/" component={About} />
-      <Route path="/status/" component={Status} />
-      <Route path="/register" component={Register} />
-      <Route path="/login/" component={Login} />
-      <Route path="/profile" component={ProfilePage} />
-    </Router>
-  );
-};
+export default class App extends Component {
+  state = {
+    isLoggedIn: false
+  };
 
-ReactDOM.render(<Routes />, document.getElementById("root"));
+  setIsLoggedIn = isLoggedIn => {
+    this.setState({
+      isLoggedIn: isLoggedIn
+    });
+  };
+
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.setIsLoggedIn(true);
+    }
+  }
+
+  render() {
+    return (
+      <Router>
+        <MenuBar isLoggedIn={this.state.isLoggedIn} />
+        <Route path="/" exact component={Home} />
+        <Route path="/about/" component={About} />
+        <Route path="/status/" component={Status} />
+        <Route path="/register" component={Register} />
+        <Route
+          path="/login/"
+          render={props => (
+            <Login
+              setIsLoggedIn={this.setIsLoggedIn}
+              isLoggedIn={this.state.isLoggedIn}
+            />
+          )}
+        />
+        <Route path="/profile" component={ProfilePage} />
+      </Router>
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));

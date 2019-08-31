@@ -50,7 +50,8 @@ export default class MenuBar extends Component {
           to="/profile"
         />
         <Menu.Menu position="right">
-          {localStorage.getItem("token") ? (
+          {//TODO change to use isAuthenticated
+          localStorage.getItem("token") ? (
             <Menu.Item
               name="logout"
               active={activeItem === "logout"}

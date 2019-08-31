@@ -1,4 +1,4 @@
-export const UserLogin = (email, password) => {
+export const userLogin = (email, password) => {
   const postData = {
     method: "POST",
     body: JSON.stringify({ email, password }),

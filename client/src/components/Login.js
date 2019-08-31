@@ -9,7 +9,7 @@ import {
   Segment,
   Icon
 } from "semantic-ui-react";
-import { UserLogin } from "../api/login";
+import { userLogin } from "../api/login";
 import { Link, Redirect } from "react-router-dom";
 import Home from "./Home";
 
@@ -41,9 +41,10 @@ class Login extends Component {
   handleOnSubmit = e => {
     e.preventDefault();
     const { email, password } = this.state;
-    UserLogin(email, password)
+    userLogin(email, password)
       .then(loggedInUser => {
         localStorage.setItem("token", loggedInUser.token);
+        //TODO change to use  isAuthenticated
         window.location.reload();
         this.setState({
           isLoggedIn: true

@@ -11,6 +11,7 @@ import Login from "./components/Login";
 import ProfilePage from "./components/ProfilePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+//TODO change to class component && isAuthenticated
 const Routes = () => {
   return (
     <Router>

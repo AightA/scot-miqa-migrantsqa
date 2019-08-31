@@ -94,14 +94,9 @@ This structure using `Express.Router` allows our code to be _modular_ and minimi
 
 ## Recreate and populate the DB 
 1. cd server
-2. connect to the database: psql final_project
-3. execute the following command:
-`GRANT ALL PRIVILEGES ON TABLE questions TO app_user;`
-4. Quit the database:
-`\q`
-5. recreate schema using this command:
+2. recreate schema using this command:
  `psql -d final_project -f db/recreate-schema.sql`
-6. populate DB using this command:
+3. populate DB using this command:
  `psql -d final_project -f db/populate-db.sql`
   
 

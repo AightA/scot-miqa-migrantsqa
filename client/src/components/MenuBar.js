@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Menu } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Menu, MenuHeader } from "semantic-ui-react";
+import { Link, Redirect } from "react-router-dom";
 
 export default class MenuBar extends Component {
   state = {
@@ -11,6 +11,12 @@ export default class MenuBar extends Component {
   };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  handleLogout = e => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
   render() {
     const { activeItem } = this.state;
     return (
@@ -44,22 +50,34 @@ export default class MenuBar extends Component {
           to="/profile"
         />
         <Menu.Menu position="right">
-          <Menu.Item
-            name="register"
-            position="right"
-            active={activeItem === "register"}
-            onClick={this.handleItemClick}
-            as={Link}
-            to="/register"
-          />
-          <Menu.Item
-            name="login"
-            active={activeItem === "login"}
-            position="right"
-            onClick={this.handleItemClick}
-            as={Link}
-            to="/login"
-          />
+          {//TODO change to use isAuthenticated
+          localStorage.getItem("token") ? (
+            <Menu.Item
+              name="logout"
+              active={activeItem === "logout"}
+              position="right"
+              onClick={this.handleLogout}
+            />
+          ) : (
+            <Menu.Menu position="right">
+              <Menu.Item
+                name="login"
+                active={activeItem === "login"}
+                position="right"
+                onClick={this.handleItemClick}
+                as={Link}
+                to="/login"
+              />
+              <Menu.Item
+                name="register"
+                position="right"
+                active={activeItem === "register"}
+                onClick={this.handleItemClick}
+                as={Link}
+                to="/register"
+              />
+            </Menu.Menu>
+          )}
         </Menu.Menu>
       </Menu>
     );

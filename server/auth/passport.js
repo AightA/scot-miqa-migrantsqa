@@ -9,6 +9,7 @@ config.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken("authorization");
 
 passport.use(
 	new JwtStrategy(config, async (jwtPayload, done) => {
+		console.log('jwtPayload', jwtPayload);
 		try {
 			const user = await db.getUserById(jwtPayload.userId);
 			if (user) {

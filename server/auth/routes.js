@@ -52,4 +52,29 @@ router.post("/register", async (req, res, next) => {
     });
 });
 
+/**
+ *  User Profile Password Update
+ */
+router.put('/change-password', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
+  console.log('req', req);
+  const { password, email } = req.body;
+
+  const user = {
+    password,
+    email,
+  };
+
+  db.updatePassword(user)
+    .then(() => {
+      res.send({
+        success: true,
+        message: "Password changed"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      next(err);
+    });
+})
+
 module.exports = router;

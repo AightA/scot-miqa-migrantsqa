@@ -62,9 +62,28 @@ const getUserById = id => {
   });
 };
 
+
+const updatePassword = ({ password, email }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      "UPDATE users SET password = $1 WHERE email = $2",
+      [password, email],
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          return reject(error);
+        }
+        console.log(result);
+        resolve(result.rows);
+      }
+    );
+  });
+};
+
 module.exports = {
   getUserByEmail,
   createUser,
   getUserById,
-  getAllUsers
+  getAllUsers,
+  updatePassword
 };

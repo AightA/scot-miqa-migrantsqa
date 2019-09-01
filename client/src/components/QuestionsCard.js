@@ -1,6 +1,6 @@
 import React from "react";
 import { getQuestions } from "../api/questions";
-import { Card, Grid, Container } from "semantic-ui-react";
+import { Card, Container } from "semantic-ui-react";
 
 function formatingDate(date) {
   const event = new Date(date);

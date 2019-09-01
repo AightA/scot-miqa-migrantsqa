@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Menu, MenuHeader } from "semantic-ui-react";
-import { Link, Redirect } from "react-router-dom";
+import { Menu } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 export default class MenuBar extends Component {
   state = {

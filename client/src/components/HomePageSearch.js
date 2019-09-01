@@ -7,8 +7,6 @@ export default class HomePageSearch extends Component {
   state = initialState;
 
   render() {
-    const { isLoading, value, results } = this.state;
-
     return (
       <Grid>
         <Search />

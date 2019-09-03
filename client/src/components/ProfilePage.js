@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "semantic-ui-css/semantic.min.css";
+import { Message } from "semantic-ui-react";
 import { updatePassword } from "../api/updatePassword";
 import { Form, Grid, Header, Segment, Button } from "semantic-ui-react";
 
@@ -8,8 +9,11 @@ class ProfilePage extends Component {
     super(props);
     this.state = {
       user: null,
-      update: false,
-      error: false
+      isPasswordChangedSuccessfully: false,
+      isPasswordChangedFailure: false,
+      oldPassword: "",
+      newPassword: "",
+      confirmedPassword: ""
     };
   }
   componentDidMount() {
@@ -25,97 +29,64 @@ class ProfilePage extends Component {
       });
   }
 
-  // changeNewPassword = (email, password) => {
-  //   const updateDate = {
-  //     method: "PUT",
-  //     body: JSON.stringify({ email, password }),
-  //     headers: { "Content-Type": "application/json" }
-  //   };
-  //   return fetch("/auth/change-password", updateDate);
-  //   // .then(response => console.log(response.status))
-  //   // .catch(err => console.error(err));
-  // };
-
   validateForm() {
     return (
-      this.state.user.email.length > 0 && this.state.user.password.length > 0
+      this.state.oldPassword.length > 0 &&
+      this.state.newPassword.length > 0 &&
+      this.state.confirmedPassword.length > 0
     );
   }
-
-  handleNameChange = event => {
-    const name = event.target.value;
-    this.setState({ name: name });
+  handleOldPasswordChange = event => {
+    const oldPassword = event.target.value;
+    this.setState({ oldPassword: oldPassword });
   };
-
-  handleEmailChange = event => {
-    const email = event.target.value;
-    this.setState({ email: email });
+  handleNewPasswordChange = event => {
+    const newPassword = event.target.value;
+    this.setState({ newPassword: newPassword });
   };
-
-  // handleOnUpdate = e => {
-  //   e.preventDefault();
-  //   if (this.isFormValid()) {
-  //     this.setState({ errorsLog: [], isLoading: true });
-  //     const { email, password, errorsLog } = this.state;
-  //     updatePassword(email, password)
-  //       .then(updatePassword => {
-  //         this.setState({
-  //           isLoading: false,
-  //           isSuccess: updatePassword.status === 200 ? true : false,
-  //           email: "",
-  //           password: ""
-  //         });
-  //       })
-  //       .catch(err => {
-  //         console.error(err);
-  //         this.setState({ errorsLog: errorsLog.concat(err), isLoading: false });
-  //       });
-  //   }
-  // };
-
-  updatePassword = e => {
+  handleConfirmedPasswordChange = event => {
+    const confirmedPassword = event.target.value;
+    this.setState({ confirmedPassword: confirmedPassword });
+  };
+  passwordUpdate = e => {
     e.preventDefault();
-    fetch(`http://localhost:4000/auth/change-password`, {
-      // email: this.state.users.email,
-      // password: this.state.users.password,
-    })
-      .then(res => {
-        console.log(res.data);
-        if (res.data.message === "passsword updated") {
+    // does the new password match the confirmed password?
+    if (this.state.newPassword === this.state.confirmedPassword) {
+      // new and confirmed passwords match, update the password on the server
+      updatePassword(
+        this.state.oldPassword,
+        this.state.newPassword,
+        this.state.user.email
+      )
+        .then(() => {
           this.setState({
-            updated: true,
-            error: false
+            isPasswordChangedSuccessfully: true
           });
-        } else {
+        })
+        .catch(() => {
           this.setState({
-            updated: false,
-            error: true
+            isPasswordChangedFailure: true
           });
-        }
-      })
-      .catch(error => {
-        console.log(error.data);
+        });
+    } else {
+      // new and confirmed passwords do not match
+      // show the user an error
+      alert("New and confirmed passwords didn't match");
+      console.log("new and confirmed passwords didn't match");
+      this.setState({
+        // error: error.status > 200 && error.status < 405 ? false : true
       });
-  };
-
-  // handlePasswordChange = (event) => {
-  //   const password = event.target.value;
-  //   this.setState({ password: password });
-  // };
-  handleSubmit = event => {
-    event.preventDefault();
-    const { name, email, password } = this.state.users;
-    console.log(`A first name was submitted: ${name}. 
-                 An email was submitted: ${email}. 
-                 And Password was submitted : ${password}`);
+    }
   };
 
   render() {
-    console.log(this.state.user);
     const userData = this.state.user;
-    const { error, updated } = this.state;
 
-    return (
+    return localStorage.getItem("token") === null ? (
+      <h1 textAlign="center" color="brown">
+        You are not logged in
+      </h1>
+    ) : (
       <div>
         <Grid centered columns={3}>
           <Grid.Column>
@@ -131,12 +102,9 @@ class ProfilePage extends Component {
                     icon="lock"
                     iconPosition="left"
                     placeholder="Username"
-                    // controlId="password"
                     type="text"
                     value={userData.username}
-                    onChange={this.handleNameChange}
                   />
-
                   <label>Email</label>
                   <Form.Input
                     fluid
@@ -144,44 +112,43 @@ class ProfilePage extends Component {
                     iconPosition="left"
                     placeholder="Email address"
                     value={userData.email}
-                    onChange={this.handleEmailChange}
                   />
-
                   <Form.Input
                     fluid
                     icon="lock"
                     iconPosition="left"
                     placeholder="Current Password"
-                    // controlId="password"
                     type="password"
-                    // value={userData.password}
-                    onChange={this.updatePassword}
+                    onChange={this.handleOldPasswordChange}
                   />
                   <Form.Input
                     fluid
                     icon="lock"
                     iconPosition="left"
                     placeholder="New Password"
-                    // controlId="password"
                     type="password"
-                    // value={userData.password}
-                    onChange={this.updatePassword}
+                    onChange={this.handleNewPasswordChange}
                   />
                   <Form.Input
                     fluid
                     icon="repeat"
                     iconPosition="left"
                     placeholder="New Password"
-                    // controlId="password"
                     type="password"
-                    // value={userData.password}
-                    onChange={this.updatePassword}
+                    onChange={this.handleConfirmedPasswordChange}
                   />
-
+                  {this.state.isPasswordChangedSuccessfully && (
+                    <Message>
+                      You have successfully changed your password
+                    </Message>
+                  )}
+                  {this.state.isPasswordChangedFailure && (
+                    <Message>There was an error changing your password</Message>
+                  )}
                   <Button
                     fluid
                     size="large"
-                    onClick={this.updatePassword}
+                    onClick={this.passwordUpdate}
                     disabled={!this.validateForm()}
                     id="submit"
                     name="submit"

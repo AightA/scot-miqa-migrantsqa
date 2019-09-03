@@ -18,7 +18,6 @@ export default class AddQuestion extends Component {
   };
   handleOnSubmit = e => {
     e.preventDefault();
-
     const {
       content,
       date_posted,
@@ -28,7 +27,7 @@ export default class AddQuestion extends Component {
       user_id
     } = this.state;
     postQuestion(content, date_posted, tags, is_answered, score, user_id)
-      .then(postedQuestion => {
+      .then(() => {
         this.setState({
           content: "",
           date_posted: "",

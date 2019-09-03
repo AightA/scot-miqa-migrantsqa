@@ -1,3 +1,4 @@
+const moment = require("moment");
 const express = require("express");
 const router = express.Router();
 const questionDb = require("../services/database/questions");
@@ -26,7 +27,7 @@ router.get("/", (req, res) => {
 router.post("/", authMiddleware, async (req, res, next) => {
   const { content, tags, is_answered, score } = req.body;
   const user_id = req.user.id;
-  const date_posted = "2013-12-10";
+  const date_posted = moment().format();
   questionDb
     .insertQuestions(content, date_posted, tags, is_answered, score, user_id)
     .then(() => {

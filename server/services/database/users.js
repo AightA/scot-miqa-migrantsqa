@@ -54,7 +54,6 @@ const getUserById = id => {
   return new Promise((resolve, reject) => {
     pool.query("SELECT * FROM users where id = $1", [id], (error, result) => {
       if (error) {
-        console.error(error);
         return reject(error);
       }
       resolve(result.rows[0]);
@@ -63,20 +62,36 @@ const getUserById = id => {
 };
 
 
-const updatePassword = ({ password, email }) => {
+const updatePassword = ({ oldPassword, newPassword, email }) => {
+  console.log("called updatePassword with", oldPassword, newPassword, email)
   return new Promise((resolve, reject) => {
     pool.query(
-      "UPDATE users SET password = $1 WHERE email = $2",
-      [password, email],
+      "SELECT password FROM users WHERE email = $1", [email],
       (error, result) => {
         if (error) {
-          console.error(error);
           return reject(error);
         }
-        console.log(result);
-        resolve(result.rows);
+        if (result.rowCount !== 1) {
+          return reject(`User email ${email} not found or in database multiple times`);
+        }
+        if (oldPassword !== result.rows[0].password) {
+          return reject(`Password for user ${email} is incorrect`);
+        }
+        pool.query(
+          "UPDATE users SET password = $1 WHERE email = $2",
+          [newPassword, email],
+          (error, result) => {
+            if (error) {
+              console.error(error);
+              return reject(error);
+            }
+            console.log(result);
+            resolve(result.rows);
+          }
+        );
       }
-    );
+    )
+
   });
 };
 

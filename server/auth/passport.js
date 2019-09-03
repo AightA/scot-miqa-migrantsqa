@@ -13,12 +13,12 @@ passport.use(
 		try {
 			const user = await db.getUserById(jwtPayload.userId);
 			if (user) {
-				return done(null, user);
+				done(null, user);
 			} else {
-				return done(null, false);
+				done(null, false);
 			}
 		} catch (e) {
-			return done(e, false);
+			done(e, false);
 		}
 	})
 );

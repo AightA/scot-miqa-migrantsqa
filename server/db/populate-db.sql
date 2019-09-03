@@ -1,12 +1,8 @@
 -- Users seed data
 -- Note: Do NOT add passwords you use in real life. Passwords are now saved as clear text. This is very bad from security point of view. We will have a task to encrypt the passwords
 
-INSERT INTO users (username,email, password) values ('admin','admin@cyf.org', 'admin_password');
-INSERT INTO users (username,email, password) values ('user','user@cyf.org', 'user_password');
-INSERT INTO users (username,email,password) values('reyam','reyam@gmail.com','123455');
-INSERT INTO users (username,email,password) values('ahmed','ahmed@gmail.com','73635');
-INSERT INTO users (username,email,password) values('zan','zan@gmail.com','2516722');
-
+INSERT INTO users (username,email,password,profile_pic) values ('admin','admin@cyf.org', 'admin_password','https://image.flaticon.com/icons/png/512/145/145987.png');
+INSERT INTO users (username,email,password,profile_pic) values ('user','user@cyf.org', 'user_password','https://image.flaticon.com/icons/png/512/145/145987.png');
 insert into users (username,email,password,profile_pic) values('reyam','reyam@gmail.com','123455','https://image.flaticon.com/icons/png/512/145/145987.png');
 insert into users (username,email,password,profile_pic) values('ahmed','ahmed@gmail.com','73635','https://www.shareicon.net/download/2016/09/01/822711_user_512x512.png');
 insert into users (username,email,password,profile_pic) values('zan','zan@gmail.com','2516722', 'https://image.flaticon.com/icons/png/512/145/145987.png');

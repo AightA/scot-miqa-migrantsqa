@@ -11,7 +11,6 @@ import {
 } from "semantic-ui-react";
 import { userLogin } from "../api/login";
 import { Link, Redirect } from "react-router-dom";
-import Home from "./Home";
 
 class Login extends Component {
   constructor(props) {
@@ -19,17 +18,8 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      isLoggedIn: null
+      isError: false
     };
-  }
-
-  componentDidMount() {
-    const token = localStorage.getItem("token");
-    if (token) {
-      this.setState({
-        isLoggedIn: true
-      });
-    }
   }
 
   handleOnChange = e => {
@@ -44,22 +34,18 @@ class Login extends Component {
     userLogin(email, password)
       .then(loggedInUser => {
         localStorage.setItem("token", loggedInUser.token);
-        //TODO change to use  isAuthenticated
-        window.location.reload();
-        this.setState({
-          isLoggedIn: true
-        });
+        this.props.setIsLoggedIn(true);
       })
       .catch(err => {
         this.setState({
-          isLoggedIn: err.status > 200 && err.status < 405 ? false : true
+          isError: true
         });
       });
   };
 
   render() {
-    const { email, password, isLoggedIn } = this.state;
-    if (isLoggedIn) {
+    const { email, password, isError } = this.state;
+    if (this.props.isLoggedIn) {
       return <Redirect to="/" />;
     }
     return (
@@ -99,9 +85,7 @@ class Login extends Component {
               </Button>
             </Segment>
           </Form>
-          {isLoggedIn === false && (
-            <Message error>Please check your email/password</Message>
-          )}
+          {isError && <Message error>Please check your email/password</Message>}
           <Message>
             <Link to="/forgot-password">Forgot password?</Link>
           </Message>

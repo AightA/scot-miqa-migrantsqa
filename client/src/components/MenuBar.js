@@ -42,43 +42,43 @@ export default class MenuBar extends Component {
           as={Link}
           to="/status"
         />
-        <Menu.Item
-          name="profile"
-          active={activeItem === "profile"}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/profile"
-        />
-        <Menu.Menu position="right">
-          {//TODO change to use isAuthenticated
-          localStorage.getItem("token") ? (
+
+        {this.props.isLoggedIn ? (
+          <Menu.Menu position="right">
+            <Menu.Item
+              name="profile"
+              active={activeItem === "profile"}
+              onClick={this.handleItemClick}
+              as={Link}
+              to="/profile"
+            />
             <Menu.Item
               name="logout"
               active={activeItem === "logout"}
               position="right"
               onClick={this.handleLogout}
             />
-          ) : (
-            <Menu.Menu position="right">
-              <Menu.Item
-                name="login"
-                active={activeItem === "login"}
-                position="right"
-                onClick={this.handleItemClick}
-                as={Link}
-                to="/login"
-              />
-              <Menu.Item
-                name="register"
-                position="right"
-                active={activeItem === "register"}
-                onClick={this.handleItemClick}
-                as={Link}
-                to="/register"
-              />
-            </Menu.Menu>
-          )}
-        </Menu.Menu>
+          </Menu.Menu>
+        ) : (
+          <Menu.Menu position="right">
+            <Menu.Item
+              name="login"
+              active={activeItem === "login"}
+              position="right"
+              onClick={this.handleItemClick}
+              as={Link}
+              to="/login"
+            />
+            <Menu.Item
+              name="register"
+              position="right"
+              active={activeItem === "register"}
+              onClick={this.handleItemClick}
+              as={Link}
+              to="/register"
+            />
+          </Menu.Menu>
+        )}
       </Menu>
     );
   }

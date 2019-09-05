@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Home.css";
 import Search from "./HomePageSearch";
-import { Header, Container, Icon, Input } from "semantic-ui-react";
+import { Header, Container } from "semantic-ui-react";
 import Questions from "./QuestionsCard";
 import AddQuestion from "./AddQuestion";
 const Home = () => {

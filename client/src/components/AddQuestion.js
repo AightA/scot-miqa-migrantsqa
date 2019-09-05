@@ -6,9 +6,9 @@ export default class AddQuestion extends Component {
     content: "",
     date_posted: "",
     tags: null,
-    is_answered: null,
+    isAnswered: null,
     score: null,
-    user_id: ""
+    userId: ""
   };
 
   handleChange = e => {
@@ -18,23 +18,16 @@ export default class AddQuestion extends Component {
   };
   handleOnSubmit = e => {
     e.preventDefault();
-    const {
-      content,
-      date_posted,
-      tags,
-      is_answered,
-      score,
-      user_id
-    } = this.state;
-    postQuestion(content, date_posted, tags, is_answered, score, user_id)
+    const { content, datePosted, tags, isAnswered, score, userId } = this.state;
+    postQuestion(content, datePosted, tags, isAnswered, score, userId)
       .then(() => {
         this.setState({
           content: "",
-          date_posted: "",
+          datePosted: "",
           tags: null,
-          is_answered: null,
+          isAnswered: null,
           score: null,
-          user_id: ""
+          userId: ""
         });
       })
       .catch(err => {
@@ -43,14 +36,7 @@ export default class AddQuestion extends Component {
   };
 
   render() {
-    const {
-      content,
-      date_posted,
-      tags,
-      is_answered,
-      score,
-      user_id
-    } = this.state;
+    const { content } = this.state;
     return (
       <Container>
         <Form onSubmit={this.handleOnSubmit}>

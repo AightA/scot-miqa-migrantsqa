@@ -8,22 +8,22 @@ export const getUsers = () => {
 
 export const postQuestion = (
   content,
-  date_posted,
+  datePosted,
   tags,
-  is_answered,
+  isAnswered,
   score,
-  user_id
+  userId
 ) => {
   const token = localStorage.getItem("token");
   const postedData = {
     method: "POST",
     body: JSON.stringify({
       content,
-      date_posted,
+      datePosted,
       tags,
-      is_answered,
+      isAnswered,
       score,
-      user_id
+      userId
     }),
 
     headers: {

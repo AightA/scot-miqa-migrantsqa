@@ -25,11 +25,11 @@ router.get("/", (req, res) => {
  */
 
 router.post("/", authMiddleware, async (req, res, next) => {
-  const { content, tags, is_answered, score } = req.body;
-  const user_id = req.user.id;
-  const date_posted = moment().format();
+  const { content, tags, isAnswered, score } = req.body;
+  const userId = req.user.id;
+  const datePosted = moment().format();
   questionDb
-    .insertQuestions(content, date_posted, tags, is_answered, score, user_id)
+    .insertQuestions(content, datePosted, tags, isAnswered, score, userId)
     .then(() => {
       res.send({
         success: true,

@@ -4,7 +4,6 @@ import { postQuestion } from "../api/questions";
 export default class AddQuestion extends Component {
   state = {
     content: "",
-    date_posted: "",
     tags: null,
     isAnswered: null,
     score: null,
@@ -18,12 +17,11 @@ export default class AddQuestion extends Component {
   };
   handleOnSubmit = e => {
     e.preventDefault();
-    const { content, datePosted, tags, isAnswered, score, userId } = this.state;
-    postQuestion(content, datePosted, tags, isAnswered, score, userId)
+    const { content, tags, isAnswered, score, userId } = this.state;
+    postQuestion(content, tags, isAnswered, score, userId)
       .then(() => {
         this.setState({
           content: "",
-          datePosted: "",
           tags: null,
           isAnswered: null,
           score: null,

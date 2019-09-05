@@ -6,7 +6,7 @@ export const getUsers = () => {
   return fetch("/api/users").then(res => res.json());
 };
 
-export const postQuestion = (content, tags, isAnswered, score, userId) => {
+export const postQuestion = (content, tags, isAnswered, score) => {
   const token = localStorage.getItem("token");
   const postedData = {
     method: "POST",
@@ -14,8 +14,7 @@ export const postQuestion = (content, tags, isAnswered, score, userId) => {
       content,
       tags,
       isAnswered,
-      score,
-      userId
+      score
     }),
 
     headers: {

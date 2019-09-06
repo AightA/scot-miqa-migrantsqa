@@ -63,7 +63,6 @@ const getUserById = id => {
 
 
 const updatePassword = ({ oldPassword, newPassword, email }) => {
-  console.log("called updatePassword with", oldPassword, newPassword, email)
   return new Promise((resolve, reject) => {
     pool.query(
       "SELECT password FROM users WHERE email = $1", [email],

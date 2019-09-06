@@ -59,8 +59,6 @@ router.post("/register", async (req, res, next) => {
 router.put('/change-password',
   authMiddleware,
   async (req, res, next) => {
-    console.log('req', req.user);
-    console.log(req.body);
     db.updatePassword(req.body)
       .then(() => {
         res.send({

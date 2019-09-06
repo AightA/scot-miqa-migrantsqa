@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "semantic-ui-css/semantic.min.css";
 import { Message } from "semantic-ui-react";
 import { updatePassword } from "../api/updatePassword";
+import { Redirect } from "react-router-dom";
 import { Form, Grid, Header, Segment, Button } from "semantic-ui-react";
 
 class ProfilePage extends Component {
@@ -11,6 +12,7 @@ class ProfilePage extends Component {
       user: null,
       isPasswordChangedSuccessfully: false,
       isPasswordChangedFailure: false,
+      isNewPasswordMatchConfirmedPassword: false,
       oldPassword: "",
       newPassword: "",
       confirmedPassword: ""
@@ -71,21 +73,16 @@ class ProfilePage extends Component {
     } else {
       // new and confirmed passwords do not match
       // show the user an error
-      alert("New and confirmed passwords didn't match");
-      console.log("new and confirmed passwords didn't match");
       this.setState({
-        // error: error.status > 200 && error.status < 405 ? false : true
+        isNewPasswordMatchConfirmedPassword: true
       });
     }
   };
 
   render() {
     const userData = this.state.user;
-
     return localStorage.getItem("token") === null ? (
-      <h1 textAlign="center" color="brown">
-        You are not logged in
-      </h1>
+      <Redirect to="/" />
     ) : (
       <div>
         <Grid centered columns={3}>
@@ -96,10 +93,10 @@ class ProfilePage extends Component {
             <Segment>
               {userData ? (
                 <Form size="large">
-                  <label>User name</label>
+                  <label>Username</label>
                   <Form.Input
                     fluid
-                    icon="lock"
+                    icon="user"
                     iconPosition="left"
                     placeholder="Username"
                     type="text"
@@ -144,6 +141,11 @@ class ProfilePage extends Component {
                   )}
                   {this.state.isPasswordChangedFailure && (
                     <Message>There was an error changing your password</Message>
+                  )}
+                  {this.state.isNewPasswordMatchConfirmedPassword && (
+                    <Message>
+                      New password and confirmed password do not match
+                    </Message>
                   )}
                   <Button
                     fluid

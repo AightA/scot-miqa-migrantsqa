@@ -29,8 +29,11 @@ export default class UserRegistration extends Component {
       error = { message: "Please fill all fields" };
       this.setState({ errorsLog: [error] });
       return false;
-    } else if (this.isPasswordTooShort(this.state)) {
-      error = { message: "Password is too short" };
+    } else if (this.isPasswordInvalid(this.state)) {
+      error = {
+        message:
+          "Your password must contain at least 6 characters including an uppercase letter, a lowercase letter and a number"
+      };
       this.setState({ errorsLog: [error] });
       return false;
     } else if (!this.isPasswordMismatch(this.state)) {
@@ -51,11 +54,30 @@ export default class UserRegistration extends Component {
     );
   };
 
-  isPasswordTooShort = ({ password, passwordConfirmation }) => {
-    if (password.length > 2 || passwordConfirmation.length > 2) {
-      return false;
-    } else {
+  containsNumber = text => {
+    return text.split("").some(ch => !isNaN(ch));
+  };
+
+  isPasswordInvalid = ({ password }) => {
+    if (password.length <= 6) {
       return true;
+    }
+    // check at least one character is lowercase
+    else if (password.toUpperCase() === password) {
+      return true;
+    }
+    // check at least one character is uppercase
+    else if (password.toLowerCase() === password) {
+      return true;
+    }
+    // check at least one character is a number
+    else if (!this.containsNumber(password)) {
+      return true;
+    }
+    // we haven't found any reason for the password to be invalid,
+    // it must be valid!
+    else {
+      return false;
     }
   };
 

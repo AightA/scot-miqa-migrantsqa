@@ -37,8 +37,8 @@ const getUserByEmail = email => {
 const createUser = ({ username, email, password }) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      "INSERT INTO users (username ,email, password) values ($1, $2, $3)",
-      [username, email, password],
+      "INSERT INTO users (username ,email, password, profile_pic) values ($1, $2, $3,$4)",
+      [username, email, password,'https://image.flaticon.com/icons/png/512/145/145987.png'],
       (error, result) => {
         if (error) {
           return reject(error);

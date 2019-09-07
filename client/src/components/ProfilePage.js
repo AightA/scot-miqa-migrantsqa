@@ -12,7 +12,7 @@ class ProfilePage extends Component {
       user: null,
       isPasswordChangedSuccessfully: false,
       isPasswordChangedFailure: false,
-      isNewPasswordMatchConfirmedPassword: false,
+      isNewPasswordsNotMatching: false,
       oldPassword: "",
       newPassword: "",
       confirmedPassword: ""
@@ -74,14 +74,14 @@ class ProfilePage extends Component {
       // new and confirmed passwords do not match
       // show the user an error
       this.setState({
-        isNewPasswordMatchConfirmedPassword: true
+        isNewPasswordsNotMatching: true
       });
     }
   };
 
   render() {
     const userData = this.state.user;
-    return localStorage.getItem("token") === null ? (
+    return !this.props.isLoggedIn ? (
       <Redirect to="/" />
     ) : (
       <div>
@@ -142,7 +142,7 @@ class ProfilePage extends Component {
                   {this.state.isPasswordChangedFailure && (
                     <Message>There was an error changing your password</Message>
                   )}
-                  {this.state.isNewPasswordMatchConfirmedPassword && (
+                  {this.state.isNewPasswordsNotMatching && (
                     <Message>
                       New password and confirmed password do not match
                     </Message>

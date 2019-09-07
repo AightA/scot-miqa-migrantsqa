@@ -19,14 +19,13 @@ export default class AddQuestion extends Component {
     e.preventDefault();
     const { content, tags, isAnswered, score, userId } = this.state;
     postQuestion(content, tags, isAnswered, score, userId)
-      .then(() => {
-        this.setState({
-          content: "",
-          tags: null,
-          isAnswered: null,
-          score: null,
-          userId: ""
-        });
+      .then(result => {
+        if (result.status === 200) {
+          this.props.pageReload();
+          this.setState({
+            content: ""
+          });
+        }
       })
       .catch(err => {
         console.error(err);

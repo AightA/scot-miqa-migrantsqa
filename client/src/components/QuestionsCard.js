@@ -1,5 +1,4 @@
 import React from "react";
-import { getQuestions } from "../api/questions";
 import { Card, Container } from "semantic-ui-react";
 
 function formatingDate(date) {
@@ -15,37 +14,23 @@ function formatingDate(date) {
 
   return event.toLocaleDateString("en-GB", options);
 }
-class Questions extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      questions: []
-    };
-  }
-  componentDidMount() {
-    getQuestions().then(response => {
-      this.setState({ questions: response });
-    });
-  }
-  render() {
-    const { questions } = this.state;
-    return (
-      <Container>
-        {questions.map(question => {
-          return (
-            <Card fluid>
-              <Card.Content>
-                <Card.Header>{question.content}</Card.Header>
-                <Card.Meta textAlign="right">
-                  {formatingDate(question.date_posted)}
-                </Card.Meta>
-                <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
-              </Card.Content>
-            </Card>
-          );
-        })}
-      </Container>
-    );
-  }
-}
+const Questions = props => {
+  return (
+    <Container>
+      {props.questions.map(question => {
+        return (
+          <Card fluid>
+            <Card.Content>
+              <Card.Header>{question.content}</Card.Header>
+              <Card.Meta textAlign="right">
+                {formatingDate(question.date_posted)}
+              </Card.Meta>
+              <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
+            </Card.Content>
+          </Card>
+        );
+      })}
+    </Container>
+  );
+};
 export default Questions;

@@ -8,16 +8,19 @@ config.secretOrKey = process.env.JWT_SECRET || "your_jwt_secret";
 config.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken("authorization");
 
 passport.use(
-	new JwtStrategy(config, async (jwtPayload, done) => {
-		try {
-			const user = await db.getUserById(jwtPayload.userId);
-			if (user) {
-				return done(null, user);
-			} else {
-				return done(null, false);
-			}
-		} catch (e) {
-			return done(e, false);
-		}
-	})
+  new JwtStrategy(config, async (jwtPayload, done) => {
+    try {
+      const user = await db.getUserById(jwtPayload.userId);
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
+    } catch (e) {
+      return done(e, false);
+    }
+  })
 );
+
+const authMiddleware = passport.authenticate("jwt", { session: false });
+module.exports = { authMiddleware };

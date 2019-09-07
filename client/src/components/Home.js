@@ -1,21 +1,15 @@
 import React from "react";
 import "../styles/Home.css";
 import Search from "./HomePageSearch";
-import { Header, Container, Icon, Input } from "semantic-ui-react";
-import Questions from "./QuestionsCard";
+import { Header, Container } from "semantic-ui-react";
+import QuestionsController from "./QuestionsController/QuestionController";
+
 const Home = () => {
   return (
     <Container>
-      <header>
-        <Header as="h1">Graduation Project skeleton</Header>
-        <Search></Search>
-        <Input
-          fluid
-          icon={<Icon name="add" inverted circular link />}
-          placeholder="Write your questions here"
-        />
-      </header>
-      <Questions />
+      <Header as="h1">Graduation Project skeleton</Header>
+      <Search></Search>
+      <QuestionsController />
     </Container>
   );
 };

@@ -11,7 +11,7 @@ const pool = new Pool(config);
 const getAllQuestions = () => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `select questions.content, users.username ,questions.date_posted
+      `select questions.content, questions.tags, users.username ,questions.date_posted
 		from questions 
 		INNER JOIN users ON users.id = questions.user_id limit 10`,
       (error, result) => {

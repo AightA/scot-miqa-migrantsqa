@@ -23,6 +23,19 @@ const Questions = props => {
             <Card.Content>
               <Card.Header>{question.content}</Card.Header>
               <Card.Meta textAlign="right">
+                <Card.Meta
+                  textAlign="right"
+                  style={{
+                    fontSize: "12px",
+                    fontStyle: "italic"
+                  }}
+                >
+                  {" "}
+                  #
+                  {question.tags.map(tag => {
+                    return <span>{tag} </span>;
+                  })}
+                </Card.Meta>
                 {formatingDate(question.date_posted)}
               </Card.Meta>
               <Card.Meta textAlign="right"> by {question.username}</Card.Meta>

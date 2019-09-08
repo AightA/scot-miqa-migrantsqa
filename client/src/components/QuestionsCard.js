@@ -31,10 +31,7 @@ const Questions = props => {
                   }}
                 >
                   {" "}
-                  #
-                  {question.tags.map(tag => {
-                    return <span>{tag} </span>;
-                  })}
+                  #{question.tags.join(" #")}
                 </Card.Meta>
                 {formatingDate(question.date_posted)}
               </Card.Meta>

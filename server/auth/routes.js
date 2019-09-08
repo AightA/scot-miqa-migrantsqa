@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const db = require("../services/database/users");
+const { authMiddleware } = require('../auth/passport');
 
 /**
  * Users Login
@@ -51,5 +52,24 @@ router.post("/register", async (req, res, next) => {
       next(err);
     });
 });
+
+/**
+ *  User Profile Password Update
+ */
+router.put('/change-password',
+  authMiddleware,
+  async (req, res, next) => {
+    db.updatePassword(req.body)
+      .then(() => {
+        res.send({
+          success: true,
+          message: "Password changed"
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        next(err);
+      });
+  })
 
 module.exports = router;

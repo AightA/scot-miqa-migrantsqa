@@ -10,16 +10,16 @@ const pool = new Pool(config);
 
 const getAllQuestions = () => {
 	return new Promise((resolve, reject) => {
-		pool.query(`select questions.content, users.username ,questions.date_posted
+		pool.query(`select questions.content, users.username ,questions.date_posted, questions.id
 		from questions 
-		INNER JOIN users ON users.id = questions.user_id limit 10`, (error, result) => {
-			if (error) {
-				console.error(error)
-				reject(error);
-			} else {
-				resolve(result.rows);
-			}
-		});
+		INNER JOIN users ON users.id = questions.user_id order by questions.date_posted desc limit 10`, (error, result) => {
+				if (error) {
+					console.error(error)
+					reject(error);
+				} else {
+					resolve(result.rows);
+				}
+			});
 	});
 };
-module.exports= {getAllQuestions};
+module.exports = { getAllQuestions };

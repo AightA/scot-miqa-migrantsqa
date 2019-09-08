@@ -1,6 +1,7 @@
 import React from "react";
 import { getQuestions } from "../api/questions";
-import { Card, Grid, Container } from "semantic-ui-react";
+import { getAnswers } from "../api/answers";
+import { Card, Container, Accordion } from "semantic-ui-react";
 
 function formatingDate(date) {
   const event = new Date(date);
@@ -15,29 +16,84 @@ function formatingDate(date) {
 
   return event.toLocaleDateString("en-GB", options);
 }
+
 class Questions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: []
+      questions: [],
+      answers: [],
+      activeIndex: 0
     };
   }
+
+  handleClick = (e, titleProps) => {
+    const { index } = titleProps;
+    const { activeIndex } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+    this.setState({ activeIndex: newIndex });
+  };
+
   componentDidMount() {
     getQuestions().then(response => {
       this.setState({ questions: response });
     });
+    getAnswers().then(res => {
+      // let resps = res.concat(res);
+      this.setState({ answers: res });
+      console.log(res);
+    });
   }
+
   render() {
-    const { questions } = this.state;
+    const { questions, answers, activeIndex } = this.state;
     return (
       <Container>
-        {questions.map(question => {
+        {questions.map((question, index) => {
           return (
             <Card fluid>
               <Card.Content>
-                <Card.Header>{question.content}</Card.Header>
-                <Card.Meta>{formatingDate(question.date_posted)}</Card.Meta>
-                <Card.Meta> by {question.username}</Card.Meta>
+                <Card.Header>
+                  <Accordion>
+                    <Accordion.Title
+                      active={activeIndex === index}
+                      index={index}
+                      onClick={this.handleClick}
+                      id={`card-${index}`}
+                    >
+                      {question.content}
+                    </Accordion.Title>
+                    <Accordion.Content active={activeIndex === index}>
+                      {answers.map(answer => {
+                        var check = answer.question_id === question.id;
+                        console.log(check);
+                        return check ? (
+                          <div>
+                            <Card.Content>
+                              <Card.Header>
+                                Here it is:
+                                {console.log("answer ", answer.content)}
+                                {console.log(
+                                  "answer's qid ",
+                                  answer.question_id
+                                )}
+                                {console.log("qid ", question.id)}
+                                {answer.content}
+                              </Card.Header>
+                            </Card.Content>
+                          </div>
+                        ) : (
+                          <div></div>
+                        );
+                      })}
+                    </Accordion.Content>
+                  </Accordion>
+                </Card.Header>
+                <Card.Meta textAlign="right">
+                  {formatingDate(question.date_posted)}
+                </Card.Meta>
+                <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
+                <Accordion />
               </Card.Content>
             </Card>
           );

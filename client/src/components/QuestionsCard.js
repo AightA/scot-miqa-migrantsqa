@@ -1,7 +1,7 @@
 import React from "react";
 import { getQuestions } from "../api/questions";
 import { getAnswers } from "../api/answers";
-import { Card, Container, Accordion } from "semantic-ui-react";
+import { Card, Container, Segment, Accordion } from "semantic-ui-react";
 
 function formatingDate(date) {
   const event = new Date(date);
@@ -39,9 +39,7 @@ class Questions extends React.Component {
       this.setState({ questions: response });
     });
     getAnswers().then(res => {
-      // let resps = res.concat(res);
       this.setState({ answers: res });
-      console.log(res);
     });
   }
 
@@ -51,7 +49,7 @@ class Questions extends React.Component {
       <Container>
         {questions.map((question, index) => {
           return (
-            <Card fluid>
+            <Card fluid key={question.question_id}>
               <Card.Content>
                 <Card.Header>
                   <Accordion>
@@ -65,35 +63,30 @@ class Questions extends React.Component {
                     </Accordion.Title>
                     <Accordion.Content active={activeIndex === index}>
                       {answers.map(answer => {
-                        var check = answer.question_id === question.id;
-                        console.log(check);
-                        return check ? (
-                          <div>
+                        return answer.question_id === question.id ? (
+                          <Segment key={answer.answer_id} size="small">
                             <Card.Content>
-                              <Card.Header>
-                                Here it is:
-                                {console.log("answer ", answer.content)}
-                                {console.log(
-                                  "answer's qid ",
-                                  answer.question_id
-                                )}
-                                {console.log("qid ", question.id)}
-                                {answer.content}
-                              </Card.Header>
+                              <Card.Header>{answer.content}</Card.Header>
                             </Card.Content>
-                          </div>
-                        ) : (
-                          <div></div>
-                        );
+                            <Card.Meta textAlign="right">
+                              {" "}
+                              {formatingDate(answer.date_answered)}
+                            </Card.Meta>
+                            <Card.Meta textAlign="right">
+                              {" "}
+                              by {answer.username}
+                            </Card.Meta>
+                          </Segment>
+                        ) : null;
                       })}
                     </Accordion.Content>
                   </Accordion>
                 </Card.Header>
+
                 <Card.Meta textAlign="right">
                   {formatingDate(question.date_posted)}
                 </Card.Meta>
                 <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
-                <Accordion />
               </Card.Content>
             </Card>
           );

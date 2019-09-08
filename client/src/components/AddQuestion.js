@@ -1,14 +1,28 @@
 import React, { Component } from "react";
-import { Container, Segment, Form } from "semantic-ui-react";
+import { Container, Segment, Form, Dropdown } from "semantic-ui-react";
 import { postQuestion } from "../api/questions";
+
+const tags = [
+  { key: "English", text: "English", value: "English" },
+  { key: "Arabic", text: "Arabic", value: "Arabic" },
+  { key: "Amharic", text: "Amharic", value: "Amharic" }
+];
 export default class AddQuestion extends Component {
   state = {
     content: "",
-    tags: null,
+    tags,
     isAnswered: null,
     score: null,
     userId: ""
   };
+
+  handleAddition = (e, { value }) => {
+    this.setState(prevState => ({
+      tags: [{ text: value, value }, ...prevState.tags]
+    }));
+  };
+
+  handleChangeTag = (e, { value }) => this.setState({ currentValues: value });
 
   handleChange = e => {
     this.setState({
@@ -17,8 +31,9 @@ export default class AddQuestion extends Component {
   };
   handleOnSubmit = e => {
     e.preventDefault();
-    const { content, tags, isAnswered, score, userId } = this.state;
-    postQuestion(content, tags, isAnswered, score, userId)
+    const questionTag = this.state.currentValues;
+    const { content, isAnswered, score, userId } = this.state;
+    postQuestion(content, questionTag, isAnswered, score, userId)
       .then(result => {
         if (result.status === 200) {
           this.props.pageReload();
@@ -33,7 +48,7 @@ export default class AddQuestion extends Component {
   };
 
   render() {
-    const { content } = this.state;
+    const { content, currentValues } = this.state;
     return (
       <Container>
         <Form onSubmit={this.handleOnSubmit}>
@@ -48,6 +63,19 @@ export default class AddQuestion extends Component {
               required
               minLength={12}
               type="text"
+            />
+            <Dropdown
+              multiple
+              options={this.state.tags}
+              placeholder="Choose Languages"
+              search
+              selection
+              fluid
+              multiple
+              allowAdditions
+              value={currentValues}
+              onAddItem={this.handleAddition}
+              onChange={this.handleChangeTag}
             />
           </Segment>
         </Form>

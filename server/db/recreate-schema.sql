@@ -16,7 +16,7 @@ CREATE TABLE questions(
   id                       SERIAL PRIMARY KEY,
   content                  VARCHAR (150) NOT NULL,
   date_posted              DATE ,
-  tags                     VARCHAR(50),
+  tags                     TEXT [],
   is_answered              BOOLEAN ,
   score                    INT,
   user_id                  INT REFERENCES users(id)

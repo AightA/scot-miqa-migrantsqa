@@ -9,6 +9,7 @@ const pool = new Pool(config);
  */
 
 const getAllQuestions = () => {
+
   return new Promise((resolve, reject) => {
     pool.query(`select questions.content, users.username ,questions.date_posted, questions.id
 		from questions 
@@ -22,6 +23,8 @@ const getAllQuestions = () => {
       });
   });
 };
+
+
 
 const insertQuestions = (
   content,

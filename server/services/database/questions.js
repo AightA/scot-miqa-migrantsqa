@@ -11,7 +11,7 @@ const pool = new Pool(config);
 const getAllQuestions = () => {
 
   return new Promise((resolve, reject) => {
-    pool.query(`select questions.content, users.username ,questions.date_posted, questions.id
+    pool.query(`select questions.content, users.username, questions.date_posted, questions.id
 		from questions 
 		INNER JOIN users ON users.id = questions.user_id order by questions.date_posted desc limit 10`, (error, result) => {
         if (error) {
@@ -23,8 +23,6 @@ const getAllQuestions = () => {
       });
   });
 };
-
-
 
 const insertQuestions = (
   content,

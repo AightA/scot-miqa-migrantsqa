@@ -2,11 +2,6 @@ const { Pool } = require("pg");
 const config = require("../../config");
 const pool = new Pool(config);
 
-/**
- * This is used for testing the Client<->API connection, but this operation
- * won't be allowed in the final version of the project as it is a
- * security risk to expose all users
- */
 
 const getAllAnswers = () => {
     return new Promise((resolve, reject) => {

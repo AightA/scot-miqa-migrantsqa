@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import { Container, Segment, Form, Dropdown } from "semantic-ui-react";
 import { postQuestion } from "../api/questions";
+import { tags } from "../util/tag-options";
 
-const tags = [
-  { key: "English", text: "English", value: "English" },
-  { key: "Arabic", text: "Arabic", value: "Arabic" },
-  { key: "Amharic", text: "Amharic", value: "Amharic" }
-];
 export default class AddQuestion extends Component {
   state = {
     content: "",
@@ -38,7 +34,8 @@ export default class AddQuestion extends Component {
         if (result.status === 200) {
           this.props.pageReload();
           this.setState({
-            content: ""
+            content: "",
+            tags: ""
           });
         }
       })
@@ -67,7 +64,7 @@ export default class AddQuestion extends Component {
             <Dropdown
               multiple
               options={this.state.tags}
-              placeholder="Choose Languages"
+              placeholder="Add Tags"
               search
               selection
               fluid

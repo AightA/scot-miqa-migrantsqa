@@ -1,4 +1,5 @@
 import React from "react";
+
 import { getQuestions } from "../api/questions";
 import { getAnswers } from "../api/answers";
 import { Card, Container, Accordion } from "semantic-ui-react";
@@ -102,4 +103,5 @@ class Questions extends React.Component {
     );
   }
 }
+
 export default Questions;

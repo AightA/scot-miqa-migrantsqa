@@ -46,7 +46,10 @@ export default class App extends Component {
             />
           )}
         />
-        <Route path="/profile" component={ProfilePage} />
+        <Route
+          path="/profile"
+          render={props => <ProfilePage isLoggedIn={this.state.isLoggedIn} />}
+        />
       </Router>
     );
   }

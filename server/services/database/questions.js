@@ -9,6 +9,7 @@ const pool = new Pool(config);
  */
 
 const getAllQuestions = () => {
+  
 	return new Promise((resolve, reject) => {
 		pool.query(`select questions.content, users.username ,questions.date_posted, questions.id
 		from questions 
@@ -22,4 +23,32 @@ const getAllQuestions = () => {
 			});
 	});
 };
-module.exports = { getAllQuestions };
+
+ 
+
+const insertQuestions = (
+  content,
+  date_posted,
+  tags,
+  is_answered,
+  score,
+  user_id
+) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id)
+       VALUES($1, $2, $3, $4, $5, $6)
+       `,
+      [content, date_posted, tags, is_answered, score, user_id],
+      (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+        console.log(result);
+        resolve(result.rows);
+      }
+    );
+  });
+};
+module.exports = { getAllQuestions, insertQuestions };
+

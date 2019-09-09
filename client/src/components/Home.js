@@ -6,10 +6,10 @@ import QuestionsController from "./QuestionsController/QuestionController";
 const Home = () => {
   return (
     <Container>
-        <Divider horizontal />
-        <Search />
-        <Divider horizontal />
-        <QuestionsController />
+      <Divider horizontal />
+      <Search />
+      <Divider horizontal />
+      <QuestionsController />
     </Container>
   );
 };

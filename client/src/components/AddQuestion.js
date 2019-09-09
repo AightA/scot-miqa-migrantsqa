@@ -34,8 +34,7 @@ export default class AddQuestion extends Component {
         if (result.status === 200) {
           this.props.pageReload();
           this.setState({
-            content: "",
-            tags: ""
+            content: ""
           });
         }
       })

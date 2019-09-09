@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Container } from "semantic-ui-react";
+import { Card, Container, Segment, Accordion } from "semantic-ui-react";
 
 function formatingDate(date) {
   const event = new Date(date);
@@ -14,25 +14,56 @@ function formatingDate(date) {
 
   return event.toLocaleDateString("en-GB", options);
 }
+
 const Questions = props => {
   return (
     <Container>
-      {props.questions.map(question => {
+      {props.questions.map((question, index) => {
         return (
-          <Card fluid>
+          <Card fluid key={question.question_id}>
             <Card.Content>
-              <Card.Header>{question.content}</Card.Header>
+              <Card.Header>
+                <Accordion>
+                  <Accordion.Title
+                    active={props.activeIndex === index}
+                    index={index}
+                    onClick={props.toggleAnswers}
+                    id={`card-${index}`}
+                  >
+                    {question.content}
+                  </Accordion.Title>
+                  <Accordion.Content active={props.activeIndex === index}>
+                    {props.answers.map(answer => {
+                      return answer.question_id === question.id ? (
+                        <Segment key={answer.answer_id} size="small">
+                          <Card.Content>
+                            <Card.Header>{answer.content}</Card.Header>
+                          </Card.Content>
+                          <Card.Meta textAlign="right">
+                            {" "}
+                            {formatingDate(answer.date_answered)}
+                          </Card.Meta>
+                          <Card.Meta textAlign="right">
+                            {" "}
+                            by {answer.username}
+                          </Card.Meta>
+                        </Segment>
+                      ) : null;
+                    })}
+                  </Accordion.Content>
+                </Accordion>
+              </Card.Header>
+              <Card.Meta
+                textAlign="right"
+                style={{
+                  fontSize: "12px",
+                  fontStyle: "italic"
+                }}
+              >
+                {" "}
+                #{question.tags.join(" #")}
+              </Card.Meta>
               <Card.Meta textAlign="right">
-                <Card.Meta
-                  textAlign="right"
-                  style={{
-                    fontSize: "12px",
-                    fontStyle: "italic"
-                  }}
-                >
-                  {" "}
-                  #{question.tags.join(" #")}
-                </Card.Meta>
                 {formatingDate(question.date_posted)}
               </Card.Meta>
               <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
@@ -43,4 +74,5 @@ const Questions = props => {
     </Container>
   );
 };
+
 export default Questions;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Menu, MenuHeader, Image } from "semantic-ui-react";
-import { Link, Redirect } from "react-router-dom";
+import { Menu, Image } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import { getUserById } from "../api/questions";
 
 export default class MenuBar extends Component {

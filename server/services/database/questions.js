@@ -10,10 +10,11 @@ const pool = new Pool(config);
 
 const getAllQuestions = () => {
   return new Promise((resolve, reject) => {
-    pool.query(
-      `select questions.content, questions.tags, users.username ,questions.date_posted, questions.id
-		from questions 
-		INNER JOIN users ON users.id = questions.user_id order by questions.date_posted desc limit 10`,
+    pool.query(`select  questions.id, questions.content, questions.tags, users.username,
+                questions.date_posted, questions.user_id 
+		            from questions 
+                INNER JOIN users ON users.id = questions.user_id
+                order by questions.date_posted desc limit 10`,
       (error, result) => {
         if (error) {
           console.error(error);
@@ -50,4 +51,35 @@ const insertQuestions = (
     );
   });
 };
-module.exports = { getAllQuestions, insertQuestions };
+
+const updateQuestions = (content,date_posted,id) => {
+	console.log('in here', content, date_posted, id)
+	return new Promise((resolve, reject) => {
+		pool.query(`update questions set content=$1,date_posted=$2 where id=$3`, [content,date_posted,id],(error, result) => {
+			if (error) {
+				console.error(error)
+				reject(error);
+			} else {
+				resolve(result.rows);
+			}
+		});
+	});
+};
+const deleteQuestions = () => {
+	return new Promise((resolve, reject) => {
+		pool.query(`delete from questions where questions.id=$1`, [id],(error, result) => {
+			if (error) {
+				console.error(error)
+				reject(error);
+			} else {
+				resolve(result.rows);
+			}
+		});
+	});
+};
+
+module.exports= {
+	getAllQuestions,
+  updateQuestions,
+  insertQuestions,
+	deleteQuestions};

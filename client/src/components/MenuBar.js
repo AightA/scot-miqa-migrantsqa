@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { Menu } from "semantic-ui-react";
+import { Menu, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { getUserById } from "../api/questions";
 
 export default class MenuBar extends Component {
   state = {
     activeItem:
       window.location.pathname === "/"
         ? "home"
-        : window.location.pathname.substr(1)
+        : window.location.pathname.substr(1),
+    profilePicUrl: null
   };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -17,6 +19,14 @@ export default class MenuBar extends Component {
     localStorage.removeItem("token");
     window.location.href = "/";
   };
+
+  componentDidMount = () => {
+    getUserById(4).then(response => {
+      console.log(response);
+      this.setState({ profilePicUrl: response.profile_pic });
+    });
+  };
+
   render() {
     const { activeItem } = this.state;
     return (
@@ -58,6 +68,7 @@ export default class MenuBar extends Component {
               position="right"
               onClick={this.handleLogout}
             />
+            <Image src={this.state.profilePicUrl} size="mini" avatar />
           </Menu.Menu>
         ) : (
           <Menu.Menu position="right">

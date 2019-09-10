@@ -61,7 +61,7 @@ const Questions = props => {
                 }}
               >
                 {" "}
-                #{question.tags.join(" #")}
+                {/* {question.tags.join(" #")} */}
               </Card.Meta>
               <Card.Meta textAlign="right">
                 {formatingDate(question.date_posted)}

@@ -13,26 +13,25 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 export default class App extends Component {
   state = {
-    isLoggedIn: false
+    userId: null
   };
 
-  setIsLoggedIn = isLoggedIn => {
-    this.setState({
-      isLoggedIn: isLoggedIn
-    });
+  setUserId = id => {
+    if (id) {
+      this.setState({ userId: id });
+    } else {
+      this.setState({ userId: null });
+    }
   };
 
   componentDidMount() {
-    const token = localStorage.getItem("token");
-    if (token) {
-      this.setIsLoggedIn(true);
-    }
+    this.setUserId(localStorage.getItem("userId"));
   }
 
   render() {
     return (
       <Router>
-        <MenuBar isLoggedIn={this.state.isLoggedIn} />
+        <MenuBar userId={this.state.userId} />
         <Route path="/" exact component={Home} />
         <Route path="/about/" component={About} />
         <Route path="/status/" component={Status} />
@@ -41,14 +40,14 @@ export default class App extends Component {
           path="/login/"
           render={props => (
             <Login
-              setIsLoggedIn={this.setIsLoggedIn}
-              isLoggedIn={this.state.isLoggedIn}
+              setUserId={this.setUserId}
+              isLoggedIn={this.state.userId !== null}
             />
           )}
         />
         <Route
           path="/profile"
-          render={props => <ProfilePage isLoggedIn={this.state.isLoggedIn} />}
+          render={props => <ProfilePage userId={this.state.userId} />}
         />
       </Router>
     );

@@ -17,14 +17,19 @@ export default class MenuBar extends Component {
   handleLogout = e => {
     e.preventDefault();
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     window.location.href = "/";
   };
 
-  componentDidMount = () => {
-    getUserById(4).then(response => {
+  updateProfilePic = () => {
+    getUserById(this.props.userId).then(response => {
       console.log(response);
       this.setState({ profilePicUrl: response.profile_pic });
     });
+  };
+
+  componentDidMount = () => {
+    this.updateProfilePic();
   };
 
   render() {
@@ -53,7 +58,7 @@ export default class MenuBar extends Component {
           to="/status"
         />
 
-        {this.props.isLoggedIn ? (
+        {this.props.userId !== null ? (
           <Menu.Menu position="right">
             <Menu.Item
               name="profile"
@@ -68,7 +73,11 @@ export default class MenuBar extends Component {
               position="right"
               onClick={this.handleLogout}
             />
-            <Image src={this.state.profilePicUrl} size="mini" avatar />
+            {this.props.userId !== null ? (
+              <Image src={this.state.profilePicUrl} size="mini" avatar />
+            ) : (
+              ""
+            )}
           </Menu.Menu>
         ) : (
           <Menu.Menu position="right">

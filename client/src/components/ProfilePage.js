@@ -19,7 +19,7 @@ class ProfilePage extends Component {
     };
   }
   componentDidMount() {
-    fetch(`http://localhost:4000/api/users/2`)
+    fetch(`http://localhost:4000/api/users/${this.props.userId}`)
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -81,7 +81,8 @@ class ProfilePage extends Component {
 
   render() {
     const userData = this.state.user;
-    return !this.props.isLoggedIn ? (
+    // check if we are logged in
+    return this.props.userId === null ? (
       <Redirect to="/" />
     ) : (
       <div>

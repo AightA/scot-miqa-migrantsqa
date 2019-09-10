@@ -42,6 +42,7 @@ export default class Controller extends Component {
       <Container>
         <AddQuestion pageReload={this.pageReload} />
         <DisplayQuestions
+          pageReload={this.pageReload}
           toggleAnswers={this.handleClick}
           questions={this.state.questions}
           activeIndex={this.state.activeIndex}

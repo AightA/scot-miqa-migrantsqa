@@ -28,3 +28,7 @@ export const postQuestion = (content, tags, isAnswered, score) => {
   };
   return fetch("/api/questions", postedData);
 };
+
+export const update = () => {
+  return fetch("/api/update").then(res => res.json());
+};

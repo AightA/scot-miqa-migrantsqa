@@ -178,7 +178,8 @@ class Questions extends Component {
                   }}
                 >
                   {" "}
-                  {/* #{question.tags.join(" #")} */}
+                  #
+                  {question.tags > 1 ? question.tags.join(" #") : question.tags}
                 </Card.Meta>
                 <Card.Meta textAlign="right">
                   {formatingDate(question.date_posted)}

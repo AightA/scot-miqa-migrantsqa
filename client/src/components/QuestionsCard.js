@@ -6,7 +6,9 @@ import {
   Form,
   Segment,
   TextArea,
-  Accordion
+  Accordion,
+  Feed,
+  Icon
 } from "semantic-ui-react";
 
 function formatingDate(date) {
@@ -37,6 +39,7 @@ class Questions extends Component {
 
   handleEditClick = (question, event) => {
     event.stopPropagation();
+    console.log(question);
     this.setState({
       editQuestion: question,
       editContentQuestion: question.content,
@@ -83,18 +86,23 @@ class Questions extends Component {
     this.setState({ editContentQuestion: e.target.value });
   }
 
+  handleOnSubmitAnswer = () => {
+    const { id } = this.props.QuestionId;
+    console.log(id);
+  };
+
   render() {
     return (
       <Container>
         {this.props.questions.map((question, index) => {
           return (
-            <Card fluid key={question.question_id}>
+            <Card fluid key={question.id}>
               <Card.Content>
                 <Card.Header>
                   <Accordion>
                     <Accordion.Title
-                      active={this.props.activeIndex === index}
-                      index={index}
+                      active={this.props.activeIndex === question.id}
+                      index={question.id}
                       onClick={this.props.toggleAnswers}
                       id={`card-${index}`}
                     >
@@ -148,7 +156,7 @@ class Questions extends Component {
                     </Accordion.Title>
 
                     <Accordion.Content
-                      active={this.props.activeIndex === index}
+                      active={this.props.activeIndex === question.id}
                     >
                       {this.props.answers.map(answer => {
                         return answer.question_id === question.id ? (
@@ -167,6 +175,14 @@ class Questions extends Component {
                           </Segment>
                         ) : null;
                       })}
+                      <Form onSubmit={this.props.handleOnSubmitAnswer}>
+                        <Form.TextArea
+                          placeholder="Please write you answer here..."
+                          required
+                          minLength={2}
+                        />
+                        <Form.Button>Submit</Form.Button>
+                      </Form>
                     </Accordion.Content>
                   </Accordion>
                 </Card.Header>
@@ -192,5 +208,4 @@ class Questions extends Component {
     );
   }
 }
-
 export default Questions;

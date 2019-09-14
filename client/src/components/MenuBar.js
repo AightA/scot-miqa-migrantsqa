@@ -68,7 +68,7 @@ export default class MenuBar extends Component {
           to="/status"
         />
 
-        {this.props.userId !== null ? (
+        {this.props.userId ? (
           <Menu.Menu position="right">
             <Menu.Item
               name="profile"
@@ -83,7 +83,7 @@ export default class MenuBar extends Component {
               position="right"
               onClick={this.handleLogout}
             />
-            {this.props.userId !== null ? (
+            {this.props.userId ? (
               <Image src={this.state.profilePicUrl} size="mini" avatar />
             ) : (
               ""

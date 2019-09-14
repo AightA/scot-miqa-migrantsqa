@@ -42,4 +42,19 @@ router.post("/", authMiddleware, async (req, res, next) => {
     });
 });
 
+router.post("/update-question", async (req, res, next) => {
+	const { content, date_posted, id } = req.body;
+  
+  questionDb.updateQuestions(content, date_posted, id )
+	  .then(() => {
+		res.send({
+		  success: true,
+		  message: "Question updated"
+		});
+	  })
+	  .catch(err => {
+		console.log(err);
+		next(err);
+	  });
+  });
 module.exports = router;

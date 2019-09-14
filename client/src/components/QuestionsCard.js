@@ -10,6 +10,7 @@ import {
   Feed,
   Icon
 } from "semantic-ui-react";
+import { postAnswer } from "../api/questions";
 
 function formatingDate(date) {
   const event = new Date(date);
@@ -33,13 +34,15 @@ class Questions extends Component {
       editQuestion: null,
       editQuestionId: null,
       editContentQuestion: null,
-      userId: 1
+      userId: 1,
+      content: "",
+      score: "",
+      tags: ""
     };
   }
 
   handleEditClick = (question, event) => {
     event.stopPropagation();
-    console.log(question);
     this.setState({
       editQuestion: question,
       editContentQuestion: question.content,
@@ -68,7 +71,6 @@ class Questions extends Component {
     return fetch("/api/questions/update-question", postData)
       .then(res => {
         if (res.status >= 200 && res.status < 300) {
-          console.log("reloaded page");
           this.props.pageReload();
         } else {
           throw res;
@@ -86,9 +88,29 @@ class Questions extends Component {
     this.setState({ editContentQuestion: e.target.value });
   }
 
-  handleOnSubmitAnswer = () => {
-    const { id } = this.props.QuestionId;
-    console.log(id);
+  handleOnSubmitAnswer = e => {
+    e.preventDefault();
+    const { content, score, tags } = this.state;
+    const questionId = this.props.QuestionId;
+
+    postAnswer(content, tags, questionId)
+      .then(result => {
+        if (result.status === 200) {
+          this.props.pageReload();
+          this.setState({
+            content: ""
+          });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   };
 
   render() {
@@ -175,11 +197,15 @@ class Questions extends Component {
                           </Segment>
                         ) : null;
                       })}
-                      <Form onSubmit={this.props.handleOnSubmitAnswer}>
+                      <Form onSubmit={this.handleOnSubmitAnswer}>
                         <Form.TextArea
                           placeholder="Please write you answer here..."
                           required
                           minLength={2}
+                          name="content"
+                          onChange={this.handleChange}
+                          value={this.state.content}
+                          type="text"
                         />
                         <Form.Button>Submit</Form.Button>
                       </Form>
@@ -194,7 +220,8 @@ class Questions extends Component {
                   }}
                 >
                   {" "}
-                  {/* #{question.tags.join(" #")} */}
+                  #
+                  {question.tags > 1 ? question.tags.join(" #") : question.tags}
                 </Card.Meta>
                 <Card.Meta textAlign="right">
                   {formatingDate(question.date_posted)}

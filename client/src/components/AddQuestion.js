@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Container, Segment, Form, Dropdown } from "semantic-ui-react";
 import { postQuestion } from "../api/questions";
 import { tags } from "../util/tag-options";
-import { postAnswer } from "../api/answers";
 
 export default class AddQuestion extends Component {
   state = {

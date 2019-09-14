@@ -10,7 +10,8 @@ const pool = new Pool(config);
 
 const getAllQuestions = () => {
   return new Promise((resolve, reject) => {
-    pool.query(`select  questions.id, questions.content, questions.tags, users.username,
+    pool.query(
+      `select  questions.id, questions.content, questions.tags, users.username,
                 questions.date_posted, questions.user_id 
 		            from questions 
                 INNER JOIN users ON users.id = questions.user_id
@@ -52,34 +53,72 @@ const insertQuestions = (
   });
 };
 
-const updateQuestions = (content,date_posted,id) => {
-	console.log('in here', content, date_posted, id)
-	return new Promise((resolve, reject) => {
-		pool.query(`update questions set content=$1,date_posted=$2 where id=$3`, [content,date_posted,id],(error, result) => {
-			if (error) {
-				console.error(error)
-				reject(error);
-			} else {
-				resolve(result.rows);
-			}
-		});
-	});
+const updateQuestions = (content, date_posted, id) => {
+  console.log("in here", content, date_posted, id);
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `update questions set content=$1,date_posted=$2 where id=$3`,
+      [content, date_posted, id],
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          resolve(result.rows);
+        }
+      }
+    );
+  });
 };
 const deleteQuestions = () => {
-	return new Promise((resolve, reject) => {
-		pool.query(`delete from questions where questions.id=$1`, [id],(error, result) => {
-			if (error) {
-				console.error(error)
-				reject(error);
-			} else {
-				resolve(result.rows);
-			}
-		});
-	});
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `delete from questions where questions.id=$1`,
+      [id],
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          resolve(result.rows);
+        }
+      }
+    );
+  });
 };
 
-module.exports= {
-	getAllQuestions,
+const insertAnswer = (
+  content,
+  dateAnswered,
+  tags,
+  isAccepted,
+  score,
+  questionId,
+  userId
+) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO answers (content,date_answered ,tags,is_accepted ,
+        score,question_id,user_id)
+                        VALUES($1, $2, $3, $4, $5, $6, $7)
+                        `,
+      [content, dateAnswered, tags, isAccepted, score, questionId, userId],
+      (error, result) => {
+        if (error) {
+          return reject(error);
+        } else {
+          console.log(result);
+          resolve(result.rows);
+        }
+      }
+    );
+  });
+};
+
+module.exports = {
+  getAllQuestions,
   updateQuestions,
   insertQuestions,
-	deleteQuestions};
+  deleteQuestions,
+  insertAnswer
+};

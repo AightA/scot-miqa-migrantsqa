@@ -20,7 +20,6 @@ export default class Controller extends Component {
     const { index } = titleProps;
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
-    console.log("THIS IS ACTIVEINDEX", activeIndex, "THIS IS ID ", index);
     this.setState({ activeIndex: newIndex, id: index });
   };
 

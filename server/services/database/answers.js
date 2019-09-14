@@ -22,30 +22,4 @@ const getAllAnswers = () => {
   });
 };
 
-const insertAnswer = (
-  content,
-  dateAnswered,
-  tags,
-  isAccepted,
-  score,
-  questionId,
-  userId
-) => {
-  return new Promise((resolve, reject) => {
-    pool.query(
-      `INSERT INTO answers (content,date_answered ,tags,is_accepted ,score,question_id,user_id)
-         VALUES($1, $2, $3, $4, $5, $6, $7)
-         `,
-      [content, dateAnswered, tags, isAccepted, score, questionId, userId],
-      (error, result) => {
-        if (error) {
-          return reject(error);
-        }
-        console.log(result);
-        resolve(result.rows);
-      }
-    );
-  });
-};
-
-module.exports = { getAllAnswers, insertAnswer };
+module.exports = { getAllAnswers };

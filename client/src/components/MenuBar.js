@@ -15,18 +15,28 @@ export default class MenuBar extends Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   handleLogout = e => {
+    // Make sure we don't refresh
     e.preventDefault();
+    // Clear the local storage
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     window.location.href = "/";
   };
 
   updateProfilePic = () => {
-    getUserById(this.props.userId).then(response => {
-      console.log(response);
-      this.setState({ profilePicUrl: response.profile_pic });
-    });
+    // Use the stored userID
+    getUserById(localStorage.userId).then(response =>
+      this.setState({ profilePicUrl: response.profile_pic })
+    );
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps) {
+      getUserById(nextProps.userId).then(response => {
+        this.setState({ profilePicUrl: response.profile_pic });
+      });
+    }
+  }
 
   componentDidMount = () => {
     this.updateProfilePic();

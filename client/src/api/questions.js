@@ -29,6 +29,23 @@ export const postQuestion = (content, tags, isAnswered, score) => {
   return fetch("/api/questions", postedData);
 };
 
+export const postAnswer = (content, tags, questionId) => {
+  const token = localStorage.getItem("token");
+  const postedAnswer = {
+    method: "POST",
+    body: JSON.stringify({
+      content,
+      tags
+    }),
+
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`
+    }
+  };
+  return fetch(`/api/questions/${questionId}/answers`, postedAnswer);
+};
+
 export const update = () => {
   return fetch("/api/update").then(res => res.json());
 };

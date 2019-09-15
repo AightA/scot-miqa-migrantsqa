@@ -46,7 +46,6 @@ const insertQuestions = (
         if (error) {
           return reject(error);
         }
-        console.log(result);
         resolve(result.rows);
       }
     );
@@ -54,7 +53,6 @@ const insertQuestions = (
 };
 
 const updateQuestions = (content, date_posted, id) => {
-  console.log("in here", content, date_posted, id);
   return new Promise((resolve, reject) => {
     pool.query(
       `update questions set content=$1,date_posted=$2 where id=$3`,
@@ -107,7 +105,6 @@ const insertAnswer = (
         if (error) {
           return reject(error);
         } else {
-          console.log(result);
           resolve(result.rows);
         }
       }

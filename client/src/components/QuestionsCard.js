@@ -11,6 +11,11 @@ import {
   Icon
 } from "semantic-ui-react";
 import { postAnswer } from "../api/questions";
+import React from "react";
+
+import { getQuestions } from "../api/questions";
+import { getAnswers } from "../api/answers";
+import { Message } from "semantic-ui-react";
 
 function formatingDate(date) {
   const event = new Date(date);
@@ -29,6 +34,7 @@ function formatingDate(date) {
 class Questions extends Component {
   constructor(props) {
     super(props);
+    this.onClickHandler = this.onClickHandler.bind(this);
     this.state = {
       selectedCardId: null,
       editQuestion: null,
@@ -37,7 +43,11 @@ class Questions extends Component {
       userId: 1,
       content: "",
       score: "",
-      tags: ""
+      tags: "",
+      questions: [],
+      answers: [],
+      is_accepted: false,
+      activeIndex: 0
     };
   }
 
@@ -56,6 +66,29 @@ class Questions extends Component {
       editQuestion: null
     });
   };
+
+  handleClick = (e, titleProps) => {
+    const { index } = titleProps;
+    const { activeIndex } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+    this.setState({ activeIndex: newIndex });
+  };
+  onClickHandler = e => {
+    e.preventDefault();
+    this.setState(prevState => ({
+      is_accepted: !prevState.is_accepted
+    }));
+    // alert('clicked')
+    console.log(this.onClickHandler, "hello Hi Looo");
+  };
+  componentDidMount() {
+    getQuestions().then(response => {
+      this.setState({ questions: response });
+    });
+    getAnswers().then(res => {
+      this.setState({ answers: res });
+    });
+  }
 
   handleSaveClick = question => {
     question.stopPropagation();
@@ -114,6 +147,9 @@ class Questions extends Component {
   };
 
   render() {
+    const { questions, answers, activeIndex } = this.state;
+    const Accepted = this.state.is_accepted;
+    console.log(Accepted);
     return (
       <Container>
         {this.props.questions.map((question, index) => {
@@ -184,14 +220,29 @@ class Questions extends Component {
                         return answer.question_id === question.id ? (
                           <Segment key={answer.answer_id} size="small">
                             <Card.Content>
-                              <Card.Header>{answer.content}</Card.Header>
+                              <Card.Header> {answer.content} </Card.Header>
                             </Card.Content>
+                            {Accepted ? (
+                              <Button key={answer.answer_id}>
+                                <i
+                                  class="check circle icon"
+                                  align="right"
+                                  onClick={this.onClickHandler}
+                                ></i>
+                              </Button>
+                            ) : (
+                              <Button>
+                                <i
+                                  class="check circle outline icon"
+                                  align="right"
+                                  onClick={this.onClickHandler}
+                                ></i>
+                              </Button>
+                            )}
                             <Card.Meta textAlign="right">
-                              {" "}
                               {formatingDate(answer.date_answered)}
                             </Card.Meta>
                             <Card.Meta textAlign="right">
-                              {" "}
                               by {answer.username}
                             </Card.Meta>
                           </Segment>

@@ -11,7 +11,8 @@ export default class Controller extends Component {
     this.state = {
       questions: [],
       answers: [],
-      activeIndex: 0
+      activeIndex: -1,
+      id: ""
     };
   }
 
@@ -19,7 +20,7 @@ export default class Controller extends Component {
     const { index } = titleProps;
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
-    this.setState({ activeIndex: newIndex });
+    this.setState({ activeIndex: newIndex, id: index });
   };
 
   componentDidMount() {
@@ -46,6 +47,7 @@ export default class Controller extends Component {
           toggleAnswers={this.handleClick}
           questions={this.state.questions}
           activeIndex={this.state.activeIndex}
+          QuestionId={this.state.id}
           answers={this.state.answers}
         />
       </Container>

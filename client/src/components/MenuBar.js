@@ -15,16 +15,31 @@ export default class MenuBar extends Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   handleLogout = e => {
+    // Make sure we don't refresh
     e.preventDefault();
+    // Clear the local storage
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     window.location.href = "/";
   };
 
+  updateProfilePic = () => {
+    // Use the stored userID
+    getUserById(localStorage.userId).then(response =>
+      this.setState({ profilePicUrl: response.profile_pic })
+    );
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps) {
+      getUserById(nextProps.userId).then(response => {
+        this.setState({ profilePicUrl: response.profile_pic });
+      });
+    }
+  }
+
   componentDidMount = () => {
-    getUserById(4).then(response => {
-      console.log(response);
-      this.setState({ profilePicUrl: response.profile_pic });
-    });
+    this.updateProfilePic();
   };
 
   render() {
@@ -53,7 +68,7 @@ export default class MenuBar extends Component {
           to="/status"
         />
 
-        {this.props.isLoggedIn ? (
+        {this.props.userId ? (
           <Menu.Menu position="right">
             <Menu.Item
               name="profile"
@@ -68,7 +83,11 @@ export default class MenuBar extends Component {
               position="right"
               onClick={this.handleLogout}
             />
-            <Image src={this.state.profilePicUrl} size="mini" avatar />
+            {this.props.userId ? (
+              <Image src={this.state.profilePicUrl} size="mini" avatar />
+            ) : (
+              ""
+            )}
           </Menu.Menu>
         ) : (
           <Menu.Menu position="right">

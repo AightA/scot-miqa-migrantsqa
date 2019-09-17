@@ -43,18 +43,53 @@ router.post("/", authMiddleware, async (req, res, next) => {
 });
 
 router.post("/update-question", async (req, res, next) => {
-	const { content, date_posted, id } = req.body;
-  
-  questionDb.updateQuestions(content, date_posted, id )
-	  .then(() => {
-		res.send({
-		  success: true,
-		  message: "Question updated"
-		});
-	  })
-	  .catch(err => {
-		console.log(err);
-		next(err);
-	  });
-  });
+  const { content, date_posted, id } = req.body;
+
+  questionDb
+    .updateQuestions(content, date_posted, id)
+    .then(() => {
+      res.send({
+        success: true,
+        message: "Question updated"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      next(err);
+    });
+});
+
+// /**
+//  * Post Answers
+//  */
+
+router.post("/:questionId/answers", authMiddleware, async (req, res, next) => {
+  const { content, tags } = req.body;
+  const userId = req.user.id;
+  const dateAnswered = moment().format();
+  const isAccepted = true;
+  const questionId = parseInt(req.params.questionId);
+  const score = 4;
+  questionDb
+    .insertAnswer(
+      content,
+      dateAnswered,
+      tags,
+      isAccepted,
+      score,
+      questionId,
+      userId
+    )
+    .then(() => {
+      res.send({
+        success: true,
+        message: "Answer inserted"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      next(err);
+    });
+});
+
 module.exports = router;

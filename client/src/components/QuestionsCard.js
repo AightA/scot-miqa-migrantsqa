@@ -6,8 +6,11 @@ import {
   Form,
   Segment,
   TextArea,
-  Accordion
+  Accordion,
+  Feed,
+  Icon
 } from "semantic-ui-react";
+import { postAnswer } from "../api/questions";
 
 function formatingDate(date) {
   const event = new Date(date);
@@ -31,7 +34,10 @@ class Questions extends Component {
       editQuestion: null,
       editQuestionId: null,
       editContentQuestion: null,
-      userId: 1
+      userId: 1,
+      content: "",
+      score: "",
+      tags: ""
     };
   }
 
@@ -65,7 +71,6 @@ class Questions extends Component {
     return fetch("/api/questions/update-question", postData)
       .then(res => {
         if (res.status >= 200 && res.status < 300) {
-          console.log("reloaded page");
           this.props.pageReload();
         } else {
           throw res;
@@ -83,18 +88,43 @@ class Questions extends Component {
     this.setState({ editContentQuestion: e.target.value });
   }
 
+  handleOnSubmitAnswer = e => {
+    e.preventDefault();
+    const { content, score, tags } = this.state;
+    const questionId = this.props.QuestionId;
+
+    postAnswer(content, tags, questionId)
+      .then(result => {
+        if (result.status === 200) {
+          this.props.pageReload();
+          this.setState({
+            content: ""
+          });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
   render() {
     return (
       <Container>
         {this.props.questions.map((question, index) => {
           return (
-            <Card fluid key={question.question_id}>
+            <Card fluid key={question.id}>
               <Card.Content>
                 <Card.Header>
                   <Accordion>
                     <Accordion.Title
-                      active={this.props.activeIndex === index}
-                      index={index}
+                      active={this.props.activeIndex === question.id}
+                      index={question.id}
                       onClick={this.props.toggleAnswers}
                       id={`card-${index}`}
                     >
@@ -148,7 +178,7 @@ class Questions extends Component {
                     </Accordion.Title>
 
                     <Accordion.Content
-                      active={this.props.activeIndex === index}
+                      active={this.props.activeIndex === question.id}
                     >
                       {this.props.answers.map(answer => {
                         return answer.question_id === question.id ? (
@@ -167,6 +197,18 @@ class Questions extends Component {
                           </Segment>
                         ) : null;
                       })}
+                      <Form onSubmit={this.handleOnSubmitAnswer}>
+                        <Form.TextArea
+                          placeholder="Please write you answer here..."
+                          required
+                          minLength={2}
+                          name="content"
+                          onChange={this.handleChange}
+                          value={this.state.content}
+                          type="text"
+                        />
+                        <Form.Button>Submit</Form.Button>
+                      </Form>
                     </Accordion.Content>
                   </Accordion>
                 </Card.Header>
@@ -193,5 +235,4 @@ class Questions extends Component {
     );
   }
 }
-
 export default Questions;

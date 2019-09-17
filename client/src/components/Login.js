@@ -34,7 +34,8 @@ class Login extends Component {
     userLogin(email, password)
       .then(loggedInUser => {
         localStorage.setItem("token", loggedInUser.token);
-        this.props.setIsLoggedIn(true);
+        localStorage.setItem("userId", loggedInUser.user.id);
+        this.props.setUserId(loggedInUser.user.id);
       })
       .catch(err => {
         this.setState({

@@ -61,7 +61,6 @@ export default class AddQuestion extends Component {
               type="text"
             />
             <Dropdown
-              multiple
               options={this.state.tags}
               placeholder="Add Tags"
               search

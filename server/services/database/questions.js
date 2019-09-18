@@ -68,20 +68,28 @@ const updateQuestions = (content, date_posted, id) => {
     );
   });
 };
-const deleteQuestions = () => {
+
+const deleteQuestions = (id) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `delete from questions where questions.id=$1`,
+      `delete from answers where question_id=$1`,
       [id],
       (error, result) => {
         if (error) {
           console.error(error);
           reject(error);
         } else {
+          pool.query(`delete from questions where id=$1`,
+          [id],
+          (error, result) => {
+            if (error) {
+              console.error(error);
+              reject(error);
+            }
           resolve(result.rows);
-        }
+        });
       }
-    );
+      });
   });
 };
 

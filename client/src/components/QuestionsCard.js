@@ -85,12 +85,15 @@ class Questions extends Component {
       })
       .catch(err => {});
   };
-  handleDeleteClick = question => {
-    question.stopPropagation();
+  handleDeleteClick = (question, event) => {
+    event.stopPropagation();
+    this.setState(state => ({ deleteQuestion: question.id }));
+    console.log(question.id);
+    console.log(this.state.deleteQuestion);
     const postData = {
       method: "DELETE",
       body: JSON.stringify({
-        id: this.state.deleteQuestion
+        id: question.id
       }),
       headers: { "Content-Type": "application/json" }
     };
@@ -201,7 +204,9 @@ class Questions extends Component {
                             <Button
                               basic
                               color="red"
-                              onClick={() => this.handleDeleteClick(question)}
+                              onClick={event =>
+                                this.handleDeleteClick(question, event)
+                              }
                             >
                               Delete
                             </Button>

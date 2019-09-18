@@ -60,12 +60,12 @@ router.post("/update-question", async (req, res, next) => {
 
   router.delete("/delete-question", async (req, res, next) => {
     const {id} = req.body;
-    
-    questionDb.deleteQuestions(id )
+    console.log(id);
+    questionDb.deleteQuestions(id)
       .then(() => {
       res.send({
         success: true,
-        message: "Question updated"
+        message: "Question delete"
       });
     })
     .catch(err => {

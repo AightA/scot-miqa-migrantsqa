@@ -49,3 +49,7 @@ export const postAnswer = (content, tags, questionId) => {
 export const update = () => {
   return fetch("/api/update").then(res => res.json());
 };
+
+export const deleted = () => {
+  return fetch("/api/delete").then(res => res.json());
+};

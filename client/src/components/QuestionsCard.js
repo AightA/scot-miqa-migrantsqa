@@ -37,7 +37,8 @@ class Questions extends Component {
       userId: 1,
       content: "",
       score: "",
-      tags: ""
+      tags: "",
+      deleteQuestion: null
     };
   }
 
@@ -71,6 +72,7 @@ class Questions extends Component {
     return fetch("/api/questions/update-question", postData)
       .then(res => {
         if (res.status >= 200 && res.status < 300) {
+          console.log("reloaded page");
           this.props.pageReload();
         } else {
           throw res;
@@ -83,9 +85,36 @@ class Questions extends Component {
       })
       .catch(err => {});
   };
+  handleDeleteClick = question => {
+    question.stopPropagation();
+    const postData = {
+      method: "DELETE",
+      body: JSON.stringify({
+        id: this.state.deleteQuestion
+      }),
+      headers: { "Content-Type": "application/json" }
+    };
+    return fetch("/api/questions/delete-question", postData)
+      .then(res => {
+        if (res.status >= 200 && res.status < 300) {
+          console.log("reloaded page");
+          this.props.pageReload();
+        } else {
+          throw res;
+        }
+      })
+      .then(loggedInUser => {
+        this.setState(state => ({
+          deleteQuestion: null
+        }));
+      })
+      .catch(err => {});
+  };
 
   onChange(e) {
-    this.setState({ editContentQuestion: e.target.value });
+    this.setState({
+      editContentQuestion: e.target.value
+    });
   }
 
   handleOnSubmitAnswer = e => {
@@ -169,7 +198,11 @@ class Questions extends Component {
                             >
                               Edit
                             </Button>
-                            <Button basic color="red">
+                            <Button
+                              basic
+                              color="red"
+                              onClick={() => this.handleDeleteClick(question)}
+                            >
                               Delete
                             </Button>
                           </div>

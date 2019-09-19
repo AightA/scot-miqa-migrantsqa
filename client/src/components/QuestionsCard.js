@@ -8,8 +8,10 @@ import {
   TextArea,
   Accordion,
   Feed,
-  Icon
+  Icon,
+  Message
 } from "semantic-ui-react";
+
 import { postAnswer } from "../api/questions";
 
 function formatingDate(date) {
@@ -34,11 +36,11 @@ class Questions extends Component {
       editQuestion: null,
       editQuestionId: null,
       editContentQuestion: null,
-      userId: 1,
       content: "",
       score: "",
       tags: "",
-      deleteQuestion: null
+      deleteQuestion: null,
+      deletedsucessfully: false
     };
   }
 
@@ -105,7 +107,8 @@ class Questions extends Component {
       })
       .then(loggedInUser => {
         this.setState(state => ({
-          deleteQuestion: null
+          deleteQuestion: null,
+          deletedsucessfully: true
         }));
       })
       .catch(err => {});
@@ -185,7 +188,7 @@ class Questions extends Component {
                       ) : (
                         question.content
                       )}
-                      {this.state.userId === question.user_id &&
+                      {this.props.userId === question.user_id &&
                       !this.state.editQuestion ? (
                         <Card.Content extra>
                           <div className="ui two buttons">

@@ -88,8 +88,6 @@ class Questions extends Component {
   handleDeleteClick = (question, event) => {
     event.stopPropagation();
     this.setState(state => ({ deleteQuestion: question.id }));
-    console.log(question.id);
-    console.log(this.state.deleteQuestion);
     const postData = {
       method: "DELETE",
       body: JSON.stringify({
@@ -97,10 +95,9 @@ class Questions extends Component {
       }),
       headers: { "Content-Type": "application/json" }
     };
-    return fetch("/api/questions/delete-question", postData)
+    fetch("/api/questions/delete-question", postData)
       .then(res => {
         if (res.status >= 200 && res.status < 300) {
-          console.log("reloaded page");
           this.props.pageReload();
         } else {
           throw res;

@@ -60,7 +60,6 @@ router.post("/update-question", async (req, res, next) => {
 
   router.delete("/delete-question", async (req, res, next) => {
     const {id} = req.body;
-    console.log(id);
     questionDb.deleteQuestions(id)
       .then(() => {
       res.send({

@@ -6,8 +6,8 @@ import { getQuestions } from "../../api/questions";
 import { getAnswers } from "../../api/answers";
 
 export default class Controller extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questions: [],
       answers: [],
@@ -30,12 +30,26 @@ export default class Controller extends Component {
   pageReload = () => {
     getQuestions().then(res => {
       this.setState({
-        questions: res
+        questions: res,
+        tags: this.props.tag
       });
     });
     getAnswers().then(res => {
       this.setState({ answers: res });
     });
+  };
+
+  filterByTags = () => {
+    if (this.props.tag.length) {
+      return this.state.questions.filter(question => {
+        const selectedTags = this.props.tag.filter(tag => {
+          return question.tags.includes(tag);
+        });
+        return selectedTags.length && selectedTags;
+      });
+    } else {
+      return this.state.questions;
+    }
   };
 
   render() {
@@ -45,7 +59,7 @@ export default class Controller extends Component {
         <DisplayQuestions
           pageReload={this.pageReload}
           toggleAnswers={this.handleClick}
-          questions={this.state.questions}
+          questions={this.filterByTags()}
           activeIndex={this.state.activeIndex}
           QuestionId={this.state.id}
           answers={this.state.answers}

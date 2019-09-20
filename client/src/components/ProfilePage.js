@@ -19,7 +19,7 @@ class ProfilePage extends Component {
     };
   }
   componentDidMount() {
-    fetch(`http://localhost:4000/api/users/${this.props.userId}`)
+    fetch(`/api/users/${this.props.userId}`)
       .then(res => res.json())
       .then(data => {
         this.setState({

@@ -219,6 +219,9 @@ class Questions extends Component {
                 >
                   {question.tags.map(
                     (tag, index) =>
+                      //This line will add a #followed by the tag and
+                      //keep adding spaces till we reach the end of the array.
+
                       `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
                   )}
                 </Card.Meta>

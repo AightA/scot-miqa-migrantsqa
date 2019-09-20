@@ -11,7 +11,7 @@ export default class Home extends Component {
 
   getFilteredTags = tags => {
     this.setState({
-      tags: tags
+      tags
     });
   };
   render() {
@@ -20,7 +20,7 @@ export default class Home extends Component {
         <Divider horizontal />
         <HomePageSearch getFilteredTags={this.getFilteredTags} />
         <Divider horizontal />
-        <QuestionsController tag={this.state.tags} />
+        <QuestionsController tags={this.state.tags} />
       </Container>
     );
   }

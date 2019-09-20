@@ -31,7 +31,7 @@ export default class Controller extends Component {
     getQuestions().then(res => {
       this.setState({
         questions: res,
-        tags: this.props.tag
+        tags: this.props.tags
       });
     });
     getAnswers().then(res => {
@@ -40,9 +40,9 @@ export default class Controller extends Component {
   };
 
   filterByTags = () => {
-    if (this.props.tag.length) {
+    if (this.props.tags.length) {
       return this.state.questions.filter(question => {
-        const selectedTags = this.props.tag.filter(tag => {
+        const selectedTags = this.props.tags.filter(tag => {
           return question.tags.includes(tag);
         });
         return selectedTags.length && selectedTags;

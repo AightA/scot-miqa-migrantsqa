@@ -11,10 +11,8 @@ import {
   Icon
 } from "semantic-ui-react";
 import { postAnswer } from "../api/questions";
-import React from "react";
-
 import { getQuestions } from "../api/questions";
-import { getAnswers } from "../api/answers";
+import { getAnswers, acceptAnswers } from "../api/answers";
 import { Message } from "semantic-ui-react";
 
 function formatingDate(date) {
@@ -27,28 +25,34 @@ function formatingDate(date) {
     hour: "2-digit",
     minute: "2-digit"
   };
-
   return event.toLocaleDateString("en-GB", options);
 }
 
 class Questions extends Component {
   constructor(props) {
     super(props);
-    this.onClickHandler = this.onClickHandler.bind(this);
+    this.handleAcceptAnswerOnClick = this.handleAcceptAnswerOnClick.bind(this);
     this.state = {
       selectedCardId: null,
       editQuestion: null,
       editQuestionId: null,
       editContentQuestion: null,
-      userId: 1,
+      userId: "",
+      isAccepted: false,
       content: "",
       score: "",
       tags: "",
-      questions: [],
-      answers: [],
-      is_accepted: false,
       activeIndex: 0
     };
+  }
+
+  componentDidMount() {
+    getQuestions().then(response => {
+      this.setState({ questions: response });
+    });
+    getAnswers().then(res => {
+      this.setState({ answers: res });
+    });
   }
 
   handleEditClick = (question, event) => {
@@ -72,23 +76,49 @@ class Questions extends Component {
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
     this.setState({ activeIndex: newIndex });
+    console.log("I am over here Bro ", activeIndex);
   };
-  onClickHandler = e => {
+
+  // get the id belonging to the answer from the click event
+  // find the answer object matching that id in this.props.answers
+  // get the isAccepted for the matching answer
+  // call acceptAnswers with !isAccepted, id
+  // update the state on a SUCCESSFUL return
+
+  // // if (this.props.answers.is_accepted, this.props.answers.id) {
+  // acceptAnswers(
+  //   this.props.answers.is_accepted,
+  //   this.props.answers.id
+  // )}
+  // console.log(acceptAnswers);
+
+  handleChange = e => {
+    this.setState({
+      [e.target.id]: e.target.value
+    });
+    // console.log(e);
+  };
+
+  handleAcceptAnswerOnClick = e => {
     e.preventDefault();
-    this.setState(prevState => ({
-      is_accepted: !prevState.is_accepted
-    }));
-    // alert('clicked')
-    console.log(this.onClickHandler, "hello Hi Looo");
+    console.log(e);
+    // const { userId } = this.props.userId;
+
+    acceptAnswers()
+      // console.log(isAccepted)
+      .then(result => {
+        if (result.status === 200) {
+          this.props.pageReload();
+          this.setState(prevState => ({
+            isAccepted: !prevState.isAccepted
+          }));
+        }
+        console.log(this.handleAcceptAnswerOnClick, "hello Hi Looo");
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
-  componentDidMount() {
-    getQuestions().then(response => {
-      this.setState({ questions: response });
-    });
-    getAnswers().then(res => {
-      this.setState({ answers: res });
-    });
-  }
 
   handleSaveClick = question => {
     question.stopPropagation();
@@ -147,9 +177,7 @@ class Questions extends Component {
   };
 
   render() {
-    const { questions, answers, activeIndex } = this.state;
-    const Accepted = this.state.is_accepted;
-    console.log(Accepted);
+    // const Accepted = this.props.isAccepted;
     return (
       <Container>
         {this.props.questions.map((question, index) => {
@@ -192,7 +220,7 @@ class Questions extends Component {
                       ) : (
                         question.content
                       )}
-                      {this.state.userId === question.user_id &&
+                      {this.props.userId === question.user_id &&
                       !this.state.editQuestion ? (
                         <Card.Content extra>
                           <div className="ui two buttons">
@@ -222,21 +250,27 @@ class Questions extends Component {
                             <Card.Content>
                               <Card.Header> {answer.content} </Card.Header>
                             </Card.Content>
-                            {Accepted ? (
-                              <Button key={answer.answer_id}>
-                                <i
-                                  class="check circle icon"
+                            {/* kk */}
+
+                            {this.props.userId === question.user_id &&
+                            this.state.isAccepted ? (
+                              <Button
+                                key={answer.answer_id}
+                                onClick={this.handleAcceptAnswerOnClick}
+                              >
+                                <Icon
+                                  name="check circle outline"
+                                  size="big"
                                   align="right"
-                                  onClick={this.onClickHandler}
-                                ></i>
+                                />
                               </Button>
                             ) : (
-                              <Button>
-                                <i
-                                  class="check circle outline icon"
+                              <Button onClick={this.handleAcceptAnswerOnClick}>
+                                <Icon
+                                  name="check circle outline icon"
+                                  size="big"
                                   align="right"
-                                  onClick={this.onClickHandler}
-                                ></i>
+                                />
                               </Button>
                             )}
                             <Card.Meta textAlign="right">

@@ -1,11 +1,11 @@
 const express = require("express");
 const moment = require("moment");
 const router = express.Router();
-const question = require("../services/database/answers");
+const answerDb = require("../services/database/answers");
 const { authMiddleware } = require("../auth/passport");
 
 router.get("/", (req, res) => {
-  question
+  answerDb
     .getAllAnswers()
     .then(data => {
       res.send(data);
@@ -15,5 +15,22 @@ router.get("/", (req, res) => {
       res.sendStatus(500);
     });
 });
+
+router.post("/accept-answer", async (req, res, next) => {
+  const { isAccepted, id } = req.body;
+  answerDb
+    .acceptAnswer(isAccepted, id)
+    .then(() => {
+      res.send({
+        success: true,
+        message: "Answer accepted"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      next(err);
+    });
+});
+
 
 module.exports = router;

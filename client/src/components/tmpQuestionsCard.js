@@ -14,7 +14,6 @@ import { postAnswer } from "../api/questions";
 import { getQuestions } from "../api/questions";
 import { getAnswers, acceptAnswers } from "../api/answers";
 import { Message } from "semantic-ui-react";
-import AcceptedButton from "./AcceptedButton";
 
 function formatingDate(date) {
   const event = new Date(date);
@@ -39,21 +38,24 @@ class Questions extends Component {
       editQuestionId: null,
       editContentQuestion: null,
       userId: "",
+      isAccepted: false,
       content: "",
       score: "",
       tags: "",
-      activeIndex: 0
+      activeIndex: 0,
+      questionUserID: null,
+      answered: false
     };
   }
 
-  componentDidMount() {
-    getQuestions().then(response => {
-      this.setState({ questions: response });
-    });
-    getAnswers().then(res => {
-      this.setState({ answers: res });
-    });
-  }
+  // componentDidMount() {
+  //   getQuestions().then(response => {
+  //     this.setState({ questions: response });
+  //   });
+  //   getAnswers().then(res => {
+  //     this.setState({ answers: res });
+  //   });
+  // }
 
   handleEditClick = (question, event) => {
     event.stopPropagation();
@@ -79,23 +81,52 @@ class Questions extends Component {
     console.log("I am over here Bro ", activeIndex);
   };
 
-  handleChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value
-    });
-  };
+  // get the id belonging to the answer from the click event
+  // find the answer object matching that id in this.props.answers
+  // get the isAccepted for the matching answer
+  // call acceptAnswers with !isAccepted, id
+  // update the state on a SUCCESSFUL return
+
+  // // if (this.props.answers.is_accepted, this.props.answers.id) {
+  // acceptAnswers(
+  //   this.props.answers.is_accepted,
+  //   this.props.answers.id
+  // )}
+  // console.log(acceptAnswers);
+
+  // handleChange = e => {
+  //   this.setState({
+  //     [e.target.id]: e.target.value
+  //   });
+  // };
 
   handleAcceptAnswerOnClick = (e, a) => {
-    e.preventDefault();
-    console.log(e);
+    console.clear();
+    //kk
+    let questionUserID = this.getQuestionUserID(a).questionUserID;
+    if (localStorage.userId == questionUserID) {
+      acceptAnswers(true, a.id)
+        .then(result => {
+          if (!this.state.isAccepted && result.message === "Answer accepted") {
+            console.log("ACCEPED");
+            this.props.pageReload();
+            this.setState({ isAccepted: true, answered: true });
+          } else {
+            console.log("NOT");
+            acceptAnswers(false, a.id)
+              .then(x => x)
+              .catch(error => {});
+            this.setState({ isAccepted: false, answered: false });
+          }
+          console.log(this.handleAcceptAnswerOnClick, "hello Hi Looo");
+        })
+        .catch(err => {
+          console.log("I am an error");
+          console.error(err);
+        });
+    }
 
-    acceptAnswers(true, a.id)
-      .then(result => {
-        this.props.pageReload();
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    e.preventDefault();
   };
 
   handleSaveClick = question => {
@@ -124,6 +155,22 @@ class Questions extends Component {
       })
       .catch(err => {});
   };
+
+  getQuestionUserID(a) {
+    let answerIsAccepted;
+    let questionUserID;
+    const answerID = a.id;
+
+    this.props.questions.map(x => {
+      if (x.id === a.question_id) {
+        answerIsAccepted = a.is_accepted;
+        questionUserID = x.user_id;
+      }
+    });
+    console.log(this.props.userId);
+    console.log(localStorage.userId, questionUserID);
+    return { questionUserID, answerIsAccepted, answerID };
+  }
 
   onChange(e) {
     this.setState({ editContentQuestion: e.target.value });
@@ -155,6 +202,10 @@ class Questions extends Component {
   };
 
   render() {
+    console.log(this.props.userId);
+    console.log(localStorage.userId);
+    const { questions } = this.props;
+    console.log(questions);
     return (
       <Container>
         {this.props.questions.map((question, index) => {
@@ -227,24 +278,71 @@ class Questions extends Component {
                             <Card.Content>
                               <Card.Header> {answer.content} </Card.Header>
                             </Card.Content>
-                            {console.log(
-                              "answer",
-                              answer.id,
-                              answer.is_accepted
+                            {/* kk */}
+                            {this.getQuestionUserID(answer).questionUserID ==
+                              localStorage.userId &&
+                            !this.getQuestionUserID(answer).answerIsAccepted ? (
+                              <div>
+                                <div>
+                                  {this.state.answered &&
+                                  this.getQuestionUserID(answer)
+                                    .answerIsAccepted ? (
+                                    <div>
+                                      <Button
+                                        onClick={e =>
+                                          this.handleAcceptAnswerOnClick(
+                                            e,
+                                            answer
+                                          )
+                                        }
+                                      >
+                                        <i class="check circle outline icon"></i>
+                                      </Button>
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      {this.state.isAccepted ? (
+                                        <Button
+                                          onClick={e =>
+                                            this.handleAcceptAnswerOnClick(
+                                              e,
+                                              answer
+                                            )
+                                          }
+                                        >
+                                          <i class="check circle outline icon"></i>
+                                        </Button>
+                                      ) : (
+                                        <Button
+                                          onClick={e =>
+                                            this.handleAcceptAnswerOnClick(
+                                              e,
+                                              answer
+                                            )
+                                          }
+                                        >
+                                          <i class="freebsd icon"></i>
+                                        </Button>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ) : null}
+                            {this.getQuestionUserID(answer).answerIsAccepted &&
+                            answer.id ==
+                              this.getQuestionUserID(answer).answerID ? (
+                              <div>true</div>
+                            ) : (
+                              <div>
+                                {this.getQuestionUserID(answer)
+                                  .answerIsAccepted &&
+                                answer.id ==
+                                  this.getQuestionUserID(answer).answerID
+                                  ? null
+                                  : ""}
+                              </div>
                             )}
-                            {
-                              <AcceptedButton
-                                answerId={answer.id}
-                                onClick={e =>
-                                  this.handleAcceptAnswerOnClick(e, answer)
-                                }
-                                isAccepted={answer.is_accepted}
-                                userAskedQuestion={
-                                  parseInt(localStorage.userId) ===
-                                  parseInt(question.user_id)
-                                }
-                              />
-                            }
 
                             <Card.Meta textAlign="right">
                               {formatingDate(answer.date_answered)}
@@ -277,8 +375,6 @@ class Questions extends Component {
                     fontStyle: "italic"
                   }}
                 >
-                  {" "}
-                  #
                   {question.tags > 1 ? question.tags.join(" #") : question.tags}
                 </Card.Meta>
                 <Card.Meta textAlign="right">

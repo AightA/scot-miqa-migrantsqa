@@ -24,10 +24,12 @@ const getAllAnswers = () => {
 };
 
 const acceptAnswer = (isAccepted, id) => {
+  console.log(isAccepted, id)
   return new Promise((resolve, reject) => {
     pool.query(
       `update answers set is_accepted=$1 where id=$2`,
       [isAccepted, id],
+
       (error, result) => {
         if (error) {
           console.error(error);

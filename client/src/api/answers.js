@@ -11,10 +11,11 @@ export const updatedAnswers = () => {
 };
 
 export const acceptAnswers = (isAccepted, id) => {
+  console.log(isAccepted, id, "acceptAnswers");
   const token = localStorage.getItem("token");
   console.log(JSON.stringify({ isAccepted, id }));
   const updateData = {
-    method: "PUT",
+    method: "POST",
     body: JSON.stringify({ isAccepted, id }),
     headers: {
       "Content-Type": "application/json",

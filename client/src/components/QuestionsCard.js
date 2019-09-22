@@ -6,10 +6,7 @@ import {
   Form,
   Segment,
   TextArea,
-  Accordion,
-  Feed,
-  Icon,
-  Message
+  Accordion
 } from "semantic-ui-react";
 
 import { postAnswer } from "../api/questions";
@@ -257,9 +254,13 @@ class Questions extends Component {
                     fontStyle: "italic"
                   }}
                 >
-                  {" "}
-                  #
-                  {question.tags > 1 ? question.tags.join(" #") : question.tags}
+                  {question.tags.map(
+                    (tag, index) =>
+                      //This line will add a #followed by the tag and
+                      //keep adding spaces till we reach the end of the array.
+
+                      `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
+                  )}
                 </Card.Meta>
                 <Card.Meta textAlign="right">
                   {formatingDate(question.date_posted)}

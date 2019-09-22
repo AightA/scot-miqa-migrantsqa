@@ -8,6 +8,7 @@ import {
   TextArea,
   Accordion
 } from "semantic-ui-react";
+
 import { postAnswer } from "../api/questions";
 
 function formatingDate(date) {
@@ -32,10 +33,11 @@ class Questions extends Component {
       editQuestion: null,
       editQuestionId: null,
       editContentQuestion: null,
-      userId: 1,
       content: "",
       score: "",
-      tags: ""
+      tags: "",
+      deleteQuestion: null,
+      deletedsucessfully: false
     };
   }
 
@@ -69,6 +71,7 @@ class Questions extends Component {
     return fetch("/api/questions/update-question", postData)
       .then(res => {
         if (res.status >= 200 && res.status < 300) {
+          console.log("reloaded page");
           this.props.pageReload();
         } else {
           throw res;
@@ -81,9 +84,37 @@ class Questions extends Component {
       })
       .catch(err => {});
   };
+  handleDeleteClick = (question, event) => {
+    event.stopPropagation();
+    this.setState(state => ({ deleteQuestion: question.id }));
+    const postData = {
+      method: "DELETE",
+      body: JSON.stringify({
+        id: question.id
+      }),
+      headers: { "Content-Type": "application/json" }
+    };
+    fetch("/api/questions/delete-question", postData)
+      .then(res => {
+        if (res.status >= 200 && res.status < 300) {
+          this.props.pageReload();
+        } else {
+          throw res;
+        }
+      })
+      .then(loggedInUser => {
+        this.setState(state => ({
+          deleteQuestion: null,
+          deletedsucessfully: true
+        }));
+      })
+      .catch(err => {});
+  };
 
   onChange(e) {
-    this.setState({ editContentQuestion: e.target.value });
+    this.setState({
+      editContentQuestion: e.target.value
+    });
   }
 
   handleOnSubmitAnswer = e => {
@@ -154,7 +185,7 @@ class Questions extends Component {
                       ) : (
                         question.content
                       )}
-                      {this.state.userId === question.user_id &&
+                      {this.props.userId === question.user_id &&
                       !this.state.editQuestion ? (
                         <Card.Content extra>
                           <div className="ui two buttons">
@@ -167,7 +198,13 @@ class Questions extends Component {
                             >
                               Edit
                             </Button>
-                            <Button basic color="red">
+                            <Button
+                              basic
+                              color="red"
+                              onClick={event =>
+                                this.handleDeleteClick(question, event)
+                              }
+                            >
                               Delete
                             </Button>
                           </div>

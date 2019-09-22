@@ -20,7 +20,10 @@ export default class Home extends Component {
         <Divider horizontal />
         <HomePageSearch getFilteredTags={this.getFilteredTags} />
         <Divider horizontal />
-        <QuestionsController tags={this.state.tags} />
+        <QuestionsController
+          tags={this.state.tags}
+          userId={this.props.userId}
+        />
       </Container>
     );
   }

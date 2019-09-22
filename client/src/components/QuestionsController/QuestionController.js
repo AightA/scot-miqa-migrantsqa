@@ -63,6 +63,7 @@ export default class Controller extends Component {
           activeIndex={this.state.activeIndex}
           QuestionId={this.state.id}
           answers={this.state.answers}
+          userId={this.props.userId}
         />
       </Container>
     );

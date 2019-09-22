@@ -43,14 +43,28 @@ router.post("/", authMiddleware, async (req, res, next) => {
 });
 
 router.post("/update-question", async (req, res, next) => {
-  const { content, date_posted, id } = req.body;
+	const { content, date_posted, id } = req.body;
+  
+  questionDb.updateQuestions(content, date_posted, id )
+	  .then(() => {
+		res.send({
+		  success: true,
+		  message: "Question updated"
+		});
+	  })
+	  .catch(err => {
+		console.log(err);
+		next(err);
+	  });
+  });
 
-  questionDb
-    .updateQuestions(content, date_posted, id)
-    .then(() => {
+  router.delete("/delete-question", async (req, res, next) => {
+    const {id} = req.body;
+    questionDb.deleteQuestions(id)
+      .then(() => {
       res.send({
         success: true,
-        message: "Question updated"
+        message: "Question delete"
       });
     })
     .catch(err => {

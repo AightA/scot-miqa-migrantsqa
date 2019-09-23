@@ -1,19 +1,25 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
-import DisplayQuestions from "../QuestionsCard";
-import AddQuestion from "../AddQuestion";
-import { getQuestions } from "../../api/questions";
-import { getAnswers } from "../../api/answers";
+import { Container, Loader } from "semantic-ui-react";
+import QuestionsList from "./QuestionsList";
+import AddQuestion from "./AddQuestion";
+import { getQuestions } from "../api/questions";
+import { getAnswers } from "../api/answers";
 
-export default class Controller extends Component {
+export default class QuestionsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questions: [],
       answers: [],
       activeIndex: -1,
-      id: ""
+      id: "",
+      IsLoading: true
     };
+  }
+
+  componentDidMount() {
+    console.log("I am mounting now....");
+    this.pageReload();
   }
 
   handleClick = (e, titleProps) => {
@@ -23,15 +29,14 @@ export default class Controller extends Component {
     this.setState({ activeIndex: newIndex, id: index });
   };
 
-  componentDidMount() {
-    this.pageReload();
-  }
-
   pageReload = () => {
+    console.log("we are here pageReload");
     getQuestions().then(res => {
+      console.log("res", res);
       this.setState({
         questions: res,
-        tags: this.props.tags
+        tags: this.props.tags,
+        IsLoading: false
       });
     });
     getAnswers().then(res => {
@@ -53,10 +58,13 @@ export default class Controller extends Component {
   };
 
   render() {
-    return (
+    console.log("We are here", this.filterByTags());
+    return this.state.IsLoading ? (
+      <Loader />
+    ) : (
       <Container>
         <AddQuestion pageReload={this.pageReload} />
-        <DisplayQuestions
+        <QuestionsList
           pageReload={this.pageReload}
           toggleAnswers={this.handleClick}
           questions={this.filterByTags()}

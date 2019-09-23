@@ -46,6 +46,19 @@ export const postAnswer = (content, tags, questionId) => {
   return fetch(`/api/questions/${questionId}/answers`, postedAnswer);
 };
 
-export const update = () => {
-  return fetch("/api/update").then(res => res.json());
+export const updateQuestion = (content, postedData) => {
+  const token = localStorage.getItem("token");
+  const postedData = {
+    method: "POST",
+    body: JSON.stringify({
+      content,
+      postedData
+    }),
+
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`
+    }
+  };
+  return fetch("/api/questions", postedData);
 };

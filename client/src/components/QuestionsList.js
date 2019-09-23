@@ -87,11 +87,11 @@ export default class QuestionsList extends Component {
       .catch(err => {});
   };
 
-  onChange(e) {
+  onChange = e => {
     this.setState({
       editContentQuestion: e.target.value
     });
-  }
+  };
 
   handleOnSubmitAnswer = e => {
     e.preventDefault();
@@ -127,7 +127,7 @@ export default class QuestionsList extends Component {
               index={index}
               activeIndex={this.props.activeIndex}
               question={question}
-              userId={this.state.userId}
+              userId={this.props.userId}
               toggleAnswers={this.props.toggleAnswers}
               editQuestion={this.state.editQuestion}
               editContentQuestion={this.state.editContentQuestion}
@@ -137,6 +137,7 @@ export default class QuestionsList extends Component {
               handleEditClick={this.handleEditClick}
               answers={this.props.answers}
               handleOnSubmitAnswer={this.handleOnSubmitAnswer}
+              handleDeleteClick={this.handleDeleteClick}
               handleChange={this.handleChange}
               content={this.state.content}
             ></QuestionCard>

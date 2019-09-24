@@ -15,7 +15,7 @@ const getAllQuestions = () => {
                 questions.date_posted, questions.user_id 
 		            from questions 
                 INNER JOIN users ON users.id = questions.user_id
-                order by questions.date_posted desc limit 10`,
+                order by questions.date_posted desc limit 20`,
       (error, result) => {
         if (error) {
           console.error(error);
@@ -25,6 +25,28 @@ const getAllQuestions = () => {
         }
       }
     );
+  });
+};
+
+const flattenTags = rows => {
+  const tags = rows.reduce((acc, row) => {
+    const tags = row.tags !== null ? row.tags : [];
+    return [...acc, ...tags];
+  }, []);
+  return [...new Set(tags)];
+};
+
+const getQuestionsTags = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT distinct (tags) from questions`, (error, result) => {
+      if (error) {
+        console.error(error);
+        reject(error);
+      } else {
+        const res = flattenTags(result.rows);
+        resolve(res);
+      }
+    });
   });
 };
 
@@ -69,7 +91,7 @@ const updateQuestions = (content, date_posted, id) => {
   });
 };
 
-const deleteQuestions = (id) => {
+const deleteQuestions = id => {
   return new Promise((resolve, reject) => {
     pool.query(
       `delete from answers where question_id=$1`,
@@ -79,17 +101,20 @@ const deleteQuestions = (id) => {
           console.error(error);
           reject(error);
         } else {
-          pool.query(`delete from questions where id=$1`,
-          [id],
-          (error, result) => {
-            if (error) {
-              console.error(error);
-              reject(error);
+          pool.query(
+            `delete from questions where id=$1`,
+            [id],
+            (error, result) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              resolve(result.rows);
             }
-          resolve(result.rows);
-        });
+          );
+        }
       }
-      });
+    );
   });
 };
 
@@ -125,5 +150,7 @@ module.exports = {
   updateQuestions,
   insertQuestions,
   deleteQuestions,
-  insertAnswer
+  insertAnswer,
+  getQuestionsTags,
+  flattenTags
 };

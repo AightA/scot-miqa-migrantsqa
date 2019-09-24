@@ -10,6 +10,10 @@ export const getUserById = id => {
   return fetch(`/api/users/${id}`).then(res => res.json());
 };
 
+export const getQuestionsTags = () => {
+  return fetch("/api/questions/questionTags").then(res => res.json());
+};
+
 export const postQuestion = (content, tags, isAnswered, score) => {
   const token = localStorage.getItem("token");
   const postedData = {

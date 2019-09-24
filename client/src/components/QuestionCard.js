@@ -81,13 +81,14 @@ const QuestionCard = props => {
             fontStyle: "italic"
           }}
         >
-          {question.tags.map(
-            (tag, index) =>
-              //This line will add a #followed by the tag and
-              //keep adding spaces till we reach the end of the array.
+          {question.tags &&
+            question.tags.map(
+              (tag, index) =>
+                //This line will add a #followed by the tag and
+                //keep adding spaces till we reach the end of the array.
 
-              `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
-          )}
+                `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
+            )}
         </Card.Meta>
         <Card.Meta textAlign="right">
           {formatingDate(question.date_posted)}

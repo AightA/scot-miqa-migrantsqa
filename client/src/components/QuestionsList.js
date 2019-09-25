@@ -106,7 +106,7 @@ export default class QuestionsList extends Component {
       .catch(err => {});
   };
 
-  onChange = e => {
+  handleEditChange = e => {
     this.setState({
       editContentQuestion: e.target.value
     });
@@ -132,7 +132,7 @@ export default class QuestionsList extends Component {
               editQuestion={this.state.editQuestion}
               editContentQuestion={this.state.editContentQuestion}
               handleSaveClick={this.handleSaveClick}
-              onChange={this.onChange}
+              onChange={this.handleEditChange}
               handleCancelClick={this.handleCancelClick}
               handleEditClick={this.handleEditClick}
               answers={this.props.answers}

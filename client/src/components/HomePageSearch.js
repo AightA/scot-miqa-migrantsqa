@@ -27,7 +27,7 @@ export default class HomePageSearch extends Component {
 
   updatedTagOptions = () => {
     const newFilteredTag = [];
-    this.state.filterTags.map(tags => {
+    this.state.filterTags.forEach(tags => {
       return !newFilteredTag.includes(tags) && newFilteredTag.push(tags);
     });
     return newFilteredTag;
@@ -39,7 +39,6 @@ export default class HomePageSearch extends Component {
   };
 
   render() {
-    console.log("HomePageSeach", this.state.filterTags);
     const options = this.updatedTagOptions().map((tag, index) => ({
       key: index,
       text: tag,

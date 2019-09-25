@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Dropdown, Grid, Container } from "semantic-ui-react";
-import { getQuestions } from "../api/questions";
+import { getQuestions, getQuestionsTags } from "../api/questions";
 
 export default class HomePageSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      filterTags: [],
       questions: [],
       selectedTags: []
     };
@@ -17,19 +18,18 @@ export default class HomePageSearch extends Component {
         questions: res
       });
     });
+    getQuestionsTags().then(res => {
+      this.setState({
+        filterTags: res
+      });
+    });
   }
 
   updatedTagOptions = () => {
-    const filteredTags = this.state.questions
-      .map(question => {
-        return question.tags;
-      })
-      .flat(Infinity);
     const newFilteredTag = [];
-    filteredTags.map(tags => {
+    this.state.filterTags.forEach(tags => {
       return !newFilteredTag.includes(tags) && newFilteredTag.push(tags);
     });
-
     return newFilteredTag;
   };
 

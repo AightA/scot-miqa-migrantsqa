@@ -70,6 +70,23 @@ router.post("/update-question", async (req, res, next) => {
     });
 });
 
+router.put("/update-question-score", async (req, res, next) => {
+  const { score, id } = req.body;
+
+  questionDb
+    .updateScore(score, id)
+    .then(() => {
+      res.send({
+        success: true,
+        message: "Score updated"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      next(err);
+    });
+});
+
 router.delete("/delete-question", async (req, res, next) => {
   const { id } = req.body;
   questionDb
@@ -96,6 +113,7 @@ router.post("/:questionId/answers", authMiddleware, async (req, res, next) => {
   const dateAnswered = moment().format();
   const isAccepted = true;
   const questionId = parseInt(req.params.questionId);
+  //TODO score here must be changed
   const score = 4;
   questionDb
     .insertAnswer(

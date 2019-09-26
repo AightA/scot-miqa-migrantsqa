@@ -48,7 +48,6 @@ export default class QuestionsList extends Component {
     return fetch("/api/questions/update-question", postData)
       .then(res => {
         if (res.status >= 200 && res.status < 300) {
-          console.log("reloaded page");
           this.props.pageReload();
         } else {
           throw res;

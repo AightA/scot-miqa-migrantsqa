@@ -75,7 +75,7 @@ const QuestionCard = props => {
             />
           </Accordion>
         </Card.Header>
-        <QuestionUpvote />
+        <QuestionUpvote score={question.score} />
         <Card.Meta
           textAlign="right"
           style={{

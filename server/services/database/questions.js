@@ -12,7 +12,7 @@ const getAllQuestions = () => {
   return new Promise((resolve, reject) => {
     pool.query(
       `select  questions.id, questions.content, questions.tags, users.username,
-                questions.date_posted, questions.user_id 
+                questions.date_posted, questions.user_id , questions.score
 		            from questions 
                 INNER JOIN users ON users.id = questions.user_id
                 order by questions.date_posted desc limit 20`,
@@ -61,8 +61,8 @@ const insertQuestions = (
   return new Promise((resolve, reject) => {
     pool.query(
       `INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id)
-       VALUES($1, $2, $3, $4, $5, $6)
-       `,
+      VALUES($1, $2, $3, $4, $5, $6)
+      `,
       [content, date_posted, tags, is_answered, score, user_id],
       (error, result) => {
         if (error) {
@@ -91,6 +91,22 @@ const updateQuestions = (content, date_posted, id) => {
   });
 };
 
+const updateScore = (score, id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `update questions set score=$1 where id = $2`,
+      [score, id],
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          resolve(result.rows);
+        }
+      }
+    );
+  });
+};
 const deleteQuestions = id => {
   return new Promise((resolve, reject) => {
     pool.query(
@@ -152,5 +168,6 @@ module.exports = {
   deleteQuestions,
   insertAnswer,
   getQuestionsTags,
-  flattenTags
+  flattenTags,
+  updateScore
 };

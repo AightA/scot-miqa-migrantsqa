@@ -12,14 +12,19 @@ import { Feed, Icon } from "semantic-ui-react";
 STRETCH GOALS:
 - Each user can only click once (each question should not only have a score but also a list of userId's for the users that liked it) 
  */
+
+// onClickUpvoteBtn = () => {
+//   //update the previous state, make sure you update this into a class component.
+//   //call api to update the backend
+// };
 const QuestionUpvote = props => (
   <Feed size="large">
     <Feed.Event>
-      {console.log("Props", props.score)}
       <Feed.Content>
         <Feed.Meta>
           <Feed.Like>
-            <Icon name="chevron circle up" />4 Likes
+            <Icon name="chevron circle up" />
+            {props.score} Likes
           </Feed.Like>
         </Feed.Meta>
       </Feed.Content>

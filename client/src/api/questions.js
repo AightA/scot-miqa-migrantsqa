@@ -64,5 +64,5 @@ export const updateScore = (score, id) => {
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch("/api/questions/update-question", updatedScore);
+  return fetch("/api/questions/update-question-score", updatedScore);
 };

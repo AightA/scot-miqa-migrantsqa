@@ -19,7 +19,7 @@ CREATE TABLE questions(
   date_posted              DATE ,
   tags                     TEXT [],
   is_answered              BOOLEAN ,
-  score                    INT DEFAULT 0 NOT NULL,
+  score                    INT NOT NULL,
   user_id                  INT REFERENCES users(id)
 );
 

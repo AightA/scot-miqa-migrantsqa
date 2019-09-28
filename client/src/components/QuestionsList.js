@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
-import { postAnswer } from "../api/questions";
+import { postAnswer, updateScore } from "../api/questions";
 import QuestionCard from "./QuestionCard";
 
 export default class QuestionsList extends Component {
@@ -12,7 +12,7 @@ export default class QuestionsList extends Component {
       editQuestionId: null,
       editContentQuestion: null,
       content: "",
-      score: "",
+      score: 0,
       tags: "",
       deleteQuestion: null,
       deletedsucessfully: false
@@ -117,6 +117,19 @@ export default class QuestionsList extends Component {
     });
   };
 
+  handleOnClickUpvoteBtn = ({ score, id }) => {
+    score += 1;
+    updateScore(score, id)
+      .then(result => {
+        if (result.status === 200) {
+          this.props.pageReload();
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   render() {
     return (
       <Container>
@@ -139,6 +152,7 @@ export default class QuestionsList extends Component {
               handleChange={this.handleChange}
               content={this.state.content}
               handleOnSubmitAnswer={this.handleOnSubmitAnswer}
+              handleOnClickUpvoteBtn={this.handleOnClickUpvoteBtn}
             />
           );
         })}

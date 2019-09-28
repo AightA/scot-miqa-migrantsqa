@@ -54,6 +54,10 @@ export default class QuestionsContainer extends Component {
     }
   };
 
+  getQuestionScoreAndId = () => {
+    this.state.questions.map(question => question);
+  };
+
   render() {
     return this.state.IsLoading ? (
       <Loader />

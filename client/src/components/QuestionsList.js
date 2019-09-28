@@ -62,7 +62,7 @@ export default class QuestionsList extends Component {
   };
   handleOnSubmitAnswer = e => {
     e.preventDefault();
-    const { content, score, tags } = this.state;
+    const { content, tags } = this.state;
     const questionId = this.props.QuestionId;
 
     postAnswer(content, tags, questionId)
@@ -117,9 +117,11 @@ export default class QuestionsList extends Component {
     });
   };
 
-  handleOnClickUpvoteBtn = ({ score, id }) => {
-    score += 1;
-    updateScore(score, id)
+  handleOnClickUpvoteBtn = (question, userId) => {
+    //console.log({ question, userId });
+    if (!userId || userId === question.user_id) return;
+    const score = question.score + 1;
+    updateScore(score, question.id)
       .then(result => {
         if (result.status === 200) {
           this.props.pageReload();

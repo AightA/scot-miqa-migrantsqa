@@ -76,9 +76,13 @@ const QuestionCard = props => {
           </Accordion>
         </Card.Header>
         <QuestionUpvote
+          userId={props.userId}
+          questionUserId={question.user_id}
           questionScore={question.score}
           questionId={question.id}
-          handleOnClickUpvoteBtn={() => props.handleOnClickUpvoteBtn(question)}
+          handleOnClickUpvoteBtn={() =>
+            props.handleOnClickUpvoteBtn(question, props.userId)
+          }
         />
         <Card.Meta
           textAlign="right"

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import AnswerCard from "./AnswersCard";
 import { Form, Accordion } from "semantic-ui-react";
 

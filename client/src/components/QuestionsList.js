@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
-import { postAnswer } from "../api/questions";
+import { postAnswer, updateScore } from "../api/questions";
 import QuestionCard from "./QuestionCard";
 
 export default class QuestionsList extends Component {
@@ -12,7 +12,7 @@ export default class QuestionsList extends Component {
       editQuestionId: null,
       editContentQuestion: null,
       content: "",
-      score: "",
+      score: 0,
       tags: "",
       deleteQuestion: null,
       deletedsucessfully: false
@@ -48,7 +48,6 @@ export default class QuestionsList extends Component {
     return fetch("/api/questions/update-question", postData)
       .then(res => {
         if (res.status >= 200 && res.status < 300) {
-          console.log("reloaded page");
           this.props.pageReload();
         } else {
           throw res;
@@ -63,7 +62,7 @@ export default class QuestionsList extends Component {
   };
   handleOnSubmitAnswer = e => {
     e.preventDefault();
-    const { content, score, tags } = this.state;
+    const { content, tags } = this.state;
     const questionId = this.props.QuestionId;
 
     postAnswer(content, tags, questionId)
@@ -118,6 +117,21 @@ export default class QuestionsList extends Component {
     });
   };
 
+  handleOnClickUpvoteBtn = (question, userId) => {
+    //console.log({ question, userId });
+    if (!userId || userId === question.user_id) return;
+    const score = question.score + 1;
+    updateScore(score, question.id)
+      .then(result => {
+        if (result.status === 200) {
+          this.props.pageReload();
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   render() {
     return (
       <Container>
@@ -140,6 +154,7 @@ export default class QuestionsList extends Component {
               handleChange={this.handleChange}
               content={this.state.content}
               handleOnSubmitAnswer={this.handleOnSubmitAnswer}
+              handleOnClickUpvoteBtn={this.handleOnClickUpvoteBtn}
             />
           );
         })}

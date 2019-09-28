@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card, Form, TextArea, Accordion } from "semantic-ui-react";
 import { formatingDate } from "../util/formatingDate";
 import AnswersList from "./AnswersList";
+import QuestionUpvote from "./QuestionUpvote";
 
 const QuestionCard = props => {
   const { question, index } = props;
@@ -74,6 +75,15 @@ const QuestionCard = props => {
             />
           </Accordion>
         </Card.Header>
+        <QuestionUpvote
+          userId={props.userId}
+          questionUserId={question.user_id}
+          questionScore={question.score}
+          questionId={question.id}
+          handleOnClickUpvoteBtn={() =>
+            props.handleOnClickUpvoteBtn(question, props.userId)
+          }
+        />
         <Card.Meta
           textAlign="right"
           style={{

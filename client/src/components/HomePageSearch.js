@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dropdown, Grid, Container } from "semantic-ui-react";
+import { Dropdown, Container } from "semantic-ui-react";
 import { getQuestions, getQuestionsTags } from "../api/questions";
 
 export default class HomePageSearch extends Component {

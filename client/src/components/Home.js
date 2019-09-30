@@ -14,6 +14,7 @@ export default class Home extends Component {
       tags
     });
   };
+
   render() {
     return (
       <Container>

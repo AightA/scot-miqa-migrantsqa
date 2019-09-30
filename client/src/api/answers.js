@@ -11,12 +11,12 @@ export const updatedAnswers = () => {
 };
 
 export const acceptAnswers = (isAccepted, id) => {
-  console.log(isAccepted, id, "acceptAnswers");
+  console.log(isAccepted, id, "acceptAnswers client API has been accepted");
   const token = localStorage.getItem("token");
-  console.log(JSON.stringify({ isAccepted, id }));
   const updateData = {
     method: "POST",
-    body: JSON.stringify({ isAccepted, id }),
+    body: JSON.stringify({ isAccepted: isAccepted, id: id }),
+
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`

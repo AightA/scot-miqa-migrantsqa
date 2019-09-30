@@ -35,7 +35,9 @@ export default class Controller extends Component {
       });
     });
     getAnswers().then(res => {
-      this.setState({ answers: res });
+      this.setState({
+        answers: res
+      });
     });
   };
 

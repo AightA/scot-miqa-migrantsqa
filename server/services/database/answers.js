@@ -23,24 +23,35 @@ const getAllAnswers = () => {
   });
 };
 
-const acceptAnswer = (isAccepted, id) => {
-  console.log(isAccepted, id)
+const acceptAnswer = (questionId, isAccepted, id) => {
+  console.log(questionId, isAccepted, id)
   return new Promise((resolve, reject) => {
     pool.query(
-      `update answers set is_accepted=$1 where id=$2`,
-      [isAccepted, id],
-
+      `UPDATE answers set is_accepted=false where question_id=$1`,
+      [questionId],
       (error, result) => {
         if (error) {
           console.error(error);
           reject(error);
-        } else {
-          resolve(result.rows);
         }
+        pool.query(
+          `UPDATE answers set is_accepted=$1 where id=$2`,
+          [isAccepted, id],
+          (error, result) => {
+            if (error) {
+              console.error(error);
+              return reject(error);
+            }
+            console.log(result);
+            resolve(result.rows);
+          }
+        );
       }
     );
   });
 };
+
+
 
 
 module.exports = { getAllAnswers, acceptAnswer };

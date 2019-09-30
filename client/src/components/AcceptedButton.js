@@ -12,13 +12,13 @@ const makeButton = (iconName, answerId, onClick) => {
 const AcceptedButton = props => {
   if (props.userAskedQuestion) {
     if (props.isAccepted) {
-      return makeButton("check circle outline", props.answerId, props.onClick);
+      return makeButton("check circle ", props.answerId, props.onClick);
     } else {
-      return makeButton("check circle", props.answerId, props.onClick);
+      return makeButton("check circle outline", props.answerId, props.onClick);
     }
   } else {
     if (props.isAccepted) {
-      return <Icon name="check circle outline" size="big" align="right" />;
+      return <Icon name="check circle " size="big" align="right" />;
     } else {
       return null;
     }

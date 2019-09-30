@@ -17,13 +17,14 @@ router.get("/", (req, res) => {
 });
 
 router.post("/accept-answer", async (req, res, next) => {
-  const { isAccepted, id } = req.body;
+  const { questionId, isAccepted, id } = req.body;
   answerDb
-    .acceptAnswer(isAccepted, id)
+    .acceptAnswer(questionId, isAccepted, id)
     .then(() => {
       res.send({
         success: true,
-        message: "Answer accepted"
+        message: "Answer accepted",
+        id: id
       });
     })
     .catch(err => {

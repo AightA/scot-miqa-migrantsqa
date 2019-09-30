@@ -11,7 +11,6 @@ import {
 import { postAnswer } from "../api/questions";
 import { getQuestions } from "../api/questions";
 import { getAnswers, acceptAnswers } from "../api/answers";
-import { Message } from "semantic-ui-react";
 import AcceptedButton from "./AcceptedButton";
 
 function formatingDate(date) {
@@ -36,21 +35,11 @@ class Questions extends Component {
       editQuestion: null,
       editQuestionId: null,
       editContentQuestion: null,
-      userId: "",
       content: "",
       score: "",
       tags: "",
       activeIndex: 0
     };
-  }
-
-  componentDidMount() {
-    getQuestions().then(response => {
-      this.setState({ questions: response });
-    });
-    getAnswers().then(res => {
-      this.setState({ answers: res });
-    });
   }
 
   handleEditClick = (question, event) => {
@@ -69,33 +58,24 @@ class Questions extends Component {
     });
   };
 
-  handleClick = (e, titleProps) => {
-    const { index } = titleProps;
-    const { activeIndex } = this.state;
-    const newIndex = activeIndex === index ? -1 : index;
-    this.setState({ activeIndex: newIndex });
-    console.log("I am over here Bro ", activeIndex);
-  };
-
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     });
   };
 
-  handleAcceptAnswerOnClick = (e, a) => {
+  handleAcceptAnswerOnClick = (e, answer) => {
     e.preventDefault();
     console.log(e);
-
-    acceptAnswers(true, a.id)
+    acceptAnswers(!answer.is_accepted, answer.id)
       .then(result => {
         this.props.pageReload();
+        console.log(result);
       })
       .catch(err => {
         console.error(err);
       });
   };
-
   handleSaveClick = question => {
     question.stopPropagation();
     const postData = {
@@ -225,11 +205,14 @@ class Questions extends Component {
                             <Card.Content>
                               <Card.Header> {answer.content} </Card.Header>
                             </Card.Content>
+
                             {console.log(
-                              "answer",
+                              "answer on Quest Card",
                               answer.id,
-                              answer.is_accepted
+                              answer.question_id,
+                              question.id
                             )}
+
                             {
                               <AcceptedButton
                                 answerId={answer.id}
@@ -275,13 +258,13 @@ class Questions extends Component {
                     fontStyle: "italic"
                   }}
                 >
-                  {question.tags.map(
+                  {/* {question.tags.map(
                     (tag, index) =>
                       //This line will add a #followed by the tag and
                       //keep adding spaces till we reach the end of the array.
 
                       `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
-                  )}
+                  )} */}
                 </Card.Meta>
                 <Card.Meta textAlign="right">
                   {formatingDate(question.date_posted)}

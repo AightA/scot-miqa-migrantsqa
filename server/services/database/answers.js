@@ -24,7 +24,6 @@ const getAllAnswers = () => {
 };
 
 const acceptAnswer = (questionId, isAccepted, id) => {
-  console.log(questionId, isAccepted, id)
   return new Promise((resolve, reject) => {
     pool.query(
       `UPDATE answers set is_accepted=false where question_id=$1`,

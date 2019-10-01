@@ -23,8 +23,7 @@ router.post("/accept-answer", async (req, res, next) => {
     .then(() => {
       res.send({
         success: true,
-        message: "Answer accepted",
-        id: id
+        message: "Answer accepted"
       });
     })
     .catch(err => {

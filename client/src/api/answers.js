@@ -6,17 +6,15 @@ export const getUsers = () => {
   return fetch("/api/users").then(res => res.json());
 };
 
-export const updatedAnswers = () => {
-  return fetch("/api/answers").then(res => res.json());
-};
-
-export const acceptAnswers = (isAccepted, id) => {
-  console.log(isAccepted, id, "acceptAnswers client API has been accepted");
+export const acceptAnswers = (questionId, isAccepted, id) => {
   const token = localStorage.getItem("token");
   const updateData = {
     method: "POST",
-    body: JSON.stringify({ isAccepted: isAccepted, id: id }),
-
+    body: JSON.stringify({
+      questionId: questionId,
+      isAccepted: isAccepted,
+      id: id
+    }),
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`

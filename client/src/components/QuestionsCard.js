@@ -58,16 +58,9 @@ class Questions extends Component {
     });
   };
 
-  handleChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value
-    });
-  };
-
   handleAcceptAnswerOnClick = (e, answer) => {
     e.preventDefault();
-    console.log(e);
-    acceptAnswers(!answer.is_accepted, answer.id)
+    acceptAnswers(answer.question_id, !answer.is_accepted, answer.id)
       .then(result => {
         this.props.pageReload();
         console.log(result);
@@ -76,6 +69,7 @@ class Questions extends Component {
         console.error(err);
       });
   };
+
   handleSaveClick = question => {
     question.stopPropagation();
     const postData = {
@@ -124,12 +118,6 @@ class Questions extends Component {
       .catch(err => {
         console.error(err);
       });
-  };
-
-  handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
   };
 
   render() {
@@ -205,14 +193,6 @@ class Questions extends Component {
                             <Card.Content>
                               <Card.Header> {answer.content} </Card.Header>
                             </Card.Content>
-
-                            {console.log(
-                              "answer on Quest Card",
-                              answer.id,
-                              answer.question_id,
-                              question.id
-                            )}
-
                             {
                               <AcceptedButton
                                 answerId={answer.id}
@@ -226,7 +206,6 @@ class Questions extends Component {
                                 }
                               />
                             }
-
                             <Card.Meta textAlign="right">
                               {formatingDate(answer.date_answered)}
                             </Card.Meta>
@@ -258,7 +237,8 @@ class Questions extends Component {
                     fontStyle: "italic"
                   }}
                 >
-                  {/* {question.tags.map(
+                  {/* {console.log(question.tags)}
+                  {question.tags.map(
                     (tag, index) =>
                       //This line will add a #followed by the tag and
                       //keep adding spaces till we reach the end of the array.

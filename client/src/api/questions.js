@@ -66,3 +66,7 @@ export const updateScore = (score, id) => {
 
   return fetch("/api/questions/update-question-score", updatedScore);
 };
+
+export const getQuestionByQuestionId = id => {
+  return fetch(`/api/questions/${id}`).then(res => res.json());
+};

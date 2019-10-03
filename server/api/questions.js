@@ -7,6 +7,19 @@ const { authMiddleware } = require("../auth/passport");
 /**
  * Get Questions
  */
+//to get the question by question id
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  questionDb
+    .getQuestionByQuestionId(id)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
 
 router.get("/", (req, res) => {
   questionDb

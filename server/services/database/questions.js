@@ -27,7 +27,6 @@ const getAllQuestions = () => {
     );
   });
 };
-
 const flattenTags = rows => {
   const tags = rows.reduce((acc, row) => {
     const tags = row.tags !== null ? row.tags : [];
@@ -61,8 +60,8 @@ const insertQuestions = (
   return new Promise((resolve, reject) => {
     pool.query(
       `INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id)
-      VALUES($1, $2, $3, $4, $5, $6)
-      `,
+        VALUES($1, $2, $3, $4, $5, $6)
+        `,
       [content, date_posted, tags, is_answered, score, user_id],
       (error, result) => {
         if (error) {
@@ -146,13 +145,41 @@ const insertAnswer = (
   return new Promise((resolve, reject) => {
     pool.query(
       `INSERT INTO answers (content,date_answered ,tags,is_accepted ,
-        score,question_id,user_id)
-                        VALUES($1, $2, $3, $4, $5, $6, $7)
-                        `,
+                    score,question_id,user_id)
+                    VALUES($1, $2, $3, $4, $5, $6, $7)
+                    `,
       [content, dateAnswered, tags, isAccepted, score, questionId, userId],
       (error, result) => {
         if (error) {
           return reject(error);
+        } else {
+          resolve(result.rows);
+        }
+      }
+    );
+  });
+};
+
+// get One Question by the question Id
+const getQuestionByQuestionId = id => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT 
+      questions.id,
+      questions.content,
+      questions.tags,
+      questions.date_posted,
+      questions.user_id ,
+      questions.score,
+      users.username
+       FROM
+      questions 
+  INNER JOIN users ON users.id = questions.user_id 
+      WHERE questions.id =${id}`,
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          reject(error);
         } else {
           resolve(result.rows);
         }
@@ -169,5 +196,6 @@ module.exports = {
   insertAnswer,
   getQuestionsTags,
   flattenTags,
-  updateScore
+  updateScore,
+  getQuestionByQuestionId
 };

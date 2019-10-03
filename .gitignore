@@ -61,3 +61,6 @@ typings/
 .next
 
 *.sqlite3
+
+# changes in config file
+server/config.js

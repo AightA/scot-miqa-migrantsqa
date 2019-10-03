@@ -10,6 +10,7 @@ import Register from "./components/UserRegistration";
 import Login from "./components/Login";
 import ProfilePage from "./components/ProfilePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import ViewOneQuestion from "./components/ViewOneQuestion";
 
 export default class App extends Component {
   state = {
@@ -52,6 +53,10 @@ export default class App extends Component {
         <Route
           path="/profile"
           render={props => <ProfilePage userId={this.state.userId} />}
+        />
+        <Route
+          path="/question/:id"
+          render={props => <ViewOneQuestion userId={this.state.userId} />}
         />
       </Router>
     );

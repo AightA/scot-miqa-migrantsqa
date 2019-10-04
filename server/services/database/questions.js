@@ -188,6 +188,32 @@ const getQuestionByQuestionId = id => {
   });
 };
 
+// Get questions by userID
+const getQuestionsByUserId = id => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `
+    SELECT
+    questions.id,
+    questions.content,
+    questions.date_posted
+    FROM
+    questions 
+    WHERE user_id= ${id}
+    ORDER BY questions.date_posted DESC 
+  `,
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          resolve(result.rows);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   getAllQuestions,
   updateQuestions,
@@ -197,5 +223,6 @@ module.exports = {
   getQuestionsTags,
   flattenTags,
   updateScore,
-  getQuestionByQuestionId
+  getQuestionByQuestionId,
+  getQuestionsByUserId
 };

@@ -12,10 +12,10 @@ const getAllQuestions = () => {
   return new Promise((resolve, reject) => {
     pool.query(
       `select  questions.id, questions.content, questions.tags, users.username,
-                questions.date_posted, questions.user_id 
+                questions.date_posted, questions.user_id , questions.score
 		            from questions 
                 INNER JOIN users ON users.id = questions.user_id
-                order by questions.date_posted desc limit 10`,
+                order by questions.date_posted desc limit 20`,
       (error, result) => {
         if (error) {
           console.error(error);
@@ -25,6 +25,28 @@ const getAllQuestions = () => {
         }
       }
     );
+  });
+};
+
+const flattenTags = rows => {
+  const tags = rows.reduce((acc, row) => {
+    const tags = row.tags !== null ? row.tags : [];
+    return [...acc, ...tags];
+  }, []);
+  return [...new Set(tags)];
+};
+
+const getQuestionsTags = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT distinct (tags) from questions`, (error, result) => {
+      if (error) {
+        console.error(error);
+        reject(error);
+      } else {
+        const res = flattenTags(result.rows);
+        resolve(res);
+      }
+    });
   });
 };
 
@@ -39,8 +61,8 @@ const insertQuestions = (
   return new Promise((resolve, reject) => {
     pool.query(
       `INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id)
-       VALUES($1, $2, $3, $4, $5, $6)
-       `,
+      VALUES($1, $2, $3, $4, $5, $6)
+      `,
       [content, date_posted, tags, is_answered, score, user_id],
       (error, result) => {
         if (error) {
@@ -68,17 +90,44 @@ const updateQuestions = (content, date_posted, id) => {
     );
   });
 };
-const deleteQuestions = () => {
+
+const updateScore = (score, id) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `delete from questions where questions.id=$1`,
-      [id],
+      `update questions set score=$1 where id = $2`,
+      [score, id],
       (error, result) => {
         if (error) {
           console.error(error);
           reject(error);
         } else {
           resolve(result.rows);
+        }
+      }
+    );
+  });
+};
+const deleteQuestions = id => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `delete from answers where question_id=$1`,
+      [id],
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          pool.query(
+            `delete from questions where id=$1`,
+            [id],
+            (error, result) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              resolve(result.rows);
+            }
+          );
         }
       }
     );
@@ -117,5 +166,8 @@ module.exports = {
   updateQuestions,
   insertQuestions,
   deleteQuestions,
-  insertAnswer
+  insertAnswer,
+  getQuestionsTags,
+  flattenTags,
+  updateScore
 };

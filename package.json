@@ -14,5 +14,10 @@
     "server/node_modules"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-alert": "^5.5.0",
+    "react-alert-template-basic": "^1.0.0"
+
+  }
 }

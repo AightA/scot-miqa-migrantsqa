@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../styles/Home.css";
 import HomePageSearch from "./HomePageSearch";
 import { Container, Divider } from "semantic-ui-react";
-import QuestionsController from "./QuestionsController/QuestionController";
+import QuestionsContainer from "./QuestionsContainer";
 
 export default class Home extends Component {
   state = {
@@ -21,7 +21,7 @@ export default class Home extends Component {
         <Divider horizontal />
         <HomePageSearch getFilteredTags={this.getFilteredTags} />
         <Divider horizontal />
-        <QuestionsController tags={this.state.tags} />
+        <QuestionsContainer tags={this.state.tags} userId={this.props.userId} />
       </Container>
     );
   }

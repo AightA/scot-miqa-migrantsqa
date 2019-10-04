@@ -18,7 +18,7 @@ export default class App extends Component {
 
   setUserId = id => {
     if (id) {
-      this.setState({ userId: id });
+      this.setState({ userId: parseInt(id) });
     } else {
       this.setState({ userId: null });
     }
@@ -32,7 +32,11 @@ export default class App extends Component {
     return (
       <Router>
         <MenuBar userId={this.state.userId} />
-        <Route path="/" exact component={Home} />
+        <Route
+          path="/"
+          exact
+          render={props => <Home userId={this.state.userId} />}
+        />
         <Route path="/about/" component={About} />
         <Route path="/status/" component={Status} />
         <Route path="/register" component={Register} />

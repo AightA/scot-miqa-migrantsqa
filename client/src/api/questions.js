@@ -10,6 +10,10 @@ export const getUserById = id => {
   return fetch(`/api/users/${id}`).then(res => res.json());
 };
 
+export const getQuestionsTags = () => {
+  return fetch("/api/questions/questionTags").then(res => res.json());
+};
+
 export const postQuestion = (content, tags, isAnswered, score) => {
   const token = localStorage.getItem("token");
   const postedData = {
@@ -48,4 +52,17 @@ export const postAnswer = (content, tags, questionId) => {
 
 export const update = () => {
   return fetch("/api/update").then(res => res.json());
+};
+
+export const updateScore = (score, id) => {
+  const updatedScore = {
+    method: "PUT",
+    body: JSON.stringify({
+      score: score,
+      id: id
+    }),
+    headers: { "Content-Type": "application/json" }
+  };
+
+  return fetch("/api/questions/update-question-score", updatedScore);
 };

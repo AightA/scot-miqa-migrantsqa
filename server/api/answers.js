@@ -27,7 +27,7 @@ router.post("/accept-answer", async (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       next(err);
     });
 });

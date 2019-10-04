@@ -48,7 +48,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       next(err);
     });
 });
@@ -65,7 +65,7 @@ router.post("/update-question", async (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       next(err);
     });
 });
@@ -82,7 +82,7 @@ router.put("/update-question-score", async (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       next(err);
     });
 });
@@ -98,7 +98,7 @@ router.delete("/delete-question", async (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       next(err);
     });
 });
@@ -132,7 +132,7 @@ router.post("/:questionId/answers", authMiddleware, async (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       next(err);
     });
 });

@@ -27,7 +27,7 @@ class ProfilePage extends Component {
         });
       })
       .catch(error => {
-        console.log("error is ", error);
+        console.error("error is ", error);
       });
   }
 

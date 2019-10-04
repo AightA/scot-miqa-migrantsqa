@@ -119,7 +119,6 @@ export default class QuestionsList extends Component {
   };
 
   handleOnClickUpvoteBtn = (question, userId) => {
-    //console.log({ question, userId });
     if (!userId || userId === question.user_id) return;
     const score = question.score + 1;
     updateScore(score, question.id)
@@ -138,7 +137,6 @@ export default class QuestionsList extends Component {
     acceptAnswers(answer.question_id, !answer.is_accepted, answer.id)
       .then(result => {
         this.props.pageReload();
-        console.log(result);
       })
       .catch(err => {
         console.error(err);

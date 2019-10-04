@@ -66,7 +66,11 @@ export const updateScore = (score, id) => {
 
   return fetch("/api/questions/update-question-score", updatedScore);
 };
-
+// get all questions for question page
 export const getQuestionByQuestionId = id => {
   return fetch(`/api/questions/${id}`).then(res => res.json());
+};
+// get questions for profile by userID
+export const getQuestionsByUserIdForProfilePage = id => {
+  return fetch(`/api/questions/${id}/Profile`).then(res => res.json());
 };

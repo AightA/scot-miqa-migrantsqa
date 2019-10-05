@@ -49,7 +49,7 @@ export default class UserProfile extends Component {
           </Header>
         </Grid.Row>
         <Grid.Row columns={1}>
-          <Grid.Column textAlign="left">
+          <Grid.Column textAlign="center">
             <Header as="h2" color="blue">
               Welcome : {user.username}
             </Header>
@@ -75,7 +75,7 @@ export default class UserProfile extends Component {
         ) : (
           questions &&
           questions.map(question => (
-            <Grid.Row>
+            <Grid.Row centered>
               <Grid.Column
                 textAlign="left"
                 width={15}

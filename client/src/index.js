@@ -10,7 +10,7 @@ import Register from "./components/UserRegistration";
 import Login from "./components/Login";
 import ProfilePage from "./components/ProfilePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-
+import Footer from "./components/Footer";
 export default class App extends Component {
   state = {
     userId: null
@@ -53,6 +53,7 @@ export default class App extends Component {
           path="/profile"
           render={props => <ProfilePage userId={this.state.userId} />}
         />
+        <Footer />
       </Router>
     );
   }

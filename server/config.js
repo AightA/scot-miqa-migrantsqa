@@ -2,7 +2,7 @@ const config = {
 	development: {
 		user: "app_user",
 		host: "localhost",
-		database: "miqa_final_project",
+		database: "final_project",
 		password: "password",
 		port: 5432,
 	},

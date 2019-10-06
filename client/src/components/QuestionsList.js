@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Pagination, Grid } from "semantic-ui-react";
+import { Pagination, Grid, Container } from "semantic-ui-react";
 import { postAnswer, updateScore } from "../api/questions";
 import QuestionCard from "./QuestionCard";
 
@@ -151,7 +151,7 @@ export default class QuestionsList extends Component {
     console.log("=====>>>", currentQuestions);
 
     return (
-      <Grid>
+      <Container>
         {currentQuestions.map((question, index) => {
           return (
             <QuestionCard
@@ -176,20 +176,22 @@ export default class QuestionsList extends Component {
             />
           );
         })}
-        <Grid.Row centered>
-          <Pagination
-            defaultActivePage={1}
-            firstItem={null}
-            lastItem={null}
-            onPageChange={this.handlePaginationChange}
-            onClick={this.getPageNumber}
-            boundaryRange={3}
-            totalPages={
-              this.props.questions.length / this.state.questionsPerPage
-            }
-          />
-        </Grid.Row>
-      </Grid>
+        <Grid>
+          <Grid.Row centered>
+            <Pagination
+              defaultActivePage={1}
+              firstItem={null}
+              lastItem={null}
+              onPageChange={this.handlePaginationChange}
+              onClick={this.getPageNumber}
+              boundaryRange={3}
+              totalPages={
+                this.props.questions.length / this.state.questionsPerPage
+              }
+            />
+          </Grid.Row>
+        </Grid>
+      </Container>
     );
   }
 }

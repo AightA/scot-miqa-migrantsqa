@@ -23,8 +23,6 @@ class ProfilePage extends Component {
   getUserData = () => {
     getUsersDataByUserId(this.props.userId)
       .then(data => {
-        console.log(data);
-
         this.setState({
           user: data
         });
@@ -34,7 +32,7 @@ class ProfilePage extends Component {
       });
   };
   componentDidMount() {
-    this.getUsersData();
+    this.getUserData();
   }
 
   validateForm() {

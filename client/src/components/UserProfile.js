@@ -16,7 +16,6 @@ export default class UserProfile extends Component {
   getUserData = () => {
     getUsersDataByUserId(this.state.userId)
       .then(data => {
-        console.log(data);
         this.setState({
           user: data
         });
@@ -29,7 +28,6 @@ export default class UserProfile extends Component {
   // Get Questions
   getQuestions = () => {
     return getQuestionsByUserIdForProfilePage(this.state.userId).then(data => {
-      console.log(data);
       this.setState({ questions: data });
     });
   };

@@ -1,4 +1,4 @@
-# Logs
+Sorry for giving you wrong advice! The gitignore trick would only work if the file wasn't already committed. Because it has been, you'd have to do something else. # Logs
 logs
 *.log
 npm-debug.log*
@@ -61,6 +61,3 @@ typings/
 .next
 
 *.sqlite3
-
-# changes in config file
-server/config.js

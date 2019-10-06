@@ -1,4 +1,4 @@
-Sorry for giving you wrong advice! The gitignore trick would only work if the file wasn't already committed. Because it has been, you'd have to do something else. # Logs
+# Logs
 logs
 *.log
 npm-debug.log*

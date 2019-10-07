@@ -1,9 +1,18 @@
 import React, { Component } from "react";
-import { Grid, Header, Image, CardHeader, Card } from "semantic-ui-react";
+import {
+  Grid,
+  Header,
+  Image,
+  CardHeader,
+  Card,
+  Segment
+} from "semantic-ui-react";
 import { getQuestionsByUserIdForProfilePage } from "../api/questions";
 import { Link } from "react-router-dom";
 import { formatingDate } from "../util/formatingDate";
 import { getUsersDataByUserId } from "../api/users";
+import OptionsButton from "./OptionsButton";
+
 export default class UserProfile extends Component {
   state = {
     userId: localStorage.getItem("userId"),
@@ -40,57 +49,62 @@ export default class UserProfile extends Component {
   render() {
     const { questions, user } = this.state;
     return (
-      <Grid>
-        <Grid.Row centered>
-          <Header as="h2" textAlign="center" color="brown">
-            Account Profile <i class="earlybirds icon" />
-          </Header>
-        </Grid.Row>
-        <Grid.Row columns={1}>
-          <Grid.Column textAlign="center">
-            <Header as="h2" color="blue">
-              Welcome : {user.username}
+      <Segment>
+        <Grid columns={2} centered>
+          {/* <Grid.Row columns={2}> */}
+          <Grid.Column textAlign="center" width={6}>
+            <OptionsButton changePassword />{" "}
+            <Image
+              src={user.profile_pic}
+              centered
+              size="small"
+              circular
+            ></Image>
+            <Header as="h2" color="brown">
+              Welcome :{user.username && user.username}
+            </Header>
+            <Header as="h4" color="brown">
+              Email : {user.email}
             </Header>
           </Grid.Column>
-        </Grid.Row>
-        <Grid.Row centered>
-          <Image src={user.profile_pic} size="small" circular></Image>
-        </Grid.Row>
-        <Grid.Row columns={1}>
-          <Grid.Column textAlign="left">
-            <Header as="h2" color="blue">
+          <Grid.Column textAlign="center  " width={10}>
+            {" "}
+            <Header as="h2" textAlign="center" color="brown">
               Your Questions:
             </Header>
+            {/* if user don't have any questions he will see a message that he
+            don't have any questions and link to home page to aks his first one */}
+            {questions && questions.length === 0 ? (
+              <Header as="h3">
+                You didn't Ask any question{" "}
+                <Link to={"/"}>Ask Your first question</Link>
+              </Header>
+            ) : (
+              questions &&
+              questions.map(question => (
+                <Grid.Row>
+                  <Grid.Column
+                    textAlign="left"
+                    width={15}
+                    as={Link}
+                    to={`/question/${question.id}`}
+                  >
+                    <Card fluid>
+                      <CardHeader textAlign="left">
+                        "{question.content}"
+                      </CardHeader>
+                      <Card.Meta textAlign="right">
+                        {formatingDate(question.date_posted)}
+                      </Card.Meta>
+                    </Card>
+                  </Grid.Column>
+                  <br></br>
+                </Grid.Row>
+              ))
+            )}{" "}
           </Grid.Column>
-        </Grid.Row>
-        {/* if user don't have any questions he will see a
-     message that he don't have any questions and link to home page to aks his first one */}
-        {questions && questions.length === 0 ? (
-          <Header as="h3">
-            You didn't Ask any question{" "}
-            <Link to={"/"}>Ask Your first question</Link>
-          </Header>
-        ) : (
-          questions &&
-          questions.map(question => (
-            <Grid.Row centered>
-              <Grid.Column
-                textAlign="left"
-                width={15}
-                as={Link}
-                to={`/question/${question.id}`}
-              >
-                <Card fluid>
-                  <CardHeader>"{question.content}"</CardHeader>
-                  <Card.Meta textAlign="right">
-                    {formatingDate(question.date_posted)}
-                  </Card.Meta>
-                </Card>
-              </Grid.Column>
-            </Grid.Row>
-          ))
-        )}
-      </Grid>
+        </Grid>
+      </Segment>
     );
   }
 }

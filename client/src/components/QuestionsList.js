@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
 import { postAnswer, updateScore } from "../api/questions";
 import QuestionCard from "./QuestionCard";
+import { sendNotificationEmail } from "../api/sendEmail";
+import { getUsersDataByUserId } from "../api/users";
 
 export default class QuestionsList extends Component {
   constructor(props) {
@@ -60,15 +62,32 @@ export default class QuestionsList extends Component {
       })
       .catch(err => {});
   };
+  SendEmailWhenAnswerSubmitted = (questionId, questionOwnerId) => {
+    getUsersDataByUserId(questionOwnerId)
+      .then(data => data)
+      .then(details => {
+        const recipient = details.email;
+        const username = details.username;
+        const message = {
+          subject: `hi ${username}your Question Is Answerd`,
+          text: "Please Check Your Question Answer ",
+          inline: `https://miqa.herokuapp.com/question/${questionId}`,
+          html: `https://miqa.herokuapp.com/question/${questionId}`
+        };
+        return sendNotificationEmail(recipient, message);
+      });
+  };
+
   handleOnSubmitAnswer = e => {
     e.preventDefault();
     const { content, tags } = this.state;
     const questionId = this.props.QuestionId;
-
+    const userId = this.props.userId;
     postAnswer(content, tags, questionId)
       .then(result => {
         if (result.status === 200) {
           this.props.pageReload();
+          this.SendEmailWhenAnswerSubmitted(questionId, userId);
           this.setState({
             content: ""
           });
@@ -118,7 +137,6 @@ export default class QuestionsList extends Component {
   };
 
   handleOnClickUpvoteBtn = (question, userId) => {
-    //console.log({ question, userId });
     if (!userId || userId === question.user_id) return;
     const score = question.score + 1;
     updateScore(score, question.id)

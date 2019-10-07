@@ -1,11 +1,10 @@
 const express = require("express");
-const sendMail = express.Router();
-const emailUtil = require("./email-util");
-
+const router = express.Router();
+const emailUtil = require("../api/email-util");
 const { sendEmail } = emailUtil;
-
-sendMail.post("/mail", async (req, res, next) => {
+router.post("/mail", async (req, res, next) => {
   const { recipient, message } = req.body;
+  console.log("body", message, recipient);
   try {
     await sendEmail(recipient, message);
     res.json({ message: "Your query has been sent" });
@@ -14,4 +13,4 @@ sendMail.post("/mail", async (req, res, next) => {
     await next(e);
   }
 });
-module.exports = sendMail;
+module.exports = router;

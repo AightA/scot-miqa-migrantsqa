@@ -1,22 +1,24 @@
-const emailConfig = require("../services/email-config")();
-const mailgun = require("mailgun-js")(emailConfig);
-
+const mailgun = require("mailgun-js");
 exports.sendEmail = (recipient, message, attachment) =>
   new Promise((resolve, reject) => {
+    const DOMAIN = "sandbox31ad9b239544492b8277169c4c7b343c.mailgun.org";
+    const mg = mailgun({
+      apiKey: "8554c25a964940de4272e37f98dd5d5f-af6c0cec-5bb8acbf",
+      domain: DOMAIN
+    });
     const data = {
-      from: "Youssef sadek <youssef.sadek910@gmail.com>",
+      from: "<info@Miqa.com>",
       to: recipient,
       subject: message.subject,
-      text: message.text
-      // inline: attachment,
-      // html: message.html
+      text: message.text,
+      inline: attachment,
+      html: message.html
     };
-
-    mailgun.messages().send(data, error => {
+    mg.messages().send(data, function(error, body) {
       if (error) {
-        console.log("error====> ", error);
         return reject(error);
       }
-      return resolve();
+      console.log(body);
+      return resolve(body);
     });
   });

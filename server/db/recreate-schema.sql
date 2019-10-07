@@ -15,7 +15,7 @@ CREATE TABLE users (
 
 CREATE TABLE questions(
   id                       SERIAL PRIMARY KEY,
-  content                  VARCHAR (150) NOT NULL,
+  content                  VARCHAR (1000) NOT NULL,
   date_posted              TIMESTAMP,
   tags                     TEXT [],
   is_answered              BOOLEAN ,
@@ -25,7 +25,7 @@ CREATE TABLE questions(
 
 CREATE TABLE answers(
   id           SERIAL PRIMARY KEY,
-  content      VARCHAR (150) NOT NULL,
+  content      VARCHAR (1000) NOT NULL,
   date_answered TIMESTAMP NOT NULL,
   tags         VARCHAR(50),
   is_accepted  BOOLEAN NOT NULL,

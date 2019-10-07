@@ -10,3 +10,13 @@ body {
 .text-in-about {
   font-size: 18px;
 }
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-content {
+  flex: 1;
+}

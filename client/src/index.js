@@ -30,31 +30,36 @@ export default class App extends Component {
 
   render() {
     return (
-      <Router>
-        <MenuBar userId={this.state.userId} />
-        <Route
-          path="/"
-          exact
-          render={props => <Home userId={this.state.userId} />}
-        />
-        <Route path="/about/" component={About} />
-        <Route path="/status/" component={Status} />
-        <Route path="/register" component={Register} />
-        <Route
-          path="/login/"
-          render={props => (
-            <Login
-              setUserId={this.setUserId}
-              isLoggedIn={this.state.userId !== null}
+      <>
+        <div className="top-content">
+          <Router>
+            <MenuBar userId={this.state.userId} />
+            <Route
+              path="/"
+              exact
+              render={props => <Home userId={this.state.userId} />}
             />
-          )}
-        />
-        <Route
-          path="/profile"
-          render={props => <ProfilePage userId={this.state.userId} />}
-        />
+            <Route path="/about/" component={About} />
+            <Route path="/status/" component={Status} />
+            <Route path="/register" component={Register} />
+            <Route
+              path="/login/"
+              render={props => (
+                <Login
+                  setUserId={this.setUserId}
+                  isLoggedIn={this.state.userId !== null}
+                />
+              )}
+            />
+            <Route
+              path="/profile"
+              render={props => <ProfilePage userId={this.state.userId} />}
+            />
+          </Router>
+        </div>
+
         <Footer />
-      </Router>
+      </>
     );
   }
 }

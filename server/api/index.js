@@ -11,6 +11,6 @@ router.use("/status", status);
 router.use("/questions", questions);
 router.use("/answers", answers);
 router.use("/answers", answers);
-router.use("/v1/communicate", sendMail);
+router.use("/email", sendMail);
 
 module.exports = router;

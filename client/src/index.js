@@ -8,9 +8,13 @@ import Status from "./components/Status";
 import MenuBar from "./components/MenuBar";
 import Register from "./components/UserRegistration";
 import Login from "./components/Login";
-import ProfilePage from "./components/ProfilePage";
+import ChangePassword from "./components/ChangePasswordPage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Footer from "./components/Footer";
+import ViewOneQuestion from "./components/ViewOneQuestion";
+import UserProfile from "./components/UserProfile";
+import { Container } from "semantic-ui-react";
+
 export default class App extends Component {
   state = {
     userId: null
@@ -39,25 +43,21 @@ export default class App extends Component {
               exact
               render={props => <Home userId={this.state.userId} />}
             />
-            <Route path="/about/" component={About} />
-            <Route path="/status/" component={Status} />
-            <Route path="/register" component={Register} />
+            )} />
             <Route
-              path="/login/"
-              render={props => (
-                <Login
-                  setUserId={this.setUserId}
-                  isLoggedIn={this.state.userId !== null}
-                />
-              )}
+              path="/change-password"
+              render={props => <ChangePassword userId={this.state.userId} />}
             />
             <Route
               path="/profile"
-              render={props => <ProfilePage userId={this.state.userId} />}
+              render={props => <UserProfile userId={this.state.userId} />}
+            />
+            <Route
+              path="/question/:id"
+              render={props => <ViewOneQuestion userId={this.state.userId} />}
             />
           </Router>
         </div>
-
         <Footer />
       </>
     );

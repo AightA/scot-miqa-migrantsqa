@@ -10,12 +10,12 @@ insert into users (username,email,password,profile_pic) values('zan','zan@gmail.
 INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id  ) values('I have been served court papers in regards to parental','2013-12-10',ARRAY['paper'],true,4,1);
 INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id ) values('My wife and I are arriving in the UK in october and will','2015-02-21',ARRAY['wife'],true,4,2);
 INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id  ) values('I have asked a question here before about visa for an','2014-07-27',ARRAY['visa'],true,4,1);
-INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id  ) values('It not might be immigration question. let me explain','2018-04-12',ARRAY['immigrantion'],true,4,2);
-INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id ) values('With a zambian passport, my father is British with a British','2019-06-08',ARRAY['zambian'],true,4,2);
+INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id  ) values('When interviewing arrivals seeking entry, what questions do UK Immigration offices ask?','2018-04-12',ARRAY['immigrantion'],true,4,2);
+INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id ) values('Stie cineva de unde pot lua branza proaspata de vaci? ','2019-06-08',ARRAY['romanian'],true,4,2);
 INSERT INTO questions (content,date_posted ,tags,is_answered ,score,user_id ) values('هل صحيح انه ينعم بالحرية والامن والامان','2019-04-21',ARRAY['حرية'],false,4,1);
 
-INSERT INTO answers (content,date_answered,tags,is_accepted,score,question_id,user_id) values('Answer text11 ','2013-12-10','paper',true,4,1,1);
-INSERT INTO answers (content,date_answered,tags,is_accepted,score,question_id,user_id) values('Answer text12 ','2015-02-21','paper',true,4,1,2);
+INSERT INTO answers (content,date_answered,tags,is_accepted,score,question_id,user_id) values('Corect e sa zici branza de vaca, nu de vaci. Ce provincialism e asta? Si ca sa-ti raspund la intrebare: de la vaca. De unde altundeva?','2013-12-10','paper',true,4,5,1);
+INSERT INTO answers (content,date_answered,tags,is_accepted,score,question_id,user_id) values('There is no prescribed set of questions; the IO will be trying to determine if you qualify as a visitor under Appendix V of the rules. So a full interview will cover purpose, length, maintenance, accommodation, returnability, and overstay risk.','2015-02-21','paper',true,4,4,2);
 INSERT INTO answers (content,date_answered,tags,is_accepted,score,question_id,user_id) values('Answer text21 ','2014-07-27','paper',true,4,2,3);
 INSERT INTO answers (content,date_answered,tags,is_accepted,score,question_id,user_id) values('Answer text22 ','2018-04-12','paper',true,4,2,1);
 INSERT INTO answers (content,date_answered,tags,is_accepted,score,question_id,user_id) values('Answer text31 ','2019-06-08','paper',true,4,3,2);

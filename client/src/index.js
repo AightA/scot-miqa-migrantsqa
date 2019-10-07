@@ -8,11 +8,10 @@ import Status from "./components/Status";
 import MenuBar from "./components/MenuBar";
 import Register from "./components/UserRegistration";
 import Login from "./components/Login";
-import ChangePassword from "./components/ChangePasswordPage";
+import ChangePasswordPage from "./components/ChangePasswordPage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import ViewOneQuestion from "./components/ViewOneQuestion";
 import UserProfile from "./components/UserProfile";
-import { Container } from "semantic-ui-react";
 
 export default class App extends Component {
   state = {
@@ -54,7 +53,7 @@ export default class App extends Component {
         />
         <Route
           path="/change-password"
-          render={props => <ChangePassword userId={this.state.userId} />}
+          render={props => <ChangePasswordPage userId={this.state.userId} />}
         />
         <Route
           path="/profile"

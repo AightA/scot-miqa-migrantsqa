@@ -91,6 +91,7 @@ const QuestionCard = props => {
               handleOnSubmitAnswer={props.handleOnSubmitAnswer}
               handleChange={props.handleChange}
               content={props.content}
+              handleAcceptAnswerOnClick={props.handleAcceptAnswerOnClick}
             />
           </Accordion>
         </Card.Header>
@@ -110,6 +111,7 @@ const QuestionCard = props => {
             fontStyle: "italic"
           }}
         >
+          {/* Commenting out temporarily because of bug
           {question.tags &&
             question.tags.map(
               (tag, index) =>
@@ -118,6 +120,7 @@ const QuestionCard = props => {
 
                 `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
             )}
+            */}
         </Card.Meta>
         <Card.Meta textAlign="right">
           {formatingDate(question.date_posted)}

@@ -9,12 +9,19 @@ const AnswersList = props => {
     activeIndex,
     handleOnSubmitAnswer,
     handleChange,
+    handleAcceptAnswerOnClick,
     content
   } = props;
   return (
     <Accordion.Content active={activeIndex === question.id}>
       {answers.map(answer => {
-        return <AnswerCard question={question} answer={answer} />;
+        return (
+          <AnswerCard
+            question={question}
+            answer={answer}
+            handleAcceptAnswerOnClick={handleAcceptAnswerOnClick}
+          />
+        );
       })}
 
       <Form onSubmit={handleOnSubmitAnswer}>

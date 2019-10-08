@@ -37,7 +37,9 @@ export default class QuestionsContainer extends Component {
       });
     });
     getAnswers().then(res => {
-      this.setState({ answers: res });
+      this.setState({
+        answers: res
+      });
     });
   };
 

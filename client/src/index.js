@@ -43,7 +43,6 @@ export default class App extends Component {
               exact
               render={props => <Home userId={this.state.userId} />}
             />
-            )} />
             <Route
               path="/change-password"
               render={props => <ChangePassword userId={this.state.userId} />}

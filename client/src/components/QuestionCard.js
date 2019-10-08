@@ -123,6 +123,14 @@ const QuestionCard = props => {
           {formatingDate(question.date_posted)}
         </Card.Meta>
         <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
+        <Card.Meta textAlign="right">
+          {" "}
+          {
+            props.answers.filter(answer => answer.question_id === question.id)
+              .length
+          }{" "}
+          answers{" "}
+        </Card.Meta>
       </Card.Content>
     </Card>
   );

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Pagination, Grid, Container } from "semantic-ui-react";
 import { postAnswer, updateScore } from "../api/questions";
+import { acceptAnswers } from "../api/answers";
 import QuestionCard from "./QuestionCard";
 
 export default class QuestionsList extends Component {
@@ -136,6 +137,17 @@ export default class QuestionsList extends Component {
     this.setState({ pageNumber: e.target.value });
   };
 
+  handleAcceptAnswerOnClick = (e, answer) => {
+    e.preventDefault();
+    acceptAnswers(answer.question_id, !answer.is_accepted, answer.id)
+      .then(result => {
+        this.props.pageReload();
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   handlePaginationChange = (e, { activePage }) =>
     this.setState({ currentPage: activePage });
   render() {
@@ -173,6 +185,7 @@ export default class QuestionsList extends Component {
               content={this.state.content}
               handleOnSubmitAnswer={this.handleOnSubmitAnswer}
               handleOnClickUpvoteBtn={this.handleOnClickUpvoteBtn}
+              handleAcceptAnswerOnClick={this.handleAcceptAnswerOnClick}
             />
           );
         })}

@@ -69,7 +69,7 @@ const getAnswerByQuestionId = id => {
         resolve(result.rows);
       }
     );
-  }
+  })
 }
 
 

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Menu, Image } from "semantic-ui-react";
+import { Menu, Image, Container } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { getUserById } from "../api/questions";
+import logo from "../assets/logo.png";
 
 export default class MenuBar extends Component {
   state = {
@@ -45,21 +46,26 @@ export default class MenuBar extends Component {
   render() {
     const { activeItem } = this.state;
     return (
-      <Menu pointing secondary size="massive" color="brown">
-        <Menu.Item
-          name="home"
-          active={activeItem === "home"}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/"
-        />
-        <Menu.Item
-          name="about"
-          active={activeItem === "about"}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/about"
-        />
+      <Menu inverted size="large">
+        <Container>
+          <Menu.Item style={{ pointerEvents: "none" }}>
+            <Image style={{ width: "60px" }} size="tiny" src={logo} />
+          </Menu.Item>
+          <Menu.Item
+            name="home"
+            active={activeItem === "home"}
+            onClick={this.handleItemClick}
+            as={Link}
+            to="/"
+          />
+          <Menu.Item
+            name="about"
+            active={activeItem === "about"}
+            onClick={this.handleItemClick}
+            as={Link}
+            to="/about"
+          />
+        </Container>
 
         {this.props.userId ? (
           <Menu.Menu position="right">

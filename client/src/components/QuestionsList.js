@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
+import { Pagination, Grid, Container } from "semantic-ui-react";
 import { postAnswer, updateScore } from "../api/questions";
 import { acceptAnswers } from "../api/answers";
 import QuestionCard from "./QuestionCard";
@@ -16,7 +16,9 @@ export default class QuestionsList extends Component {
       score: 0,
       tags: "",
       deleteQuestion: null,
-      deletedsucessfully: false
+      deletedsucessfully: false,
+      currentPage: 1,
+      questionsPerPage: 10
     };
   }
   handleEditClick = (question, event) => {
@@ -131,6 +133,9 @@ export default class QuestionsList extends Component {
         console.error(err);
       });
   };
+  getPageNumber = e => {
+    this.setState({ pageNumber: e.target.value });
+  };
 
   handleAcceptAnswerOnClick = (e, answer) => {
     e.preventDefault();
@@ -143,12 +148,26 @@ export default class QuestionsList extends Component {
       });
   };
 
+  handlePaginationChange = (e, { activePage }) =>
+    this.setState({ currentPage: activePage });
   render() {
+    const { currentPage, questionsPerPage } = this.state;
+
+    //splitting array into small array
+    const indexOfLastQuestion = currentPage * questionsPerPage;
+    const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+    const currentQuestions = this.props.questions.slice(
+      indexOfFirstQuestion,
+      indexOfLastQuestion
+    );
+    console.log("=====>>>", currentQuestions);
+
     return (
       <Container>
-        {this.props.questions.map((question, index) => {
+        {currentQuestions.map((question, index) => {
           return (
             <QuestionCard
+              key={question.id}
               index={index}
               activeIndex={this.props.activeIndex}
               question={question}
@@ -170,6 +189,21 @@ export default class QuestionsList extends Component {
             />
           );
         })}
+        <Grid>
+          <Grid.Row centered>
+            <Pagination
+              defaultActivePage={1}
+              firstItem={null}
+              lastItem={null}
+              onPageChange={this.handlePaginationChange}
+              onClick={this.getPageNumber}
+              boundaryRange={3}
+              totalPages={
+                this.props.questions.length / this.state.questionsPerPage
+              }
+            />
+          </Grid.Row>
+        </Grid>
       </Container>
     );
   }

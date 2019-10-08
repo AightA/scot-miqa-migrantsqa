@@ -28,3 +28,7 @@ export const acceptAnswers = (questionId, isAccepted, id) => {
     }
   });
 };
+
+export const getAnswersByQuestionId = questionId => {
+  return fetch(`/api/answers/${questionId}`).then(res => res.json());
+};

@@ -94,10 +94,29 @@ const updatePassword = ({ oldPassword, newPassword, email }) => {
   });
 };
 
+
+const updateProfilePicture = ({ profilePicture, userId }) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      "UPDATE users set (profile_pic, id) values ($1, $2)",
+      [profilePicture, userId],
+      (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+        console.log(result);
+        resolve(result.rows);
+      }
+    );
+  });
+};
+
+
 module.exports = {
   getUserByEmail,
   createUser,
   getUserById,
   getAllUsers,
-  updatePassword
+  updatePassword,
+  updateProfilePicture
 };

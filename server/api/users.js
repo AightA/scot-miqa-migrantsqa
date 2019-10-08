@@ -30,4 +30,20 @@ router.get("/:userId", (req, res) => {
 		});
 });
 
+router.post("/:update-profile-picture", (req, res) => {
+	const {profilePicture, userId} = req.body;
+	usersDb
+		.updateProfilePicture(profilePicture ,userId)
+		.then(() => {
+			res.send({
+				success: true,
+				message: "Profile picture updated"
+			});
+		})
+		.catch((err) => {
+			console.error(err);
+			res.send(500);
+		});
+});
+
 module.exports = router;

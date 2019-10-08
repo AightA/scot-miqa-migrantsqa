@@ -138,7 +138,7 @@ router.post("/:questionId/answers", authMiddleware, async (req, res, next) => {
   const { content, tags } = req.body;
   const userId = req.user.id;
   const dateAnswered = moment().format();
-  const isAccepted = true;
+  const isAccepted = false;
   const questionId = parseInt(req.params.questionId);
   //TODO score here must be changed
   const score = 4;

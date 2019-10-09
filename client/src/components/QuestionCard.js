@@ -7,7 +7,8 @@ import {
   Accordion,
   Icon,
   Popup,
-  Image
+  Image,
+  Grid
 } from "semantic-ui-react";
 import { formatingDate } from "../util/formatingDate";
 import AnswersList from "./AnswersList";
@@ -36,6 +37,18 @@ const QuestionCard = props => {
               onClick={props.toggleAnswers}
               id={`card-${index}`}
             >
+        <Grid columns={3} >
+        <Grid.Column textAlign="left" width={2}>
+        <QuestionUpvote
+          userId={props.userId}
+          questionUserId={question.user_id}
+          questionScore={question.score}
+          questionId={question.id}
+          handleOnClickUpvoteBtn={() =>
+            props.handleOnClickUpvoteBtn(question, props.userId)
+          }
+        /></Grid.Column>
+          <Grid.Column textAlign="left" width={9}>
               {props.editQuestion && props.editQuestion.id === question.id ? (
                 <Form>
                   <TextArea
@@ -43,7 +56,7 @@ const QuestionCard = props => {
                     style={{ minHeight: 100 }}
                     onChange={e => props.onChange(e)}
                   />
-                  <div className="ui two buttons" style={{width:'15%'}}>
+                  <div className="ui two buttons" style={{width:'40%'}}>
                     <Button onClick={props.handleSaveClick} basic color="black">
                       Save
                     </Button>
@@ -62,7 +75,7 @@ const QuestionCard = props => {
               )}
               {props.userId === question.user_id && !props.editQuestion ? (
                 <Card.Content extra>
-                  <div className="ui two buttons" style={{width:'15%'}}>
+                  <div className="ui two buttons" style={{width:'40%'}}>
                     <Button
                       basic
                       color="black"
@@ -82,6 +95,29 @@ const QuestionCard = props => {
                   </div>
                 </Card.Content>
               ) : null}
+        </Grid.Column>
+        <Grid.Column textAlign="right" width={5}>
+        <Card.Meta
+          textAlign="right"
+          style={{
+            fontStyle: "italic"
+          }}
+        >
+          {question.tags &&
+            question.tags.map(
+              (tag, index) =>
+                //This line will add a #followed by the tag and
+                //keep adding spaces till we reach the end of the array.
+
+                `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
+            )}
+        </Card.Meta>
+        <Card.Meta textAlign="right">
+          {formatingDate(question.date_posted)}
+        </Card.Meta>
+        <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
+        </Grid.Column>
+        </Grid>
             </Accordion.Title>
 
             <AnswersList
@@ -95,34 +131,6 @@ const QuestionCard = props => {
             />
           </Accordion>
         </Card.Header>
-        <QuestionUpvote
-          userId={props.userId}
-          questionUserId={question.user_id}
-          questionScore={question.score}
-          questionId={question.id}
-          handleOnClickUpvoteBtn={() =>
-            props.handleOnClickUpvoteBtn(question, props.userId)
-          }
-        />
-        <Card.Meta
-          textAlign="right"
-          style={{
-            fontSize: "12px",
-            fontStyle: "italic"
-          }}
-        >
-          {question.tags &&
-            question.tags.map(
-              (tag, index) =>
-                //This line will add a #followed by the tag and
-                //keep adding spaces till we reach the end of the array.
-                `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
-            )}
-        </Card.Meta>
-        <Card.Meta textAlign="right">
-          {formatingDate(question.date_posted)}
-        </Card.Meta>
-        <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
       </Card.Content>
     </Card>
   );

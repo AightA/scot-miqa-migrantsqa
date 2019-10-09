@@ -69,10 +69,18 @@ export default class QuestionsList extends Component {
         const recipient = details.email;
         const username = details.username;
         const message = {
-          subject: `hi ${username}your Question Is Answerd`,
-          text: "Please Check Your Question Answer ",
-          inline: `https://miqa.herokuapp.com/question/${questionId}`,
-          html: `https://miqa.herokuapp.com/question/${questionId}`
+          subject: `Your question has a new answer`,
+          text: `Your question has a new answer: https://miqa.herokuapp.com/question/${questionId} `,
+          html: `
+          <centered>
+          <h2>Hey ${username}</h2>
+          <h3>Your question has a new answer:</h3>
+          <h4><a href="https://miqa.herokuapp.com/question/54">
+          https://miqa.herokuapp.com/question/${questionId}</a></h4>
+          <br>
+          <p>All the best,</p>
+          <p>MiQA team</p>
+          </centered>"`
         };
         return sendNotificationEmail(recipient, message);
       });
@@ -82,12 +90,14 @@ export default class QuestionsList extends Component {
     e.preventDefault();
     const { content, tags } = this.state;
     const questionId = this.props.QuestionId;
-    const userId = this.props.userId;
+    const questionOwnerID = this.props.questions.find(
+      question => question.id === questionId
+    ).user_id;
     postAnswer(content, tags, questionId)
       .then(result => {
         if (result.status === 200) {
           this.props.pageReload();
-          this.SendEmailWhenAnswerSubmitted(questionId, userId);
+          this.SendEmailWhenAnswerSubmitted(questionId, questionOwnerID);
           this.setState({
             content: ""
           });

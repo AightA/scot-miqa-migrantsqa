@@ -24,7 +24,7 @@ const Footer = () => {
           </Grid.Column>
           <Grid.Column width={10}>
             <p>
-              Migrants' Questions and Answers (MiQA) is an open source project, created
+              Migrants' Questions and Answers is an open source project, created
               by CodeYourFuture students. 
             </p> 
             <p></p> 

@@ -8,7 +8,8 @@ import {
   Icon,
   Popup,
   Image,
-  Grid
+  Grid,
+  Label
 } from "semantic-ui-react";
 import { formatingDate } from "../util/formatingDate";
 import AnswersList from "./AnswersList";
@@ -18,7 +19,7 @@ import { Link } from "react-router-dom";
 const QuestionCard = props => {
   const { question, index } = props;
   return (
-    <Card data-testid="question" fluid key={question.id}>
+    <Card data-testid="question" fluid key={question.id} style={{padding: '1em'}}>
       <Card.Content>
         <Popup
           content="Expand"
@@ -95,12 +96,11 @@ const QuestionCard = props => {
                   </div>
                 </Card.Content>
               ) : null}
-        </Grid.Column>
-        <Grid.Column textAlign="right" width={5}>
         <Card.Meta
-          textAlign="right"
+          textAlign="left"
           style={{
-            fontStyle: "italic"
+            fontStyle: "italic",
+            marginTop: '0.5em'
           }}
         >
           {question.tags &&
@@ -112,10 +112,15 @@ const QuestionCard = props => {
                 `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
             )}
         </Card.Meta>
-        <Card.Meta textAlign="right">
-          {formatingDate(question.date_posted)}
-        </Card.Meta>
-        <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
+        </Grid.Column>
+        <Grid.Column textAlign="right" width={5}>
+
+        <Card.Meta textAlign="right"> 
+        <Label as='a' image>
+      <img src='https://react.semantic-ui.com/images/avatar/small/nan.jpg' />
+      {"  "}{question.username}
+    </Label>
+         </Card.Meta>
         </Grid.Column>
         </Grid>
             </Accordion.Title>

@@ -3,6 +3,7 @@ import { Menu, Image, Container } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { getUserById } from "../api/questions";
 import logo from "../assets/logo.png";
+import "../styles/MenuBar.css";
 
 export default class MenuBar extends Component {
   state = {
@@ -46,11 +47,16 @@ export default class MenuBar extends Component {
   render() {
     const { activeItem } = this.state;
     return (
-      <Menu inverted size="large">
+      <Menu inverted size="huge" className="menu" style={{ height: "60px"}}
+      >
         <Container>
-          <Menu.Item style={{ pointerEvents: "none" }}>
-            <Image style={{ width: "60px" }} size="tiny" src={logo} />
-          </Menu.Item>
+            <Image
+              src={logo}
+              as='a'
+              size="small"
+              href='/'
+              style={{ width: "100px" }}
+            />
           <Menu.Item
             name="home"
             active={activeItem === "home"}
@@ -65,7 +71,6 @@ export default class MenuBar extends Component {
             as={Link}
             to="/about"
           />
-        </Container>
 
         {this.props.userId ? (
           <Menu.Menu position="right">
@@ -83,7 +88,7 @@ export default class MenuBar extends Component {
               onClick={this.handleLogout}
             />
             {this.props.userId ? (
-              <Image src={this.state.profilePicUrl} size="mini" avatar />
+              <Image src={this.state.profilePicUrl} size="mini" style={{ width: "50px" }} />
             ) : (
               ""
             )}
@@ -108,6 +113,8 @@ export default class MenuBar extends Component {
             />
           </Menu.Menu>
         )}
+                </Container>
+
       </Menu>
     );
   }

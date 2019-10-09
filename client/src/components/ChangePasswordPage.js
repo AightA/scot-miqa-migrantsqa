@@ -92,10 +92,10 @@ class ProfilePage extends Component {
       <div>
         <Grid centered columns={3}>
           <Grid.Column>
-            <Header as="h2" textAlign="center" color="brown">
-              Change Password <i class="earlybirds icon" />
-            </Header>
             <Segment>
+            <Header as="h2" textAlign="center" color="brown">
+              Change Password 
+            </Header>
               {userData ? (
                 <Form size="large">
                   <label>Username</label>

@@ -5,7 +5,8 @@ import {
   Image,
   CardHeader,
   Card,
-  Segment
+  Segment,
+  Item
 } from "semantic-ui-react";
 import { getQuestionsByUserIdForProfilePage } from "../api/questions";
 import { Link } from "react-router-dom";
@@ -50,27 +51,33 @@ export default class UserProfile extends Component {
     const { questions, user } = this.state;
     return (
       <Segment>
-        <Grid columns={2} centered>
-          {/* <Grid.Row columns={2}> */}
-          <Grid.Column textAlign="center" width={6}>
-            <OptionsButton changePassword />{" "}
+        <Grid columns={3} centered  style={{margin: '1em'}}>
+          <Grid.Column textAlign="center" width={3}></Grid.Column>
+          <Grid.Column textAlign="center" width={4}>
+            <OptionsButton changePassword />
             <Image
               src={user.profile_pic}
               centered
               size="small"
               circular
             ></Image>
-            <Header as="h2" color="brown">
-              Welcome :{user.username && user.username}
-            </Header>
-            <Header as="h4" color="brown">
-              Email : {user.email}
-            </Header>
+            <Grid centered>
+              <Grid.Row>
+                <Header as="h4" color="brown" textAlign="left" style={{margin: '2em'}}>
+                  <Item>
+                  Username: {user.username && user.username}
+                  </Item>
+                  <Item>
+                  Email: {user.email}
+                  </Item>
+                </Header>
+              </Grid.Row>
+            </Grid>
           </Grid.Column>
-          <Grid.Column textAlign="center  " width={10}>
+          <Grid.Column textAlign="center  " width={6}>
             {" "}
             <Header as="h2" textAlign="center" color="brown">
-              Your Questions:
+              Questions Posted
             </Header>
             {/* if user don't have any questions he will see a message that he
             don't have any questions and link to home page to aks his first one */}
@@ -83,15 +90,15 @@ export default class UserProfile extends Component {
               questions &&
               questions.map(question => (
                 <Grid.Row>
-                  <Grid.Column
+                  <Grid.Column 
                     textAlign="left"
                     width={15}
                     as={Link}
                     to={`/question/${question.id}`}
                   >
-                    <Card fluid>
-                      <CardHeader textAlign="left">
-                        "{question.content}"
+                    <Card fluid style={{padding: '1em'}}>
+                      <CardHeader as="h4" textAlign="left">
+                        {question.content}
                       </CardHeader>
                       <Card.Meta textAlign="right">
                         {formatingDate(question.date_posted)}
@@ -103,6 +110,7 @@ export default class UserProfile extends Component {
               ))
             )}{" "}
           </Grid.Column>
+          <Grid.Column textAlign="center" width={3}></Grid.Column>
         </Grid>
       </Segment>
     );

@@ -1,12 +1,11 @@
 import React from "react";
-import { Grid, Header, Dropdown, Icon } from "semantic-ui-react";
+import { Grid, Header, Dropdown, Icon, Label } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 export default ({ changePassword }) => {
   return (
     <Grid>
       <Grid.Column floated="left" width={6}>
         <Header>
-          Options{" "}
           <Header.Content>
             <Dropdown item size="large" icon="options">
               <Dropdown.Menu>

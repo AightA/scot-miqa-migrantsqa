@@ -15,7 +15,7 @@ import "../styles/About.css";
 const About = () => {
   return (
     <Container text style={{ marginTop: "7em", marginBottom: "7em" }}>
-      <Header className="about-header" as="h2">
+      <Header className="about-header" as="h2" style={{ marginBottom: "1em" }}>
         Migrants' Q & A
       </Header>
       <p>
@@ -29,7 +29,6 @@ const About = () => {
         migrants themselves or people who have an understanding of the issues
         people face when they resettle in Glasgow.{" "}
       </p>
-
       <p>
         To post your question or answer and to make the most of this fantastic
         webpage, please sign up using the register button on the top-right
@@ -46,10 +45,8 @@ const About = () => {
         This page was created by five CodeYourFuture students: Nab, Reyam,
         Ahmed, Zan, and Saeed, as part of their graduation project.
       </p>
-
       {/* <Image src='/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} /> */}
     </Container>
   );
 };
-
 export default About;

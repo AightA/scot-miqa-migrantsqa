@@ -61,18 +61,18 @@ const QuestionCard = props => {
                 question.content
               )}
               {props.userId === question.user_id && !props.editQuestion ? (
-                <Card.Content extra>
+                <Card.Content extra style={{width:'15%'}}>
                   <div className="ui two buttons">
                     <Button
                       basic
-                      color="green"
+                      color="black"
                       onClick={event => props.handleEditClick(question, event)}
                     >
                       Edit
                     </Button>
                     <Button
                       basic
-                      color="red"
+                      color="black"
                       onClick={event =>
                         props.handleDeleteClick(question, event)
                       }

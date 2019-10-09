@@ -124,12 +124,11 @@ const QuestionCard = props => {
         </Card.Meta>
         <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
         <Card.Meta textAlign="right">
-          {" "}
           {
             props.answers.filter(answer => answer.question_id === question.id)
               .length
-          }{" "}
-          answers{" "}
+          }
+          answers
         </Card.Meta>
       </Card.Content>
     </Card>

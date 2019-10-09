@@ -81,7 +81,7 @@ export default class UserProfile extends Component {
                 to={`/question/${question.id}`}
               >
                 <Card fluid>
-                  <CardHeader>"{question.content}"</CardHeader>
+                  <CardHeader>{question.content}</CardHeader>
                   <Card.Meta textAlign="right">
                     {formatingDate(question.date_posted)}
                   </Card.Meta>

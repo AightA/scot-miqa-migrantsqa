@@ -7,7 +7,9 @@ import {
   Accordion,
   Icon,
   Popup,
-  Image
+  Image,
+  Grid,
+  Label
 } from "semantic-ui-react";
 import { formatingDate } from "../util/formatingDate";
 import AnswersList from "./AnswersList";
@@ -17,7 +19,7 @@ import { Link } from "react-router-dom";
 const QuestionCard = props => {
   const { question, index } = props;
   return (
-    <Card data-testid="question" fluid key={question.id}>
+    <Card data-testid="question" fluid key={question.id} style={{padding: '1em'}}>
       <Card.Content>
         <Popup
           content="Expand"
@@ -36,6 +38,18 @@ const QuestionCard = props => {
               onClick={props.toggleAnswers}
               id={`card-${index}`}
             >
+        <Grid columns={3} >
+        <Grid.Column textAlign="left" width={2}>
+        <QuestionUpvote
+          userId={props.userId}
+          questionUserId={question.user_id}
+          questionScore={question.score}
+          questionId={question.id}
+          handleOnClickUpvoteBtn={() =>
+            props.handleOnClickUpvoteBtn(question, props.userId)
+          }
+        /></Grid.Column>
+          <Grid.Column textAlign="left" width={9}>
               {props.editQuestion && props.editQuestion.id === question.id ? (
                 <Form>
                   <TextArea
@@ -43,15 +57,15 @@ const QuestionCard = props => {
                     style={{ minHeight: 100 }}
                     onChange={e => props.onChange(e)}
                   />
-                  <div className="ui two buttons">
-                    <Button onClick={props.handleSaveClick} basic color="green">
+                  <div className="ui two buttons" style={{width:'40%'}}>
+                    <Button onClick={props.handleSaveClick} basic color="black">
                       Save
                     </Button>
                     <Button
                       data-testid="cancel-button"
                       onClick={props.handleCancelClick}
                       basic
-                      color="gray"
+                      color="black"
                     >
                       Cancel
                     </Button>
@@ -62,17 +76,17 @@ const QuestionCard = props => {
               )}
               {props.userId === question.user_id && !props.editQuestion ? (
                 <Card.Content extra>
-                  <div className="ui two buttons">
+                  <div className="ui two buttons" style={{width:'40%'}}>
                     <Button
                       basic
-                      color="green"
+                      color="black"
                       onClick={event => props.handleEditClick(question, event)}
                     >
                       Edit
                     </Button>
                     <Button
                       basic
-                      color="red"
+                      color="black"
                       onClick={event =>
                         props.handleDeleteClick(question, event)
                       }
@@ -82,32 +96,11 @@ const QuestionCard = props => {
                   </div>
                 </Card.Content>
               ) : null}
-            </Accordion.Title>
-
-            <AnswersList
-              answers={props.answers}
-              question={question}
-              activeIndex={props.activeIndex}
-              handleOnSubmitAnswer={props.handleOnSubmitAnswer}
-              handleChange={props.handleChange}
-              content={props.content}
-            />
-          </Accordion>
-        </Card.Header>
-        <QuestionUpvote
-          userId={props.userId}
-          questionUserId={question.user_id}
-          questionScore={question.score}
-          questionId={question.id}
-          handleOnClickUpvoteBtn={() =>
-            props.handleOnClickUpvoteBtn(question, props.userId)
-          }
-        />
         <Card.Meta
-          textAlign="right"
+          textAlign="left"
           style={{
-            fontSize: "12px",
-            fontStyle: "italic"
+            fontStyle: "italic",
+            marginTop: '0.5em'
           }}
         >
           {question.tags &&
@@ -119,10 +112,30 @@ const QuestionCard = props => {
                 `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
             )}
         </Card.Meta>
-        <Card.Meta textAlign="right">
-          {formatingDate(question.date_posted)}
-        </Card.Meta>
-        <Card.Meta textAlign="right"> by {question.username}</Card.Meta>
+        </Grid.Column>
+        <Grid.Column textAlign="right" width={5}>
+
+        <Card.Meta textAlign="right"> 
+        <Label as='a' image>
+      <img src='https://react.semantic-ui.com/images/avatar/small/nan.jpg' />
+      {"  "}{question.username}
+    </Label>
+         </Card.Meta>
+        </Grid.Column>
+        </Grid>
+            </Accordion.Title>
+
+            <AnswersList
+              answers={props.answers}
+              question={question}
+              activeIndex={props.activeIndex}
+              handleOnSubmitAnswer={props.handleOnSubmitAnswer}
+              handleChange={props.handleChange}
+              content={props.content}
+              handleAcceptAnswerOnClick={props.handleAcceptAnswerOnClick}
+            />
+          </Accordion>
+        </Card.Header>
       </Card.Content>
     </Card>
   );

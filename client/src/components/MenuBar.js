@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { Menu, Image } from "semantic-ui-react";
+import { Menu, Image, Container } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { getUserById } from "../api/questions";
+import logo from "../assets/logo.png";
+import "../styles/MenuBar.css";
 
 export default class MenuBar extends Component {
   state = {
@@ -45,28 +47,30 @@ export default class MenuBar extends Component {
   render() {
     const { activeItem } = this.state;
     return (
-      <Menu pointing secondary size="massive" color="brown">
-        <Menu.Item
-          name="home"
-          active={activeItem === "home"}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/"
-        />
-        <Menu.Item
-          name="about"
-          active={activeItem === "about"}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/about"
-        />
-        <Menu.Item
-          name="status"
-          active={activeItem === "status"}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/status"
-        />
+      <Menu inverted size="huge" className="menu" style={{ height: "60px"}}
+      >
+        <Container>
+            <Image
+              src={logo}
+              as='a'
+              size="small"
+              href='/'
+              style={{ width: "100px" }}
+            />
+          <Menu.Item
+            name="home"
+            active={activeItem === "home"}
+            onClick={this.handleItemClick}
+            as={Link}
+            to="/"
+          />
+          <Menu.Item
+            name="about"
+            active={activeItem === "about"}
+            onClick={this.handleItemClick}
+            as={Link}
+            to="/about"
+          />
 
         {this.props.userId ? (
           <Menu.Menu position="right">
@@ -84,7 +88,7 @@ export default class MenuBar extends Component {
               onClick={this.handleLogout}
             />
             {this.props.userId ? (
-              <Image src={this.state.profilePicUrl} size="mini" avatar />
+              <Image src={this.state.profilePicUrl} size="mini" style={{ width: "50px" }} />
             ) : (
               ""
             )}
@@ -109,6 +113,8 @@ export default class MenuBar extends Component {
             />
           </Menu.Menu>
         )}
+                </Container>
+
       </Menu>
     );
   }

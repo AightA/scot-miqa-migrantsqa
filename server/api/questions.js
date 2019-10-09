@@ -22,7 +22,7 @@ router.get("/:id/Profile", (req, res) => {
 });
 
 //to get the question by question id
-router.get("/:id", (req, res) => {
+router.get("/:id([0-9]+)", (req, res) => {
   const { id } = req.params;
   questionDb
     .getQuestionByQuestionId(id)

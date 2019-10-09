@@ -43,15 +43,15 @@ const QuestionCard = props => {
                     style={{ minHeight: 100 }}
                     onChange={e => props.onChange(e)}
                   />
-                  <div className="ui two buttons">
-                    <Button onClick={props.handleSaveClick} basic color="green">
+                  <div className="ui two buttons" style="width: 15%">
+                    <Button onClick={props.handleSaveClick} basic color="black">
                       Save
                     </Button>
                     <Button
                       data-testid="cancel-button"
                       onClick={props.handleCancelClick}
                       basic
-                      color="gray"
+                      color="black"
                     >
                       Cancel
                     </Button>
@@ -61,8 +61,8 @@ const QuestionCard = props => {
                 question.content
               )}
               {props.userId === question.user_id && !props.editQuestion ? (
-                <Card.Content extra style={{width:'15%'}}>
-                  <div className="ui two buttons">
+                <Card.Content extra>
+                  <div className="ui two buttons" style="width: 15%">
                     <Button
                       basic
                       color="black"

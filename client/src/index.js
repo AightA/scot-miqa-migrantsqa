@@ -47,6 +47,16 @@ export default class App extends Component {
               path="/change-password"
               render={props => <ChangePasswordPage userId={this.state.userId} />}
             />
+            <Route path="/register" component={Register} />
+            <Route
+              path="/login/"
+              render={props => (
+                <Login
+                  setUserId={this.setUserId}
+                  isLoggedIn={this.state.userId !== null}
+                />
+              )}
+            />
             <Route
               path="/profile"
               render={props => <UserProfile userId={this.state.userId} />}

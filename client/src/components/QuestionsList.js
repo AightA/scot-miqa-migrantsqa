@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Pagination, Grid, Container } from "semantic-ui-react";
 import { postAnswer, updateScore } from "../api/questions";
+import { acceptAnswers } from "../api/answers";
 import QuestionCard from "./QuestionCard";
+import { sendNotificationEmail } from "../api/sendEmail";
+import { getUsersDataByUserId } from "../api/users";
 
 export default class QuestionsList extends Component {
   constructor(props) {
@@ -62,15 +65,42 @@ export default class QuestionsList extends Component {
       })
       .catch(err => {});
   };
+  SendEmailWhenAnswerSubmitted = (questionId, questionOwnerId) => {
+    getUsersDataByUserId(questionOwnerId)
+      .then(data => data)
+      .then(details => {
+        const recipient = details.email;
+        const username = details.username;
+        const message = {
+          subject: `Your question has a new answer`,
+          text: `Your question has a new answer: https://miqa.herokuapp.com/question/${questionId} `,
+          html: `
+          <centered>
+          <h2>Hey ${username}</h2>
+          <h3>Your question has a new answer:</h3>
+          <h4><a href="https://miqa.herokuapp.com/question/54">
+          https://miqa.herokuapp.com/question/${questionId}</a></h4>
+          <br>
+          <p>All the best,</p>
+          <p>MiQA team</p>
+          </centered>"`
+        };
+        return sendNotificationEmail(recipient, message);
+      });
+  };
+
   handleOnSubmitAnswer = e => {
     e.preventDefault();
     const { content, tags } = this.state;
     const questionId = this.props.QuestionId;
-
+    const questionOwnerID = this.props.questions.find(
+      question => question.id === questionId
+    ).user_id;
     postAnswer(content, tags, questionId)
       .then(result => {
         if (result.status === 200) {
           this.props.pageReload();
+          this.SendEmailWhenAnswerSubmitted(questionId, questionOwnerID);
           this.setState({
             content: ""
           });
@@ -136,6 +166,17 @@ export default class QuestionsList extends Component {
     this.setState({ pageNumber: e.target.value });
   };
 
+  handleAcceptAnswerOnClick = (e, answer) => {
+    e.preventDefault();
+    acceptAnswers(answer.question_id, !answer.is_accepted, answer.id)
+      .then(result => {
+        this.props.pageReload();
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   handlePaginationChange = (e, { activePage }) =>
     this.setState({ currentPage: activePage });
   render() {
@@ -173,6 +214,7 @@ export default class QuestionsList extends Component {
               content={this.state.content}
               handleOnSubmitAnswer={this.handleOnSubmitAnswer}
               handleOnClickUpvoteBtn={this.handleOnClickUpvoteBtn}
+              handleAcceptAnswerOnClick={this.handleAcceptAnswerOnClick}
             />
           );
         })}

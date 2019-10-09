@@ -43,7 +43,7 @@ const QuestionCard = props => {
                     style={{ minHeight: 100 }}
                     onChange={e => props.onChange(e)}
                   />
-                  <div className="ui two buttons" style="width: 15%">
+                  <div className="ui two buttons" style={{width:'15%'}}>
                     <Button onClick={props.handleSaveClick} basic color="black">
                       Save
                     </Button>
@@ -62,7 +62,7 @@ const QuestionCard = props => {
               )}
               {props.userId === question.user_id && !props.editQuestion ? (
                 <Card.Content extra>
-                  <div className="ui two buttons" style="width: 15%">
+                  <div className="ui two buttons" style={{width:'15%'}}>
                     <Button
                       basic
                       color="black"
@@ -111,16 +111,13 @@ const QuestionCard = props => {
             fontStyle: "italic"
           }}
         >
-          {/* Commenting out temporarily because of bug
           {question.tags &&
             question.tags.map(
               (tag, index) =>
                 //This line will add a #followed by the tag and
                 //keep adding spaces till we reach the end of the array.
-
                 `#${tag}${index === question.tags.length - 1 ? "" : ` `}`
             )}
-            */}
         </Card.Meta>
         <Card.Meta textAlign="right">
           {formatingDate(question.date_posted)}
